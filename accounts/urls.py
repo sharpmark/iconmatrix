@@ -31,6 +31,6 @@ from django.contrib.auth import views as auth_views
 
 
 urlpatterns = patterns('',
-    url(r'^login/$', auth_views.login, {'template_name': 'active_directory/login.html'}, name='auth-login'),
-    url(r'^logout/$', auth_views.logout, {'template_name': 'active_directory/logout.html'}, name='auth-logout'),
+    url(r'^accounts/login/$', auth_views.login, {'template_name': 'accounts/login.html'}, name='auth-login'),
+    url(r'^accounts/logout/$', auth_views.logout, {'template_name': 'accounts/logout.html'}, name='auth-logout'),
 )

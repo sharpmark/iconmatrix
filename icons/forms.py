@@ -3,7 +3,7 @@
 from django.forms import ModelForm
 from icons.models import Icon
 
-class IconForm(ModelForm):
+class IconSubmitForm(ModelForm):
     class Meta:
         model = Icon
 
@@ -15,3 +15,9 @@ class IconForm(ModelForm):
         help_texts = {
             'wandoujia_url': '豌豆荚的应用详情链接',
         }
+
+class IconUploadForm(ModelForm):
+    class Meta:
+        model = Icon
+
+        fields = ['large_icon_image', 'small_icon_image']

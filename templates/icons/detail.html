@@ -7,5 +7,6 @@
         <p>下载次数 {{ icon.download_count }}</p>
         <p>{{ icon.description }}</p>
         <p>当前状态 {{ icon.get_status_display }}</p>
+        <p><a href="/icons/upload/{{ icon.id }}">上传作品</a>
     </div>
 {% endblock %}

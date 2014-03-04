@@ -7,7 +7,7 @@ urlpatterns = patterns('',
     url(r'^icons/$', views.list, name='icon-list'),
 
     url(r'^icons/submit/$', views.submit, name='icon-submit'),
-
     url(r'^icons/upload/$', views.upload, name='icon-upload'),
-    url(r'^icons/review/$', views.review, name='icon-review'),
+
+    #url(r'^icons/review/$', views.review, name='icon-review'),
 )

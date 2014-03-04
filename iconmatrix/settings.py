@@ -1,5 +1,9 @@
+# -*- coding: utf-8 -*-
 # Django settings for iconmatrix project.
+
 import os
+import ldap
+from django_auth_ldap.config import LDAPSearch, GroupOfNamesType, PosixGroupType
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -129,11 +133,12 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.admin',
-    'django_auth_ldap.backend.LDAPBackend',
-    'accounts',
-    'icons',
     'bootstrap_toolkit',
-    'active_directory',
+    'django_auth_ldap',
+    'icons',
+    'artists',
+    'accounts',
+    #'active_directory',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )
@@ -170,20 +175,39 @@ LOGGING = {
 }
 
 # active directory authentication module
-AD_DNS_NAME = 'ad.smartisan.cn'
-AD_LDAP_PORT = 389
-AD_LDAP_URL='ldap://172.16.21.3:389'
-#AD_LDAP_URL = 'ldap://%s:%s' % (AD_DNS_NAME,AD_LDAP_PORT)
-AD_SEARCH_DN ='ou=chuizi,dc=smartisan,dc=cn'
-AD_NT4_DOMAIN = 'ad.smartisan.cn'
-AD_SEARCH_FIELDS = ['mail','givenName','sn','sAMAccountName','memberOf']
-AD_DEBUG = True
-AD_DEBUG_FILE = '/tmp/ad_login.log'
+#AD_DNS_NAME = 'ad.smartisan.cn'
+#AD_NT4_DOMAIN = 'ad.smartisan.cn'
+#AD_SEARCH_FIELDS = ['mail','givenName','sn','sAMAccountName','memberOf']
 
-AD_MEMBERSHIP_ADMIN = ['Domain Admins']    # this ad group gets superuser status in django
-AD_MEMBERSHIP_REQ = AD_MEMBERSHIP_ADMIN  + ['Domain Users'] # only members of this group can access
+# Baseline configuration.
+#AUTH_LDAP_SERVER_URI = 'ldap://172.16.21.3:389'
+AUTH_LDAP_SERVER_URI = 'ldap://ad.smartisan.cn:389'
+AUTH_LDAP_BIND_DN = ''
+AUTH_LDAP_BIND_PASSWORD = ''
+AUTH_LDAP_USER_SEARCH = LDAPSearch("ou=chuizi,dc=smartisan,dc=cn",
+    ldap.SCOPE_SUBTREE, "(uid=%(user)s)")
 
+AUTH_LDAP_GROUP_SEARCH = LDAPSearch("ou=chuizi,dc=smartisan,dc=cn", #查找组
+    ldap.SCOPE_SUBTREE, "(objectClass=posixGroup)"
+)
+AUTH_LDAP_GROUP_TYPE = PosixGroupType(name_attr="cn")
+
+AUTH_LDAP_USER_ATTR_MAP = {
+    "first_name": "givenName",
+    "last_name": "sn",
+    "username": "uid",
+    "email": "mail",
+}
+
+AUTH_LDAP_MIRROR_GROUPS=True #注意 此为重点：当这个值为 True， LDAP的用户条目映射并创建 Django User 的时候，会自动映创建Group
+AUTH_LDAP_ALWAYS_UPDATE_USER = True #是否每次都从LDAP 把用户信息 更新到 Django 的User
+AUTH_LDAP_FIND_GROUP_PERMS = True #如果为True， LDAPBackend将提供基于LDAP组身份验证的用户属于的组的权限
+AUTH_LDAP_CACHE_GROUPS = True #如果为True，LDAP组成员将使用Django的缓存框架。
+AUTH_LDAP_GROUP_CACHE_TIMEOUT = 1800 #缓存时长
+
+# Keep ModelBackend around for per-user permissions and maybe a local
+# superuser.
 AUTHENTICATION_BACKENDS = (
-    'active_directory.backend.ActiveDirectoryAuthenticationBackend',
-    #'django.contrib.auth.backends.ModelBackend' #Comment out to prevent authentication from DB
+    'django_auth_ldap.backend.LDAPBackend',
+    'django.contrib.auth.backends.ModelBackend',
 )
