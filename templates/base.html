@@ -1,6 +1,6 @@
 {% load i18n %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="cn">
   <head>
     <meta charset="utf-8">
     <title>Icon Matrix</title>
@@ -24,9 +24,9 @@
         </div>
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="{% url 'index' %}">{% trans "Home" %}</a></li>
-            <li><a href="http://www.amazingworks.com.br">{% trans "About" %}</a></li>
-            <li><a href="https://github.com/ebertti">{% trans "Contact" %}</a></li>
+            <li class="active"><a href="{% url 'index' %}">Icon Matrix</a></li>
+            <li><a href="{% url 'submit' %}">Submit</a></li>
+            <li><a href="{% url 'artist' %}">Artists</a></li>
           </ul>
             {% if user.is_authenticated %}
             <ul class="nav navbar-nav navbar-right">
@@ -54,7 +54,7 @@
     {% endblock %}
     <hr>
     <footer>
-        <p>By <a href="https://github.com/ebertti">Ezequiel Bertti</a> &copy; <a href='http://www.amazingworks.com.br'>AmazingWorks</a> 2011 - 2014</p>
+        <p>By <a href="http://weibo.com/sharpmark">Sharpmark</a></p>
     </footer>
     </div> <!-- /container -->
 
