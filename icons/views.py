@@ -7,30 +7,28 @@ from django.forms.models import modelformset_factory
 from icons.models import Icon, Comment, Like
 from icons.forms import IconForm
 
-def matrix(request):
-    return render(request, 'icons/matrix.html')
-
 def detail(request, icon_id):
     icon = get_object_or_404(Icon, pk=icon_id)
     return render(request, 'icons/detail.html', {
         'icon': icon,
     })
 
-def artist(request):
-    return render(request, 'icons/artist.html')
+def list(request):
+    return render(request, 'icons/list.html', {
+        'icon_list': Icon.objects.all(),
+    })
 
 def upload(request):
     return render(request, 'icons/upload.html')
 
 def submit(request):
-    #return render(request, 'icons/submit.html')
     if request.method == 'POST':
         iconform = IconForm(request.POST)
         if iconform.is_valid():
             icon = iconform.save()
             icon.crawl_icon_from_wdjurl()
             icon.save()
-            return HttpResponseRedirect('/icons/%d' % icon.id)
+            return HttpResponseRedirect('/icons/%d/' % icon.id)
     else:
         iconform = IconForm()
     return render(request, 'icons/submit.html', {

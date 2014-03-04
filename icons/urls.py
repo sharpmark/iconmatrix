@@ -1,11 +1,13 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import url, patterns
 from icons import views
 
 urlpatterns = patterns('',
-    url(r'^upload$', views.upload, name='upload'),
-    url(r'^icons/(?P<icon_id>\d+)/$', views.detail, name='detail'),
-    url(r'^matrix$', views.matrix, name='matrix'),
-    url(r'^artist$', views.artist, name='artist'),
-    url(r'^submit$', views.submit, name='submit'),
-    url(r'^review$', views.review, name='review'),
+    url(r'^$', views.list, name='index'),
+    url(r'^icons/(?P<icon_id>\d+)/$', views.detail, name='icon-detail'),
+    url(r'^icons/$', views.list, name='icon-list'),
+
+    url(r'^icons/submit/$', views.submit, name='icon-submit'),
+
+    url(r'^icons/upload/$', views.upload, name='icon-upload'),
+    url(r'^icons/review/$', views.review, name='icon-review'),
 )

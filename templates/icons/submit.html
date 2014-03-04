@@ -2,7 +2,7 @@
 
 {% block container %}
     <div class="content">
-        <form action="/submit" method="post" class="form-horizontal" role="form">{% csrf_token %}
+        <form action="/submit/" method="post" class="form-horizontal" role="form">{% csrf_token %}
             <legend><span class="col-sm-offset-1">上传</span></legend>
             {% for field in iconform %}
                 {% include 'common/form_field.html' %}
