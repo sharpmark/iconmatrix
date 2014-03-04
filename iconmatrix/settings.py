@@ -129,8 +129,11 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.admin',
+    'django_auth_ldap.backend.LDAPBackend',
     'accounts',
     'icons',
+    'bootstrap_toolkit',
+    'active_directory',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )
@@ -165,3 +168,22 @@ LOGGING = {
         },
     }
 }
+
+# active directory authentication module
+AD_DNS_NAME = 'ad.smartisan.cn'
+AD_LDAP_PORT = 389
+AD_LDAP_URL='ldap://172.16.21.3:389'
+#AD_LDAP_URL = 'ldap://%s:%s' % (AD_DNS_NAME,AD_LDAP_PORT)
+AD_SEARCH_DN ='ou=chuizi,dc=smartisan,dc=cn'
+AD_NT4_DOMAIN = 'ad.smartisan.cn'
+AD_SEARCH_FIELDS = ['mail','givenName','sn','sAMAccountName','memberOf']
+AD_DEBUG = True
+AD_DEBUG_FILE = '/tmp/ad_login.log'
+
+AD_MEMBERSHIP_ADMIN = ['Domain Admins']    # this ad group gets superuser status in django
+AD_MEMBERSHIP_REQ = AD_MEMBERSHIP_ADMIN  + ['Domain Users'] # only members of this group can access
+
+AUTHENTICATION_BACKENDS = (
+    'active_directory.backend.ActiveDirectoryAuthenticationBackend',
+    #'django.contrib.auth.backends.ModelBackend' #Comment out to prevent authentication from DB
+)

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load bootstrap_toolkit %}
+
+{% block container %}
+<form method="post" action=".">
+    {% csrf_token %}
+    {{ form|as_bootstrap }}
+    <!-- div class="form-actions" -->
+        <button type="submit" class="btn btn-primary">Submit</button>
+    <!-- /div -->
+</form>
+{% endblock %}

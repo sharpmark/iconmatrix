@@ -30,10 +30,10 @@
             <ul class="nav navbar-nav navbar-right">
                 {% if user.is_authenticated %}
                 <li><p class="navbar-text">{{ user.username }}</p></li>
-                <li><a href="{% url 'django.contrib.auth.views.password_change' %}">修改密码</a></li>
-                <li><a href="{% url 'django.contrib.auth.views.logout' %}">退出</a></li>
+                <li><a href="{% url 'auth-logout' %}">修改密码</a></li>
+                <li><a href="{% url 'auth-logout' %}">退出</a></li>
                 {% else %}
-                <li><a href="{% url 'django.contrib.auth.views.login' %}">登录</a></li>
+                <li><a href="{% url 'auth-login' %}">登录</a></li>
                 {% endif %}
             </ul>
         </div>
@@ -41,17 +41,7 @@
 
     <div class="container">
     {% block container %}
-        <div class="content">
-            <div class="page-header">
-                <h1>{{ site.name }} <small>{% trans "Sample using Bootstrap from Twitter with django-registration" %}</small></h1>
-            </div>
-            <ul>
-                <li><a href="{% url 'django.contrib.auth.views.login' %}">{% trans "Log in" %}</a></li>
-                <li><a href="{% url 'django.contrib.auth.views.logout' %}">{% trans "Log out" %}</a></li>
-                <li><a href="{% url 'django.contrib.auth.views.password_change' %}">{% trans "Change password" %}</a></li>
-                <li><a href="{% url 'django.contrib.auth.views.password_reset' %}">{% trans "Reset my password" %}</a></li>
-            </ul>
-        </div>
+        <h1>Icon Matrix</h1>
     {% endblock %}
     <hr>
     <footer>
