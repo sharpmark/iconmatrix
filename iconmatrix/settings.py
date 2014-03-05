@@ -136,6 +136,7 @@ INSTALLED_APPS = (
     'icons',
     'artists',
     'accounts',
+    'applications',
     #'active_directory',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
@@ -202,11 +203,6 @@ LOGGING = {
             'maxBytes': '16777216', # 16megabytes(16M)
             'formatter': 'django_db_backends'
         },
-        'mail_admins': {
-            'level': 'ERROR',
-            'class': 'django.utils.log.AdminEmailHandler',
-            'include_html': True,
-        }
     },
     'loggers': {
         'django': {
