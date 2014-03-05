@@ -7,7 +7,7 @@
         <img src="/uploads/{{ application.last_icon.image_192px }}" />
         <img src="/uploads/{{ application.last_icon.image_128px }}" />
         <p>下载次数：{{ application.download_count }}</p>
-        <p>{{ application.description }}</p>
+        <p>{{ application.description|safe}}</p>
         <p>当前状态：{{ application.get_status_display }}
         </p>
         <p>
