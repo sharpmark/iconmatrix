@@ -26,9 +26,11 @@ class Application(models.Model):
     wandoujia_url = models.URLField()
     package_name = models.CharField(max_length=500)
     download_count = models.CharField(max_length=200)   # 从豌豆荚抓取数据，所以是字符串，模糊数据
+    version = models.CharField(max_length=50)
 
     # 状态和其他信息
     status = models.CharField(max_length=2, choices=STATUS, default=CREATE)
+    last_icon = models.ForeignKey('icons.Icon', null=True, related_name='app')
 
     # 上传者和绘制者
     uploader = models.ForeignKey(User, related_name='uploads', null=True)

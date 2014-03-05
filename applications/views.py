@@ -1,10 +1,14 @@
 # -*- coding: utf-8 -*-
+from django.utils import timezone
 from django.http import HttpResponse, HttpResponseRedirect, Http404
-from django.shortcuts import render, render_to_response, get_object_or_404
+from django.shortcuts import render, render_to_response, get_object_or_404, redirect
 
 from applications.models import Application
+from icons.models import Icon
+
 from applications.forms import SubmitForm
 from icons.forms import UploadForm
+
 
 def detail(request, app_id):
     application = get_object_or_404(Application, pk=app_id)
@@ -19,9 +23,10 @@ def detail(request, app_id):
             icon.save()
 
             application.status = Application.UPLOAD
+            application.last_icon = icon
             application.save()
 
-            return HttpResponseRedirect('/applications/%d/' % icon.id)
+            return HttpResponseRedirect('/apps/%d/' % icon.id)
     else:
         icon_upload_form = UploadForm()
 
@@ -30,10 +35,12 @@ def detail(request, app_id):
         'icon_upload_form': icon_upload_form,
     })
 
+
 def list(request):
     return render(request, 'applications/list.html', {
         'app_list': Application.objects.all(),
     })
+
 
 def submit(request):
     if request.method == 'POST':
@@ -51,17 +58,18 @@ def submit(request):
 
 
 def claim(request, app_id):
-    icon = Icon.objects.get(pk=icon_id)
-    if icon:
-        if icon.status == Icon.CONFIRM or icon.status == Icon.NEW:
-            #icon.artist = 1 # todo
-            icon.status = Icon.CLAIM
-            icon.save()
-            return HttpResponse('true')
-        else:
-            return HttpResponse('图标已被认领或已绘制。')
-    else:
-        return HttpResponse('图标不存在。')
+
+    if not request.user.is_authenticated():
+        return redirect('/accounts/login/?next=%s' % request.path)
+
+    app = Application.objects.get(pk=app_id)
+    if app:
+        if app.status == Application.CONFIRM or app.status == Application.CREATE:
+            print request.user
+            app.artist = request.user
+            app.status = Application.CLAIM
+            app.save()
+    return HttpResponseRedirect('/apps/%d/' % app.id)
 
 
 def review(request):

@@ -4,8 +4,8 @@
     <div class="content">
         <h2><a href="{{ application.wandoujia_url }}">{{ application.name }}</a></h2>
         <img src="{{ application.original_icon_image }}" />
-        <img src="/uploads/{{ application.last_icon.large_icon_image }}" />
-        <img src="/uploads/{{ application.last_icon.small_icon_image }}" />
+        <img src="/uploads/{{ application.last_icon.image_192px }}" />
+        <img src="/uploads/{{ application.last_icon.image_128px }}" />
         <p>下载次数：{{ application.download_count }}</p>
         <p>{{ application.description }}</p>
         <p>当前状态：{{ application.get_status_display }}
@@ -14,8 +14,8 @@
     </div>
     <div>
         {% if application.status == 'CR' or application.status == 'CO' %}
-        <a href="/apps/{{ icon.id }}/claim" target="_blank">认领</a>
-        {% elif icon.status == 'CL' or icon.status == 'UP' %}
+        <a href="/apps/{{ application.id }}/claim/">认领</a>
+        {% elif application.status == 'CL' or application.status == 'UP' %}
         <form enctype="multipart/form-data" method="post" class="form-horizontal" role="form">{% csrf_token %}
             <legend><span class="col-sm-offset-1">上传</span></legend>
             {% for field in icon_upload_form %}
