@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
+import datetime
 
 from django.db import models
 from django.contrib.auth.models import User
@@ -16,7 +17,8 @@ def upload_image_name(instance, filename, image_type):
     imagename = '/'.join(['icons/' + image_type, instance.package_name + ext])
     fullname = os.path.join(settings.MEDIA_ROOT, imagename)
     if os.path.exists(fullname):
-        os.remove(fullname)
+        os.rename(fullname,
+            fullname[:-3] + datetime.datetime.now().strftime('%Y-%m%d-%H%M%S') + fullname[-4:])
     return imagename
 
     # upload_to=lambda instance, filename: '/'.join(['mymodel', str(instance.pk), filename]),

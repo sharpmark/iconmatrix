@@ -1,4 +1,6 @@
 *.pyc
 *.sqlite
 uploads/
+logs/
 iconmatrix/ldap_settings.py
+*.log
