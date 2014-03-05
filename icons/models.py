@@ -1,7 +1,25 @@
 # -*- coding: utf-8 -*-
+import os
 
 from django.db import models
 from django.contrib.auth.models import User
+from django.conf import settings
+
+def large_image_name(instance, filename):
+    return upload_image_name(instance, filename, 'large')
+
+def small_image_name(instance, filename):
+    return upload_image_name(instance, filename, 'small')
+
+def upload_image_name(instance, filename, image_type):
+    f, ext = os.path.splitext(filename)
+    imagename = '/'.join(['icons/' + image_type, instance.package_name + ext])
+    fullname = os.path.join(settings.MEDIA_ROOT, imagename)
+    if os.path.exists(fullname):
+        os.remove(fullname)
+    return imagename
+
+    # upload_to=lambda instance, filename: '/'.join(['mymodel', str(instance.pk), filename]),
 
 class Icon(models.Model):
 
@@ -25,11 +43,12 @@ class Icon(models.Model):
     original_icon_image = models.URLField()
     description = models.CharField(max_length=5000)
     wandoujia_url = models.URLField()
+    package_name = models.CharField(max_length=500)
     download_count = models.CharField(max_length=200)   # 从豌豆荚抓取数据，所以是字符串，模糊数据
 
     # 绘制数据
-    large_icon_image = models.ImageField(upload_to='icons/large', null=True)
-    small_icon_image = models.ImageField(upload_to='icons/small', null=True)
+    large_icon_image = models.ImageField(upload_to=large_image_name, null=True)
+    small_icon_image = models.ImageField(upload_to=small_image_name, null=True)
     artist = models.ForeignKey(User, related_name='draw', null=True)
 
     # 状态和其他信息
@@ -50,6 +69,7 @@ class Icon(models.Model):
         self.description = '淘宝彩票是一个简单的口袋投注站，它能帮你摇摇手机完成投注，动动手指完成守号，一个按键完成付款，贴心推送告知中奖，大奖专人通知，万元以下奖金打入支付宝，另外你还可以和你的朋友通过微博，微信一起分享中奖的喜悦，购彩的乐趣。当遇到节假日，您朋友生日，更是可以通过手机批量送彩票送祝福。淘宝彩票由淘宝官方出品，服务广大彩民的一款彩票购买、开奖查询、订单查询的一站式彩票客户端。淘宝福地，精“彩”不断！下一个大奖属于你！'
         self.wandoujia_url = 'http://www.wandoujia.com/apps/com.taobao.caipiao'
         self.download_count = '106 万'
+        self.package_name = 'com.taobao.caipiao'
         self.status = Icon.NEW
 
 class Comment(models.Model):

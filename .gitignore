@@ -1,4 +1,4 @@
-
 *.pyc
-
 *.sqlite
+uploads/
+iconmatrix/ldap_settings.py

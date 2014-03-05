@@ -2,8 +2,6 @@
 # Django settings for iconmatrix project.
 
 import os
-import ldap
-from django_auth_ldap.config import LDAPSearch, GroupOfNamesType, PosixGroupType
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -60,12 +58,12 @@ USE_TZ = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
-MEDIA_ROOT = ''
+MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
 # Examples: "http://example.com/media/", "http://media.example.com/"
-MEDIA_URL = ''
+MEDIA_URL = '/uploads/'
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
@@ -122,7 +120,7 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    os.path.join(BASE_DIR, 'templates')
+    os.path.join(BASE_DIR, 'templates'),
 )
 
 INSTALLED_APPS = (
@@ -174,40 +172,7 @@ LOGGING = {
     }
 }
 
-# active directory authentication module
-#AD_DNS_NAME = 'ad.smartisan.cn'
-#AD_NT4_DOMAIN = 'ad.smartisan.cn'
-#AD_SEARCH_FIELDS = ['mail','givenName','sn','sAMAccountName','memberOf']
-
-# Baseline configuration.
-#AUTH_LDAP_SERVER_URI = 'ldap://172.16.21.3:389'
-AUTH_LDAP_SERVER_URI = 'ldap://ad.smartisan.cn:389'
-AUTH_LDAP_BIND_DN = ''
-AUTH_LDAP_BIND_PASSWORD = ''
-AUTH_LDAP_USER_SEARCH = LDAPSearch("ou=chuizi,dc=smartisan,dc=cn",
-    ldap.SCOPE_SUBTREE, "(uid=%(user)s)")
-
-AUTH_LDAP_GROUP_SEARCH = LDAPSearch("ou=chuizi,dc=smartisan,dc=cn", #查找组
-    ldap.SCOPE_SUBTREE, "(objectClass=posixGroup)"
-)
-AUTH_LDAP_GROUP_TYPE = PosixGroupType(name_attr="cn")
-
-AUTH_LDAP_USER_ATTR_MAP = {
-    "first_name": "givenName",
-    "last_name": "sn",
-    "username": "uid",
-    "email": "mail",
-}
-
-AUTH_LDAP_MIRROR_GROUPS=True #注意 此为重点：当这个值为 True， LDAP的用户条目映射并创建 Django User 的时候，会自动映创建Group
-AUTH_LDAP_ALWAYS_UPDATE_USER = True #是否每次都从LDAP 把用户信息 更新到 Django 的User
-AUTH_LDAP_FIND_GROUP_PERMS = True #如果为True， LDAPBackend将提供基于LDAP组身份验证的用户属于的组的权限
-AUTH_LDAP_CACHE_GROUPS = True #如果为True，LDAP组成员将使用Django的缓存框架。
-AUTH_LDAP_GROUP_CACHE_TIMEOUT = 1800 #缓存时长
-
-# Keep ModelBackend around for per-user permissions and maybe a local
-# superuser.
-AUTHENTICATION_BACKENDS = (
-    'django_auth_ldap.backend.LDAPBackend',
-    'django.contrib.auth.backends.ModelBackend',
-)
+try:
+    from ldap_settings import *
+except ImportError:
+    pass
