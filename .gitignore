@@ -4,3 +4,4 @@ uploads/
 logs/
 iconmatrix/ldap_settings.py
 *.log
+.DS_Store
