@@ -30,15 +30,51 @@ def detail(request, app_id):
     else:
         icon_upload_form = UploadForm()
 
+    operation_flag = ''
+    if request.user.is_authenticated():
+        if application.status == 'CR' or application.status == 'CO':
+            operation_flag = 'claim'
+        elif application.status == 'CL':
+            if request.user == application.artist:
+                operation_flag = 'upload'
+            else:
+                operation_flag = 'notyours'
+        elif application.status == 'UP':
+            if request.user == application.artist:
+                operation_flag = 'uploaded'
+            else:
+                operation_flag = 'notyours'
+        elif application.status == 'FI' or application.status == 'AB':
+            operation_flag = 'finish'
+
     return render(request, 'applications/detail.html', {
         'application': application,
         'icon_upload_form': icon_upload_form,
+        'operation_flag': operation_flag,
     })
 
 
 def list(request):
     return render(request, 'applications/list.html', {
         'app_list': Application.objects.all(),
+    })
+
+
+def list_confirm(request):
+    return render(request, 'applications/list.html', {
+        'app_list': Application.objects.filter(status__in=[Application.CREATE, Application.CONFIRM]),
+    })
+
+
+def list_claim(request):
+    return render(request, 'applications/list.html', {
+        'app_list': Application.objects.filter(status__in=[Application.UPLOAD, Application.CLAIM]),
+    })
+
+
+def list_finish(request):
+    return render(request, 'applications/list.html', {
+        'app_list': Application.objects.filter(status__in=[Application.FINISH]),
     })
 
 

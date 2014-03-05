@@ -13,9 +13,9 @@
         <p>
     </div>
     <div>
-        {% if application.status == 'CR' or application.status == 'CO' %}
+        {% if operation_flag == 'claim' %}
         <a href="/apps/{{ application.id }}/claim/">认领</a>
-        {% elif application.status == 'CL' or application.status == 'UP' %}
+        {% elif operation_flag == 'upload' or operation_flag == 'uploaded' %}
         <form enctype="multipart/form-data" method="post" class="form-horizontal" role="form">{% csrf_token %}
             <legend><span class="col-sm-offset-1">上传</span></legend>
             {% for field in icon_upload_form %}
@@ -28,7 +28,10 @@
                 </div>
             </div>
         </form>
-        {% elif application.status == 'FI' or application.status == 'AB' %}
+          {% if operation_flag == 'uploaded' %}<a href="/apps/{{ application.id }}/claim/"></a>{% endif %}
+        {% elif operation_flag == 'notyours' %}
+        已经被{{ user.username }}认领 ^_^
+        {% else %}
         无操作
         {% endif %}
     </div>
