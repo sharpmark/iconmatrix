@@ -26,7 +26,7 @@ def detail(request, app_id):
             application.last_icon = icon
             application.save()
 
-            return HttpResponseRedirect('/apps/%d/' % icon.id)
+            return HttpResponseRedirect('/apps/%d/' % application.id)
     else:
         icon_upload_form = UploadForm()
 
