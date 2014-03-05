@@ -6,6 +6,8 @@ from applications.models import Application
 from applications.forms import SubmitForm
 from icons.forms import UploadForm
 
+from wdj_parser.parser import parse_wdj_url
+
 def detail(request, app_id):
     application = get_object_or_404(Application, pk=app_id)
 
@@ -40,7 +42,7 @@ def submit(request):
         form = SubmitForm(request.POST)
         if form.is_valid():
             icon = form.save()
-            icon.crawl_icon_from_wdjurl()
+            icon = parse_wdj_url(icon)
             icon.save()
             return HttpResponseRedirect('/apps/%d/' % icon.id)
     else:
