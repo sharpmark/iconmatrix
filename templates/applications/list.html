@@ -1,26 +1,28 @@
 {% extends 'base.html' %}
 
 {% block container %}
-    <div class="content col-md-12 center-block"><div class="row col-md-9">
+    <div class="content"><div class="launcher container">
         {% for app in app_list %}
-        <div class="col-sm-6 col-md-4">
-            <div class="thumbnail center-block">
+        <div class="app-brick">
+            <div class="app-icon-192 center-block">
                 {% if app.last_icon %}
-                <a href="/apps/{{ app.id }}/"><img src="uploads/{{ app.last_icon.image_192px }}" alt="{{ app.name }}"></a>
+                <a href="/apps/{{ app.id }}/"><img src="/uploads/{{ app.last_icon.image_192px }}" alt="{{ app.name }}"></a>
                 {% else %}
                 <a href="/apps/{{ app.id }}/"><img src="{{ app.original_icon_image }}" alt="{{ app.name }}"></a>
                 {% endif %}
-                <h5 class="text-center"><a href="/apps/{{ app.id }}/">{{ app.name }}</a></h5>
-                <div class="app-info hidden">
+                <div class="app-info">
+                    <h2 class="text-center"><a href="/apps/{{ app.id }}/">{{ app.name|truncatechars:8 }}</a></h2>
+                </div>
+            </div>
+            <div class="app-extinfo hidden">
 
-                    <p>下载次数 {{ app.download_count }}</p>
-                    <p>当前状态 {{ app.get_status_display }}</p>
-                    <p>
-                        <a href="/apps/{{ app.id }}/" class="btn btn-primary" role="button">详情</a>
-                        <a href="{{ app.wandoujia_url }}" class="btn btn-default" role="button">豌豆荚链接</a>
-                    </p>
-                 </div>
-             </div>
+                <p>下载次数 {{ app.download_count }}</p>
+                <p>当前状态 {{ app.get_status_display }}</p>
+                <p>
+                    <a href="/apps/{{ app.id }}/" class="btn btn-primary" role="button">详情</a>
+                    <a href="{{ app.wandoujia_url }}" class="btn btn-default" role="button">豌豆荚链接</a>
+                </p>
+            </div>
          </div>
         {% endfor %}
     </div></div>
