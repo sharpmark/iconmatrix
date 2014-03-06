@@ -34,7 +34,6 @@ def _get_application_download_count(application_html):
     pattern_string = '<i itemprop="interactionCount" content="UserDownloads:(\d*?)"'
     return _reg_search(pattern_string, application_html)
 
-
 def _reg_search(pattern_string, application_html):
     pattern = re.compile(pattern_string)
     result = pattern.search(application_html)
