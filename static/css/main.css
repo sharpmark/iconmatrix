@@ -10,7 +10,7 @@ body {
     height: 100%;
 }
 
-.app-brick {
+.brick-black {
     background: url(/static/images/app-brick1.png);
     width: 358px;
     height: 458px;
@@ -18,22 +18,42 @@ body {
     margin: 1px;
 }
 
-.app-icon-192 {
+.brick-icon-192 {
     padding-top: 100px;
     max-width: 192px;
     max-height: 192px;
 }
 
-.app-icon-192 img {
+.brick-icon-192 img {
     max-width: 192px;
     max-height: 192px;
 }
 
-.app-info {
+.brick-app-info {
     margin-top: 75px;
 }
 
-.app-info a, a.hover {
+.brick-app-info a, a.hover {
     color: #fff;
-    text-decoration:none;
+    text-decoration: none;
+}
+
+.detail-app-info {
+    margin-top: 20px;
+}
+
+.detail-icon-128 {
+    max-width: 128px;
+    max-height: 128px;
+}
+.detail-icon-192 {
+    max-width: 192px;
+    max-height: 192px;
+}
+.detail-original-icon {
+    float: left;
+}
+
+.detail-app-desc {
+    font-size: 15px;
 }

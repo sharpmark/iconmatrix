@@ -1,18 +1,41 @@
 {% extends 'base.html' %}
 
 {% block container %}
-    <div class="content">
-        <h2><a href="{{ application.wandoujia_url }}">{{ application.name }}</a></h2>
-        <img src="{{ application.original_icon_image }}" />
-        {% if application.last_icon %}
-        <img src="/uploads/{{ application.last_icon.image_192px }}" />
-        <img src="/uploads/{{ application.last_icon.image_128px }}" />
-        {% endif %}
-        <p>下载次数：{{ application.download_count }}</p>
-        <p>{{ application.description|safe}}</p>
-        <p>当前状态：{{ application.get_status_display }}
-        </p>
-        <p>
+    <div class="content container">
+        <div class="row detail-app-info">
+            <div class="col-md-3">
+                {% if application.last_icon %}
+                <img src="/uploads/{{ application.last_icon.image_192px }}" />
+                <h4 class="text-center">作者：{{ application.last_icon.artist.last_name }}{{ application.last_icon.artist.first_name }}</h4>
+                {% else %}
+                敬请期待！
+                {% endif %}
+            </div>
+            <div class="col-md-3">
+                <img class="detail-icon-192" src="{{ application.original_icon_image }}" />
+                <h4 class="text-center">原始图标</h4>
+            </div>
+            <div class="col-md-6">
+                <h2>
+                    {{ application.name }}
+                    <small>
+                        <a href="{{ application.wandoujia_url }}">
+                            <span class="label label-info">下载</span>
+                        </a>
+                    </small>
+                </h2>
+                <hr />
+                <h4>
+                    <span class="label label-info">{{ application.get_status_display }}</span>
+                    <span class="label label-default"><span class="glyphicon glyphicon-download"></span> {{ application.download_count }}</span>
+                </h4>
+                <hr />
+                <div class="detail-app-desc">
+                    <h4>应用介绍</h4>
+                    <p>{{ application.description|safe}}</p>
+                </div>
+            </div>
+        </div>
     </div>
     <div>
         {% if operation_flag == 'claim' %}
