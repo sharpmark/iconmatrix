@@ -44,20 +44,32 @@ class Icon(models.Model):
     timestamp_upload = models.DateTimeField(auto_now_add=True)
 
 
+    def my_score(self, user):
+        try:
+            like = Like.objects.get(icon=self, user=user)
+            return int(like.score)
+        except:
+            return 0
+
+
+    def like_count(self):
+        print 'yo yo yo'
+        return Like.objects.filter(icon=self, score=1).count()
+
+
+    def unlike_count(self):
+        return Like.objects.filter(icon=self, score=-1).count()
+
+
     def public_image(self):
-        print 'public image'
         self.public_image_field(self.image_192px.name)
         self.public_image_field(self.image_128px.name)
 
 
     def public_image_field(self, field):
         filename, ext = os.path.splitext(field)
-        print filename
-
         field_name = os.path.join(settings.MEDIA_ROOT, field)
-        print field_name
         public_name = os.path.join(settings.MEDIA_ROOT, 'public/' + filename[:-17] + ext)
-        print public_name
         shutil.copy2(field_name, public_name)
 
 
@@ -71,4 +83,5 @@ class Comment(models.Model):
 class Like(models.Model):
     icon = models.ForeignKey(Icon)
     user = models.ForeignKey(User)
-    create_time = models.DateTimeField(auto_now_add=True)
+    score = models.SmallIntegerField()
+    timestamp = models.DateTimeField(auto_now=True)

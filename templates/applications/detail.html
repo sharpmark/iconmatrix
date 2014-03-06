@@ -4,16 +4,27 @@
     <div class="content container">
         <div class="row detail-app-info">
             <div class="col-md-3">
-                {% if application.last_icon %}
-                <img src="/uploads/{{ application.last_icon.image_192px }}" />
-                <h4 class="text-center">作者：{{ application.last_icon.artist.last_name }}{{ application.last_icon.artist.first_name }}</h4>
+                {% if application.last_icon %}{% with icon=application.last_icon %}
+                <img class="detail-icon-192 center-block" src="/uploads/{{ icon.image_192px }}" />
+                <h4 class="text-center detail-icon-artist">作者：{{ icon.artist.last_name }}{{ icon.artist.first_name }}</h4>
+                <p class="text-center detail-icon-rating">{% if my_score == 0 %}
+                    <a href="/icons/{{ icon.id }}/rate/1/" class="btn btn-default" role="button">Like({{ icon.like_count }})</a>
+                    <a href="/icons/{{ icon.id }}/rate/-1/" class="btn btn-default" role="button">Unlike({{ icon.unlike_count }})</a>
+                    {% elif my_score == 1 %}
+                    <a href="/icons/{{ icon.id }}/rate/0/" class="btn btn-primary active" role="button">Liked({{ icon.like_count }})</a>
+                    <a href="/icons/{{ icon.id }}/rate/-1/" class="btn btn-default" role="button">Unlike({{ icon.unlike_count }})</a>
+                    {% elif my_score == -1 %}
+                    <a href="/icons/{{ icon.id }}/rate/1/" class="btn btn-default" role="button">Like({{ icon.like_count }})</a>
+                    <a href="/icons/{{ icon.id }}/rate/0/" class="btn btn-primary active" role="button">Unliked({{ icon.unlike_count }})</a>
+                    {% endif %}</p>
+                {% endwith %}
                 {% else %}
                 敬请期待！
                 {% endif %}
             </div>
             <div class="col-md-3">
-                <img class="detail-icon-192" src="{{ application.original_icon_image }}" />
-                <h4 class="text-center">原始图标</h4>
+                <img class="detail-icon-192 center-block" src="{{ application.original_icon_image }}" />
+                <h4 class="text-center detail-icon-artist">原始图标</h4>
             </div>
             <div class="col-md-6">
                 <h2>
@@ -53,7 +64,7 @@
                 </div>
             </div>
         </form>
-          {% if operation_flag == 'uploaded' %}<a href="/apps/{{ application.id }}/claim/"></a>{% endif %}
+            {% if operation_flag == 'uploaded' %}<a href="/apps/{{ application.id }}/claim/"></a>{% endif %}
         {% elif operation_flag == 'notyours' %}
         已经被{{ user.username }}认领 ^_^
         {% else %}
