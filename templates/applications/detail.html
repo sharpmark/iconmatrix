@@ -1,21 +1,46 @@
 {% extends 'base.html' %}
 
 {% block container %}
-    <div class="content">
-        <h2><a href="{{ application.wandoujia_url }}">{{ application.name }}</a></h2>
-        <img src="{{ application.original_icon_image }}" />
-        <img src="/uploads/{{ application.last_icon.large_icon_image }}" />
-        <img src="/uploads/{{ application.last_icon.small_icon_image }}" />
-        <p>下载次数：{{ application.download_count }}</p>
-        <p>{{ application.description|safe}}</p>
-        <p>当前状态：{{ application.get_status_display }}
-        </p>
-        <p>
+    <div class="content container">
+        <div class="row detail-app-info">
+            <div class="col-md-3">
+                {% if application.last_icon %}
+                <img src="/uploads/{{ application.last_icon.image_192px }}" />
+                <h4 class="text-center">作者：{{ application.last_icon.artist.last_name }}{{ application.last_icon.artist.first_name }}</h4>
+                {% else %}
+                敬请期待！
+                {% endif %}
+            </div>
+            <div class="col-md-3">
+                <img class="detail-icon-192" src="{{ application.original_icon_image }}" />
+                <h4 class="text-center">原始图标</h4>
+            </div>
+            <div class="col-md-6">
+                <h2>
+                    {{ application.name }}
+                    <small>
+                        <a href="{{ application.wandoujia_url }}">
+                            <span class="label label-info">下载</span>
+                        </a>
+                    </small>
+                </h2>
+                <hr />
+                <h4>
+                    <span class="label label-info">{{ application.get_status_display }}</span>
+                    <span class="label label-default"><span class="glyphicon glyphicon-download"></span> {{ application.download_count }}</span>
+                </h4>
+                <hr />
+                <div class="detail-app-desc">
+                    <h4>应用介绍</h4>
+                    <p>{{ application.description|safe}}</p>
+                </div>
+            </div>
+        </div>
     </div>
     <div>
-        {% if application.status == 'CR' or application.status == 'CO' %}
-        <a href="/apps/{{ icon.id }}/claim" target="_blank">认领</a>
-        {% elif icon.status == 'CL' or icon.status == 'UP' %}
+        {% if operation_flag == 'claim' %}
+        <a href="/apps/{{ application.id }}/claim/">认领</a>
+        {% elif operation_flag == 'upload' or operation_flag == 'uploaded' %}
         <form enctype="multipart/form-data" method="post" class="form-horizontal" role="form">{% csrf_token %}
             <legend><span class="col-sm-offset-1">上传</span></legend>
             {% for field in icon_upload_form %}
@@ -28,7 +53,10 @@
                 </div>
             </div>
         </form>
-        {% elif application.status == 'FI' or application.status == 'AB' %}
+          {% if operation_flag == 'uploaded' %}<a href="/apps/{{ application.id }}/claim/"></a>{% endif %}
+        {% elif operation_flag == 'notyours' %}
+        已经被{{ user.username }}认领 ^_^
+        {% else %}
         无操作
         {% endif %}
     </div>
