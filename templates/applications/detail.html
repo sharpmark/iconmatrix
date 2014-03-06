@@ -4,8 +4,10 @@
     <div class="content">
         <h2><a href="{{ application.wandoujia_url }}">{{ application.name }}</a></h2>
         <img src="{{ application.original_icon_image }}" />
+        {% if application.last_icon %}
         <img src="/uploads/{{ application.last_icon.image_192px }}" />
         <img src="/uploads/{{ application.last_icon.image_128px }}" />
+        {% endif %}
         <p>下载次数：{{ application.download_count }}</p>
         <p>{{ application.description|safe}}</p>
         <p>当前状态：{{ application.get_status_display }}
