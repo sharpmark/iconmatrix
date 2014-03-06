@@ -23,6 +23,8 @@ def detail(request, app_id):
             icon.timestamp_upload = timezone.now()
             icon.save()
 
+            icon.public_image()
+
             application.status = Application.UPLOAD
             application.last_icon = icon
             application.save()

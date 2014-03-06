@@ -5,9 +5,14 @@
         {% for app in app_list %}
         <div class="col-sm-6 col-md-4">
             <div class="thumbnail center-block">
-                <img src="{{ app.original_icon_image }}" alt="{{ app.name }}">
-                <div class="caption hidden">
-                    <h3><a href="{{ app.wandoujia_url }}">{{ icon.name }}</a></h3>
+                {% if app.last_icon %}
+                <a href="/apps/{{ app.id }}/"><img src="uploads/{{ app.last_icon.image_192px }}" alt="{{ app.name }}"></a>
+                {% else %}
+                <a href="/apps/{{ app.id }}/"><img src="{{ app.original_icon_image }}" alt="{{ app.name }}"></a>
+                {% endif %}
+                <h5 class="text-center"><a href="/apps/{{ app.id }}/">{{ app.name }}</a></h5>
+                <div class="app-info hidden">
+
                     <p>下载次数 {{ app.download_count }}</p>
                     <p>当前状态 {{ app.get_status_display }}</p>
                     <p>
