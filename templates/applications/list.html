@@ -5,11 +5,13 @@
         {% for app in app_list %}
         <div class="app-brick">
             <div class="app-icon-192 center-block">
-                {% if app.last_icon %}
-                <a href="/apps/{{ app.id }}/"><img src="/uploads/{{ app.last_icon.image_192px }}" alt="{{ app.name }}"></a>
-                {% else %}
-                <a href="/apps/{{ app.id }}/"><img src="{{ app.original_icon_image }}" alt="{{ app.name }}"></a>
-                {% endif %}
+                <a href="/apps/{{ app.id }}/" class="text-center">
+                    {% if app.last_icon %}
+                    <img class="" src="/uploads/{{ app.last_icon.image_192px }}" alt="{{ app.name }}">
+                    {% else %}
+                    <img class="" src="{{ app.original_icon_image }}" alt="{{ app.name }}">
+                    {% endif %}
+                </a>
                 <div class="app-info">
                     <h2 class="text-center"><a href="/apps/{{ app.id }}/">{{ app.name|truncatechars:8 }}</a></h2>
                 </div>

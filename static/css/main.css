@@ -19,9 +19,14 @@ body {
 }
 
 .app-icon-192 {
+    padding-top: 100px;
     max-width: 192px;
     max-height: 192px;
-    padding-top: 100px;
+}
+
+.app-icon-192 img {
+    max-width: 192px;
+    max-height: 192px;
 }
 
 .app-info {

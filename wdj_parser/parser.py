@@ -19,7 +19,7 @@ def parse_wdj_url(application):
     return application
 
 def _get_application_name(application_html):
-    pattern_string = '<p class="app-name">[\s\S]*?<span class="title" itemprop="name">(\S*?)</span>'
+    pattern_string = '<p class="app-name">[\s\S]*?<span class="title" itemprop="name">([\S\s]*?)</span>'
     return _reg_search(pattern_string, application_html)
 
 def _get_app_original_icon(application_html):
