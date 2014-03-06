@@ -7,4 +7,4 @@ class UploadForm(ModelForm):
     class Meta:
         model = Icon
 
-        fields = ['image_fullsize', 'image_192px', 'image_128px']
+        fields = ['image_192px', 'image_128px', 'image_fullsize', 'image_rawfile']

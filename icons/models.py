@@ -1,41 +1,32 @@
 # -*- coding: utf-8 -*-
 import os
 import datetime
+import shutil
 
 from django.db import models
 from django.contrib.auth.models import User
 from django.conf import settings
 from applications.models import Application
 
+
 def image_192px_name(instance, filename):
-    f, ext = os.path.splitext(filename)
-    imagename = '/'.join(['icons/192px', instance.application.package_name + ext])
-    fullname = os.path.join(settings.MEDIA_ROOT, imagename)
-    if os.path.exists(fullname):
-        instance.application.last_icon.image_192px = imagename[:-3] + datetime.datetime.now().strftime('%Y-%m%d-%H%M%S') + imagename[-4:]
-        instance.application.last_icon.save()
-        os.rename(fullname, fullname[:-3] + datetime.datetime.now().strftime('%Y-%m%d-%H%M%S') + fullname[-4:])
-    return imagename
+    return upload_image_name(instance, filename, '192px')
 
 def image_128px_name(instance, filename):
-    f, ext = os.path.splitext(filename)
-    imagename = '/'.join(['icons/128px', instance.application.package_name + ext])
-    fullname = os.path.join(settings.MEDIA_ROOT, imagename)
-    if os.path.exists(fullname):
-        instance.application.last_icon.image_128px = imagename[:-3] + datetime.datetime.now().strftime('%Y-%m%d-%H%M%S') + imagename[-4:]
-        instance.application.last_icon.save()
-        os.rename(fullname, fullname[:-3] + datetime.datetime.now().strftime('%Y-%m%d-%H%M%S') + fullname[-4:])
-    return imagename
+    return upload_image_name(instance, filename, '128px')
 
 def image_fullsize_name(instance, filename):
+    return upload_image_name(instance, filename, 'fullsize')
+
+def image_rawfile_name(instance, filename):
+    return upload_image_name(instance, filename, 'rawfile')
+
+def upload_image_name(instance, filename, image_type):
     f, ext = os.path.splitext(filename)
-    imagename = '/'.join(['icons/fullsize', instance.application.package_name + ext])
-    fullname = os.path.join(settings.MEDIA_ROOT, imagename)
-    if os.path.exists(fullname):
-        instance.application.last_icon.image_fullsize = imagename[:-3] + datetime.datetime.now().strftime('%Y-%m%d-%H%M%S') + imagename[-4:]
-        instance.application.last_icon.save()
-        os.rename(fullname, fullname[:-3] + datetime.datetime.now().strftime('%Y-%m%d-%H%M%S') + fullname[-4:])
-    return imagename
+    return '/'.join(['icons/' + image_type,
+        instance.application.package_name + \
+        datetime.datetime.now().strftime('%Y-%m%d-%H%M%S') + ext])
+
 
 class Icon(models.Model):
 
@@ -44,7 +35,9 @@ class Icon(models.Model):
     # 绘制数据
     image_192px = models.ImageField(upload_to=image_192px_name)
     image_128px = models.ImageField(upload_to=image_128px_name)
-    image_fullsize = models.ImageField(upload_to=image_fullsize_name)
+    image_fullsize = models.ImageField(upload_to=image_fullsize_name, null=True)
+    image_rawfile = models.FileField(upload_to=image_rawfile_name, null=True)
+
     artist = models.ForeignKey(User)
 
     timestamp_upload = models.DateTimeField(auto_now_add=True)
