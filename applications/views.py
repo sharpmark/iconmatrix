@@ -34,6 +34,7 @@ def detail(request, app_id):
         icon_upload_form = UploadForm()
 
     operation_flag = ''
+    my_score = 0
     if request.user.is_authenticated():
         if application.status == 'CR' or application.status == 'CO':
             operation_flag = 'claim'
@@ -50,16 +51,20 @@ def detail(request, app_id):
         elif application.status == 'FI' or application.status == 'AB':
             operation_flag = 'finish'
 
+        if application.last_icon:
+            my_score = application.last_icon.my_score(request.user)
+
     return render(request, 'applications/detail.html', {
         'application': application,
         'icon_upload_form': icon_upload_form,
         'operation_flag': operation_flag,
+        'my_score': my_score,
     })
 
 
 def list(request):
     return render(request, 'applications/list.html', {
-        'app_list': Application.objects.all(),
+        'app_list': Application.objects.filter(status__in=[Application.UPLOAD, Application.FINISH]),
     })
 
 
@@ -77,7 +82,7 @@ def list_claim(request):
 
 def list_finish(request):
     return render(request, 'applications/list.html', {
-        'app_list': Application.objects.filter(status__in=[Application.FINISH]),
+        'app_list': Application.objects.filter(status__in=[Application.FINISH, Application.UPLOAD]),
     })
 
 
@@ -85,10 +90,11 @@ def submit(request):
     if request.method == 'POST':
         form = SubmitForm(request.POST)
         if form.is_valid():
-            icon = form.save()
-            icon = parse_wdj_url(icon)
-            icon.save()
-            return HttpResponseRedirect('/apps/%d/' % icon.id)
+            application = form.save()
+            application = parse_wdj_url(application)
+            application.status = Application.CONFIRM
+            application.save()
+            return HttpResponseRedirect('/apps/%d/' % application.id)
     else:
         form = SubmitForm()
     return render(request, 'applications/submit.html', {

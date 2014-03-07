@@ -9,9 +9,10 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     url(r'^$', app_views.list, name='index'),
-    #url(r'', include('icons.urls')),
+    url(r'', include('icons.urls')),
     url(r'', include('accounts.urls')),
     url(r'', include('applications.urls')),
+    url(r'', include('artists.urls')),
     url(r'^admin/', include(admin.site.urls)),
 ) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) \
     + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

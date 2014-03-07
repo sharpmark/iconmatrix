@@ -1,6 +1,11 @@
 body {
     padding-top: 60px;
     padding-bottom: 40px;
+    -webkit-font-smoothing:antialiased;
+}
+
+body, h1, h2, h3, h4, h5, h6 {
+    font-family: "Open Sans",Arial,"Hiragino Sans GB","Microsoft YaHei","微软雅黑","STHeiti","WenQuanYi Micro Hei",SimSun,sans-serif;
 }
 
 .launcher {
@@ -56,4 +61,11 @@ body {
 
 .detail-app-desc {
     font-size: 15px;
+}
+
+.detail-icon-artist {
+    margin-top: 40px;
+}
+.detail-icon-rating {
+    margin-top: 40px;
 }

@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block container %}
+    <div class="launcher container"><div class="content">
+        {% for app in app_list %}
+        <div class="brick-black">
+            <div class="brick-icon-192 center-block">
+                <a href="/apps/{{ app.id }}/" class="text-center">
+                    {% if app.last_icon %}
+                    <img class="" src="/uploads/{{ app.last_icon.image_192px }}" alt="{{ app.name }}">
+                    {% else %}
+                    <img class="" src="{{ app.original_icon_image }}" alt="{{ app.name }}">
+                    {% endif %}
+                </a>
+                <div class="brick-app-info">
+                    <h2 class="text-center"><a href="/apps/{{ app.id }}/">{{ app.name|truncatechars:8 }}</a></h2>
+                </div>
+            </div>
+            <div class="brick-app-extinfo hidden">
+
+                <p>下载次数 {{ app.download_count }}</p>
+                <p>当前状态 {{ app.get_status_display }}</p>
+                <p>
+                    <a href="/apps/{{ app.id }}/" class="btn btn-primary" role="button">详情</a>
+                    <a href="{{ app.wandoujia_url }}" class="btn btn-default" role="button">豌豆荚链接</a>
+                </p>
+            </div>
+         </div>
+        {% endfor %}
+    </div></div>
+{% endblock %}
