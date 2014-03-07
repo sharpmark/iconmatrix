@@ -14,16 +14,22 @@
 
     <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="{% url 'index' %}">Icon Matrix</a></li>
-            <li><a href="{% url 'list-finish' %}">已绘</a></li>
-            <li><a href="{% url 'list-claim' %}">在绘</a></li>
-            <li><a href="{% url 'list-confirm' %}">认领</a></li>
-            <li><a href="{% url 'app-submit' %}">提交应用</a></li>
-          </ul>
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="{% url 'index' %}">Icon Matrix</a></li>
+                <li><a href="{% url 'list-finish' %}">已绘</a></li>
+                <li><a href="{% url 'list-claim' %}">在绘</a></li>
+                <li><a href="{% url 'list-confirm' %}">认领</a></li>
+                <li><a href="{% url 'app-submit' %}">提交应用</a></li>
+            </ul>
             <ul class="nav navbar-nav navbar-right">
                 {% if user.is_authenticated %}
-                <li><p class="navbar-text">{{ user.username }}</p></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ user.username }} <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/artists/{{ user.id }}/claim/">我在绘的图标</a></li>
+                        <li><a href="/artists/{{ user.id }}/finish/">我已绘的图标</a></li>
+                    </ul>
+                </li>
                 <li><a href="{% url 'auth-logout' %}">退出</a></li>
                 {% else %}
                 <li><a href="{% url 'auth-login' %}">登录</a></li>

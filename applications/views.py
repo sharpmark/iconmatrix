@@ -82,7 +82,7 @@ def list_claim(request):
 
 def list_finish(request):
     return render(request, 'applications/list.html', {
-        'app_list': Application.objects.filter(status__in=[Application.FINISH]),
+        'app_list': Application.objects.filter(status__in=[Application.FINISH, Application.UPLOAD]),
     })
 
 
@@ -90,10 +90,11 @@ def submit(request):
     if request.method == 'POST':
         form = SubmitForm(request.POST)
         if form.is_valid():
-            icon = form.save()
-            icon = parse_wdj_url(icon)
-            icon.save()
-            return HttpResponseRedirect('/apps/%d/' % icon.id)
+            application = form.save()
+            application = parse_wdj_url(application)
+            application.status = Application.CONFIRM
+            application.save()
+            return HttpResponseRedirect('/apps/%d/' % application.id)
     else:
         form = SubmitForm()
     return render(request, 'applications/submit.html', {

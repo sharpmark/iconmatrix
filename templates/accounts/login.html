@@ -3,11 +3,17 @@
 {% load bootstrap_toolkit %}
 
 {% block container %}
+<div class="container"><div class="center-block">
 <form method="post" action=".">
     {% csrf_token %}
-    {{ form|as_bootstrap }}
-    <!-- div class="form-actions" -->
-        <button type="submit" class="btn btn-primary">Submit</button>
-    <!-- /div -->
+    {% for field in form %}
+        {% include 'common/form_field.html' %}
+    {% endfor %}
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button type="submit" class="btn btn-primary">登录</button>
+        </div>
+    </div>
 </form>
+</div></div>
 {% endblock %}
