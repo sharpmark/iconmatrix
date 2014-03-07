@@ -20,7 +20,8 @@
                 {% endwith %}
                 {% elif operation_flag == 'upload' %}
                 <img class="detail-icon-192 center-block" src="/static/images/icon-default-192px.png" />
-                <h4 class="text-center detail-icon-artist"><a href="/artists/{{ icon.artist.id }}/finish/">{{ icon.artist.last_name }}{{ icon.artist.first_name }}</a>正在玩命绘制中！</h4>
+                <h4 class="text-center detail-icon-artist"><a href="/artists/{{ application.artist.id }}/finish/">{{ application.artist.last_name }}{{ application.artist.first_name }}</a>正在玩命绘制中！</h4>
+                <h4 class="text-center detail-icon-artist"><a href="/apps/{{ application.id }}/unclaim/" class="btn btn-default" role="button">取消认领</a></h4>
                 {% elif operation_flag == 'claim' %}
                 <img class="detail-icon-192 center-block" src="/static/images/icon-default-192px.png" />
                 <h4 class="text-center detail-icon-artist"><a href="/apps/{{ application.id }}/claim/" class="btn btn-primary" role="button">认领</a></h4>
@@ -52,17 +53,16 @@
             </div>
         </div>
     </div>
-    <div>
+    <div class="content container uploader">
         {% if operation_flag == 'upload' or operation_flag == 'uploaded' %}
         <form enctype="multipart/form-data" method="post" class="form-horizontal" role="form">{% csrf_token %}
-            <legend><span class="col-sm-offset-1">上传</span></legend>
+            <legend><span class="col-sm-offset-1">上传</span> (支持多次上传)</legend>
             {% for field in icon_upload_form %}
                 {% include 'common/form_field.html' %}
             {% endfor %}
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
-                  <button type="submit" name="upload" class="btn btn-default">提交</button>
-                  &nbsp;<button type="reset" class="btn">取消</button>
+                  <button type="submit" name="upload" class="btn btn-success">上传</button>
                 </div>
             </div>
         </form>

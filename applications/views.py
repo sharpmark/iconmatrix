@@ -110,12 +110,24 @@ def claim(request, app_id):
     app = Application.objects.get(pk=app_id)
     if app:
         if app.status == Application.CONFIRM or app.status == Application.CREATE:
-            print request.user
             app.artist = request.user
             app.status = Application.CLAIM
             app.save()
     return HttpResponseRedirect('/apps/%d/' % app.id)
 
+
+def unclaim(request, app_id):
+
+    if not request.user.is_authenticated():
+        return redirect('/accounts/login/?next=%s' % request.path)
+
+    app = Application.objects.get(pk=app_id)
+    if app:
+        if app.status == Application.CLAIM:
+            app.artist = None
+            app.status = Application.CONFIRM
+            app.save()
+    return HttpResponseRedirect('/apps/%d/' % app.id)
 
 def review(request):
     return render(request, 'applications/review.html')

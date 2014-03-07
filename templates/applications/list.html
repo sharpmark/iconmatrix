@@ -5,7 +5,7 @@
         {% for app in app_list %}
         <div class="brick-black">
             <div class="brick-icon-192 center-block">
-                <a href="/apps/{{ app.id }}/" class="text-center">
+                <a href="{% url 'app-detail' app.id %}" class="text-center">
                     {% if app.last_icon %}
                     <img class="" src="/uploads/{{ app.last_icon.image_192px }}" alt="{{ app.name }}">
                     {% else %}
@@ -13,7 +13,9 @@
                     {% endif %}
                 </a>
                 <div class="brick-app-info">
-                    <h2 class="text-center"><a href="/apps/{{ app.id }}/">{{ app.name|truncatechars:8 }}</a></h2>
+                    <h2 class="text-center"><strong>
+                        <a href="{% url 'app-detail' app.id %}">{{ app.name|truncatechars:8 }}</a>
+                    <strong></h2>
                 </div>
             </div>
             <div class="brick-app-extinfo hidden">
