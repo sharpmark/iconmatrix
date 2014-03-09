@@ -7,7 +7,7 @@ from artists import views
 
 urlpatterns = patterns('',
     url(r'^artists/$', views.list, name='artist-list'),
-    url(r'^artists/(?P<artist_id>\d+)/claim/$', views.claim, name='artist-claim'),
-    url(r'^artists/(?P<artist_id>\d+)/upload/$', views.upload, name='artist-upload'),
-    url(r'^artists/(?P<artist_id>\d+)/finish/$', views.finish, name='artist-finish'),
+    url(r'^artists/(?P<artist_id>\d+)/apps/claim/$', views.claim, name='artist-claim'),
+    url(r'^artists/(?P<artist_id>\d+)/apps/upload/$', views.upload, name='artist-upload'),
+    url(r'^artists/(?P<artist_id>\d+)/apps/finish/$', views.finish, name='artist-finish'),
 )

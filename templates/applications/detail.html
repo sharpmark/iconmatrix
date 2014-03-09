@@ -1,13 +1,14 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block container %}
     <div class="content container">
         <div class="row detail-app-info">
             <div class="col-md-3">
                 {% if application.last_icon %}{% with icon=application.last_icon %}
-                <img class="detail-icon-192 center-block" src="/uploads/{{ icon.image_192px }}" />
-                <h4 class="text-center detail-icon-artist">作者：<a href="/artists/{{ icon.artist.id }}/finish/">{{ icon.artist.last_name }}{{ icon.artist.first_name }}</a></h4>
-                <p class="text-center detail-icon-rating">{% if my_score == 0 %}
+                <img class="detail-icon-192 center-block" src="{% get_media_prefix %}{{ icon.image_192px }}" />
+                <h4 class="text-center detail-icon-artist">作者：<a href="/artists/{{ icon.artist.id }}/apps/finish/">{{ icon.artist.last_name }}{{ icon.artist.first_name }}</a></h4>
+                <p class="text-center detail-icon-rating">
+                    {% if my_score == 0 %}
                     <a href="/icons/{{ icon.id }}/rate/1/" class="btn btn-default" role="button">Like({{ icon.like_count }})</a>
                     <a href="/icons/{{ icon.id }}/rate/-1/" class="btn btn-default" role="button">Unlike({{ icon.unlike_count }})</a>
                     {% elif my_score == 1 %}
@@ -16,15 +17,24 @@
                     {% elif my_score == -1 %}
                     <a href="/icons/{{ icon.id }}/rate/1/" class="btn btn-default" role="button">Like({{ icon.like_count }})</a>
                     <a href="/icons/{{ icon.id }}/rate/0/" class="btn btn-primary active" role="button">Unliked({{ icon.unlike_count }})</a>
-                    {% endif %}</p>
+                    {% endif %}
+                </p>
                 {% endwith %}
-                {% elif operation_flag == 'upload' %}
-                <img class="detail-icon-192 center-block" src="/static/images/icon-default-192px.png" />
-                <h4 class="text-center detail-icon-artist"><a href="/artists/{{ application.artist.id }}/finish/">{{ application.artist.last_name }}{{ application.artist.first_name }}</a>正在玩命绘制中！</h4>
-                <h4 class="text-center detail-icon-artist"><a href="/apps/{{ application.id }}/unclaim/" class="btn btn-default" role="button">取消认领</a></h4>
-                {% elif operation_flag == 'claim' %}
-                <img class="detail-icon-192 center-block" src="/static/images/icon-default-192px.png" />
-                <h4 class="text-center detail-icon-artist"><a href="/apps/{{ application.id }}/claim/" class="btn btn-primary" role="button">认领</a></h4>
+                {% elif application.status == 'CL' %}
+                <img class="detail-icon-192 center-block" src="{% get_static_prefix %}images/icon-question-192px.png" />
+                <h4 class="text-center detail-icon-artist"><a href="/artists/{{ application.artist.id }}/apps/finish/">{{ application.artist.last_name }}{{ application.artist.first_name }}</a>正在玩命绘制中！</h4>
+                    {% if request.user.is_authenticated and request.user == application.artist %}
+                    <h4 class="text-center detail-icon-artist"><a href="/apps/{{ application.id }}/unclaim/" class="btn btn-default" role="button">取消认领</a></h4>
+                    {% endif %}
+                {% elif application.status == 'CO' %}
+                <img class="detail-icon-192 center-block" src="{% get_static_prefix %}images/icon-exclamation-192px.png" />
+                    <h4 class="text-center detail-icon-artist">
+                        {% if request.user.is_authenticated %}
+                        <a href="/apps/{{ application.id }}/claim/" class="btn btn-primary" role="button">认领</a>
+                        {% else %}
+                        <a href="/accounts/login/">登录</a>后可以认领图标
+                        {% endif %}
+                    </h4>
                 {% endif %}
             </div>
             <div class="col-md-3">
@@ -54,7 +64,7 @@
         </div>
     </div>
     <div class="content container uploader">
-        {% if operation_flag == 'upload' or operation_flag == 'uploaded' %}
+        {% if application.status == 'UP' and request.user.is_authenticated and request.user == application.artist %}
         <form enctype="multipart/form-data" method="post" class="form-horizontal" role="form">{% csrf_token %}
             <legend><span class="col-sm-offset-1">上传</span> (支持多次上传)</legend>
             {% for field in icon_upload_form %}
