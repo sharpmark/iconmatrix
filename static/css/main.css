@@ -15,8 +15,8 @@ body, h1, h2, h3, h4, h5, h6 {
     height: 100%;
 }
 
-.brick-black {
-    background: url(/static/images/app-brick1.png);
+.brick-dark {
+    background: url(/static/images/app-brick-dark.png);
     width: 358px;
     height: 458px;
     float: left;
@@ -38,7 +38,7 @@ body, h1, h2, h3, h4, h5, h6 {
     margin-top: 75px;
 }
 
-.brick-app-info a, a.hover {
+.brick-app-info, .brick-app-info a, a.hover {
     color: #fff;
     text-decoration: none;
 }

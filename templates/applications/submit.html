@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block container %}
-    <div class="content">
+    <div class="content container">
         <form action="/apps/submit/" method="post" class="form-horizontal" role="form">{% csrf_token %}
             <legend><span class="col-sm-offset-1">上传</span></legend>
             {% for field in form %}

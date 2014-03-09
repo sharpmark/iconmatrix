@@ -33,56 +33,36 @@ def detail(request, app_id):
     else:
         icon_upload_form = UploadForm()
 
-    operation_flag = ''
     my_score = 0
-    if request.user.is_authenticated():
-        if application.status == 'CR' or application.status == 'CO':
-            operation_flag = 'claim'
-        elif application.status == 'CL':
-            if request.user == application.artist:
-                operation_flag = 'upload'
-            else:
-                operation_flag = 'notyours'
-        elif application.status == 'UP':
-            if request.user == application.artist:
-                operation_flag = 'uploaded'
-            else:
-                operation_flag = 'notyours'
-        elif application.status == 'FI' or application.status == 'AB':
-            operation_flag = 'finish'
 
-        if application.last_icon:
-            my_score = application.last_icon.my_score(request.user)
+    if application.last_icon:
+        my_score = application.last_icon.my_score(request.user)
 
     return render(request, 'applications/detail.html', {
         'application': application,
         'icon_upload_form': icon_upload_form,
-        'operation_flag': operation_flag,
         'my_score': my_score,
     })
 
 
 def list(request):
-    return render(request, 'applications/list.html', {
-        'app_list': Application.objects.filter(status__in=[Application.UPLOAD, Application.FINISH]),
-    })
+    return __list_apps(request, statuses = [Application.UPLOAD, Application.FINISH])
 
 
 def list_confirm(request):
-    return render(request, 'applications/list.html', {
-        'app_list': Application.objects.filter(status__in=[Application.CREATE, Application.CONFIRM]),
-    })
+    return __list_apps(request, statuses = [Application.CREATE, Application.CONFIRM])
 
 
 def list_claim(request):
-    return render(request, 'applications/list.html', {
-        'app_list': Application.objects.filter(status__in=[Application.UPLOAD, Application.CLAIM]),
-    })
+    return __list_apps(request, statuses = [Application.CLAIM])
 
 
 def list_finish(request):
+    return __list_apps(request, statuses = [Application.FINISH])
+
+def __list_apps(request, statuses):
     return render(request, 'applications/list.html', {
-        'app_list': Application.objects.filter(status__in=[Application.FINISH, Application.UPLOAD]),
+        'app_list': Application.objects.filter(status__in=statuses).order_by('-last_icon__timestamp_upload'),
     })
 
 
@@ -116,12 +96,24 @@ def claim(request, app_id):
     app = Application.objects.get(pk=app_id)
     if app:
         if app.status == Application.CONFIRM or app.status == Application.CREATE:
-            print request.user
             app.artist = request.user
             app.status = Application.CLAIM
             app.save()
     return HttpResponseRedirect('/apps/%d/' % app.id)
 
+
+def unclaim(request, app_id):
+
+    if not request.user.is_authenticated():
+        return redirect('/accounts/login/?next=%s' % request.path)
+
+    app = Application.objects.get(pk=app_id)
+    if app:
+        if app.status == Application.CLAIM:
+            app.artist = None
+            app.status = Application.CONFIRM
+            app.save()
+    return HttpResponseRedirect('/apps/%d/' % app.id)
 
 def review(request):
     return render(request, 'applications/review.html')

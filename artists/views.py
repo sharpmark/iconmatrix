@@ -32,7 +32,7 @@ def finish(request, artist_id):
 def __artist_application_list(request, artist_id, status):
     #TODO：验证是否为当前用户
     artist = get_object_or_404(Artist, pk=artist_id)
-    app_list = artist.draws.filter(status__in=status)
+    app_list = artist.draws.filter(status__in=status).order_by('-last_icon__timestamp_upload')
     print app_list.count()
     return render(request, 'artists/applications.html', {
         'artist': artist,
