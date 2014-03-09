@@ -4,6 +4,8 @@ from applications.models import Application
 import re
 import urllib
 
+from urlparse import urlparse
+
 def parse_wdj_url(application):
     url = application.wandoujia_url
     application_html = urllib.urlopen(url).read()
@@ -13,8 +15,7 @@ def parse_wdj_url(application):
     application.description = _get_application_description(application_html)
     application.download_count = _get_application_download_count(application_html)
 
-    application.package_name = 'com.taobao.caipiao'
-    application.status = Application.CREATE
+    application.package_name = get_package_name(url)
 
     return application
 
@@ -33,6 +34,11 @@ def _get_application_description(application_html):
 def _get_application_download_count(application_html):
     pattern_string = '<i itemprop="interactionCount" content="UserDownloads:(\d*?)"'
     return _reg_search(pattern_string, application_html)
+
+def get_package_name(application_url):
+    path = urlparse(application_url)[2]
+    pattern_string = '/apps/(\S*)'
+    return _reg_search(pattern_string, path)
 
 def _reg_search(pattern_string, application_html):
     pattern = re.compile(pattern_string)

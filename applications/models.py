@@ -24,7 +24,7 @@ class Application(models.Model):
     original_icon_image = models.URLField()
     description = models.CharField(max_length=5000)
     wandoujia_url = models.URLField()
-    package_name = models.CharField(max_length=500)
+    package_name = models.CharField(max_length=500, unique=True)
     download_count = models.CharField(max_length=200)   # 从豌豆荚抓取数据，所以是字符串，模糊数据
     version = models.CharField(max_length=50)
 
