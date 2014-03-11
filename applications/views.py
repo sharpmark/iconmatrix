@@ -75,10 +75,12 @@ def submit(request):
             package_name = get_package_name(wdj_url)
 
             application, created = Application.objects.get_or_create(package_name=package_name)
-
             application.wandoujia_url = wdj_url
-            application = parse_wdj_url(application)
-            application.status = Application.CONFIRM
+            parse_wdj_url(application)
+
+            if created:
+                application.status = Application.CONFIRM
+
             application.save()
 
             return HttpResponseRedirect('/apps/%d/' % application.id)

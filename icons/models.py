@@ -53,7 +53,6 @@ class Icon(models.Model):
 
 
     def like_count(self):
-        print 'yo yo yo'
         return Like.objects.filter(icon=self, score=1).count()
 
 

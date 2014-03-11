@@ -8,15 +8,10 @@
                 <img class="detail-icon-192 center-block" src="{% get_media_prefix %}{{ icon.image_192px }}" />
                 <h4 class="text-center detail-icon-artist">作者：<a href="/artists/{{ icon.artist.id }}/apps/finish/">{{ icon.artist.last_name }}{{ icon.artist.first_name }}</a></h4>
                 <p class="text-center detail-icon-rating">
-                    {% if my_score == 0 %}
-                    <a href="/icons/{{ icon.id }}/rate/1/" class="btn btn-default" role="button">Like({{ icon.like_count }})</a>
-                    <a href="/icons/{{ icon.id }}/rate/-1/" class="btn btn-default" role="button">Unlike({{ icon.unlike_count }})</a>
-                    {% elif my_score == 1 %}
-                    <a href="/icons/{{ icon.id }}/rate/0/" class="btn btn-primary active" role="button">Liked({{ icon.like_count }})</a>
-                    <a href="/icons/{{ icon.id }}/rate/-1/" class="btn btn-default" role="button">Unlike({{ icon.unlike_count }})</a>
-                    {% elif my_score == -1 %}
-                    <a href="/icons/{{ icon.id }}/rate/1/" class="btn btn-default" role="button">Like({{ icon.like_count }})</a>
-                    <a href="/icons/{{ icon.id }}/rate/0/" class="btn btn-primary active" role="button">Unliked({{ icon.unlike_count }})</a>
+                    {% if my_score == 1 %}
+                    <a href="/icons/{{ icon.id }}/rate/0/" class="btn btn-primary active" role="button">已喜欢({{ icon.like_count }})</a>
+                    {% else %}
+                    <a href="/icons/{{ icon.id }}/rate/1/" class="btn btn-default" role="button">喜欢({{ icon.like_count }})</a>
                     {% endif %}
                 </p>
                 {% endwith %}
@@ -64,7 +59,8 @@
         </div>
     </div>
     <div class="content container uploader">
-        {% if application.status == 'UP' and request.user.is_authenticated and request.user == application.artist %}
+        {% if application.status == 'UP' or application.status == 'CL' %}
+        {% if request.user.is_authenticated and request.user == application.artist %}
         <form enctype="multipart/form-data" method="post" class="form-horizontal" role="form">{% csrf_token %}
             <legend><span class="col-sm-offset-1">上传</span> (支持多次上传)</legend>
             {% for field in icon_upload_form %}
@@ -76,6 +72,6 @@
                 </div>
             </div>
         </form>
-        {% endif %}
+        {% endif %}{% endif %}
     </div>
 {% endblock %}

@@ -1,6 +1,6 @@
 {% load static %}
 
-<div class="brick-dark">
+<div class="brick-dark brick">
     <div class="brick-icon-192 center-block">
         <a href="{% url 'app-detail' app.id %}" class="text-center">
             {% if app.last_icon %}
@@ -15,13 +15,9 @@
             </strong></h2>
         </div>
     </div>
-    <div class="brick-app-extinfo hidden">
-
-        <p>下载次数 {{ app.download_count }}</p>
-        <p>当前状态 {{ app.get_status_display }}</p>
-        <p>
-            <a href="/apps/{{ app.id }}/" class="btn btn-primary" role="button">详情</a>
-            <a href="{{ app.wandoujia_url }}" class="btn btn-default" role="button">豌豆荚链接</a>
-        </p>
+    {% if request.user.is_authenticated %}{% if app.status == 'CO' %}
+    <div class="brick-app-extinfo text-center" style="display: none;">
+        <p><a href="/apps/{{ app.id }}/claim/" class="btn btn-primary btn-lg" role="button">认领</a></p>
     </div>
+    {% endif %}{% endif %}
 </div>
