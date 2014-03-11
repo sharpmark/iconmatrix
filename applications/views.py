@@ -9,7 +9,7 @@ from icons.models import Icon
 from applications.forms import SubmitForm
 from icons.forms import UploadForm
 
-from wdj_parser.parser import parse_wdj_url, _get_package_name
+from wdj_parser.parser import parse_wdj_url, get_package_name
 
 def detail(request, app_id):
     application = get_object_or_404(Application, pk=app_id)
@@ -79,6 +79,7 @@ def submit(request):
             application.wandoujia_url = wdj_url
             application = parse_wdj_url(application)
             application.status = Application.CONFIRM
+            application.save()
 
             return HttpResponseRedirect('/apps/%d/' % application.id)
     else:
