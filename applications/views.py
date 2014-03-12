@@ -11,7 +11,7 @@ from icons.models import Icon
 from applications.forms import SubmitForm
 from icons.forms import UploadForm
 
-from app_parser.wdj_parser import parse_url, get_package_name
+from app_parser.parser import get_app_from_url
 
 def detail(request, app_id):
     application = get_object_or_404(Application, pk=app_id)
@@ -76,15 +76,13 @@ def submit(request):
     if request.method == 'POST':
         form = SubmitForm(request.POST)
         if form.is_valid():
-            source_url = form.cleaned_data['source_url']
-            package_name = get_package_name(source_url)
 
-            application, created = Application.objects.get_or_create(package_name=package_name)
-            application.source_url = source_url
-            parse_url(application)
+            application = get_app_from_url(form.cleaned_data['source_url'])
 
-            if created:
-                application.status = Application.CONFIRM
+            if application == None:
+                #todo
+                return HttpResponseRedirect('/apps/submit/')
+            elif application.uploader == None:
                 application.uploader = request.user
 
             application.save()
