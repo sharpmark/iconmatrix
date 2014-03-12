@@ -36,6 +36,11 @@ body, h1, h2, h3, h4, h5, h6 {
 .brick-icon-192 img {
     max-width: 192px;
     max-height: 192px;
+    -webkit-filter: drop-shadow(0 5px 5px rgba(0,0,0,.5));
+    -moz-filter: drop-shadow(0 5px 5px rgba(0,0,0,1));
+    -ms-filter: drop-shadow(0 5px 5px rgba(0,0,0,1));
+    -o-filter: drop-shadow(0 5px 5px rgba(0,0,0,1));
+    filter: drop-shadow(0 5px 5px rgba(0,0,0,1));
 }
 
 .brick-app-info {

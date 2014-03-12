@@ -3,6 +3,8 @@ from django.utils import timezone
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render, render_to_response, get_object_or_404, redirect
 
+from django.contrib.auth.decorators import login_required
+
 from applications.models import Application
 from icons.models import Icon
 
@@ -48,10 +50,14 @@ def detail(request, app_id):
 def list(request):
     return __list_apps(request, statuses = [Application.UPLOAD, Application.FINISH])
 
-
+@login_required
 def list_confirm(request):
-    return __list_apps(request, statuses = [Application.CREATE, Application.CONFIRM])
+    from accounts.templatetags.user_filter import is_ui
 
+    if is_ui(request.user):
+        return __list_apps(request, statuses = [Application.CREATE, Application.CONFIRM])
+    else:
+        return HttpResponseRedirect('/')
 
 def list_claim(request):
     return __list_apps(request, statuses = [Application.CLAIM])
@@ -65,7 +71,7 @@ def __list_apps(request, statuses):
         'app_list': Application.objects.filter(status__in=statuses).order_by('-last_icon__timestamp_upload'),
     })
 
-
+@login_required
 def submit(request):
     if request.method == 'POST':
         form = SubmitForm(request.POST)
@@ -79,6 +85,7 @@ def submit(request):
 
             if created:
                 application.status = Application.CONFIRM
+                application.uploader = request.user
 
             application.save()
 
@@ -90,10 +97,8 @@ def submit(request):
     })
 
 
+@login_required
 def claim(request, app_id):
-
-    if not request.user.is_authenticated():
-        return redirect('/accounts/login/?next=%s' % request.path)
 
     app = Application.objects.get(pk=app_id)
     if app:
@@ -104,10 +109,8 @@ def claim(request, app_id):
     return HttpResponseRedirect('/apps/%d/' % app.id)
 
 
+@login_required
 def unclaim(request, app_id):
-
-    if not request.user.is_authenticated():
-        return redirect('/accounts/login/?next=%s' % request.path)
 
     app = Application.objects.get(pk=app_id)
     if app:

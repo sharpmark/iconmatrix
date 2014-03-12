@@ -1,6 +1,6 @@
 {% load tags %}
 {% load static %}
-{% load filters %}
+{% load user_filter %}
 <!DOCTYPE html>
 <html lang="zh-cn">
   <head>
@@ -24,19 +24,17 @@
               <nav class="collapse navbar-collapse" role="navigation">
                   <ul class="nav navbar-nav">
                       <li class="{% active index_url %}"><a href="{% url 'index' %}">Icon Matrix</a></li>
+                      {% if user.is_authenticated and user|is_ui %}
                       <li class="{% active list_confirm_url %}"><a href="{% url 'list-confirm' %}">认领图标</a></li>
+                      <li><a href="/artists/{{ user.id }}/apps/claim/">我在绘的图标 <span class="user-claim-count label label-warning" style="display: none;">{{ user|get_claim }}</span></a></li>
+                      <li><a href="/artists/{{ user.id }}/apps/finish/">我已绘的图标</span></a></li>
+                      {% endif %}
                       <li class="{% active app_submit_url %}"><a href="{% url 'app-submit' %}">提交应用</a></li>
                       {% block customnav %}{% endblock %}
                   </ul>
                   <ul class="nav navbar-nav navbar-right">
                       {% if user.is_authenticated %}
-                      <li class="dropdown">
-                          <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ user.username }} <span class="label label-warning user-claim-count" style="display: none;">{{ user|get_claim }}</span><b class="caret"></b></a>
-                          <ul class="dropdown-menu">
-                              <li><a href="/artists/{{ user.id }}/apps/claim/">我在绘的图标 <span class="user-claim-count label label-warning" style="display: none;">{{ user|get_claim }}</span></a></li>
-                              <li><a href="/artists/{{ user.id }}/apps/finish/">我已绘的图标</span></a></li>
-                          </ul>
-                      </li>
+                      <li class="{% active auth_logout_url %}"><a href="#">{{ user.username }}</a></li>
                       <li class="{% active auth_logout_url %}"><a href="{% url 'auth-logout' %}">退出</a></li>
                       {% else %}
                       <li class="{% active auth_login_url %}"><a href="{% url 'auth-login' %}">登录</a></li>

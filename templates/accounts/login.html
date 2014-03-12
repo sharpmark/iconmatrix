@@ -10,6 +10,7 @@
     {% for field in form %}
         {% include 'common/form_field.html' %}
     {% endfor %}
+    <input type='hidden' name='next' value='{{ next }}'>
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
             <button type="submit" class="btn btn-primary">登录</button>
