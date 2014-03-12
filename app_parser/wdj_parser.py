@@ -6,8 +6,8 @@ import urllib
 
 from urlparse import urlparse
 
-def parse_wdj_url(application):
-    url = application.wandoujia_url
+def parse_url(application):
+    url = application.source_url
     application_html = urllib.urlopen(url).read()
 
     application.name = _get_application_name(application_html)

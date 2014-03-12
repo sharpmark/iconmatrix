@@ -9,7 +9,7 @@ from icons.models import Icon
 from applications.forms import SubmitForm
 from icons.forms import UploadForm
 
-from wdj_parser.parser import parse_wdj_url, get_package_name
+from app_parser.wdj_parser import parse_url, get_package_name
 
 def detail(request, app_id):
     application = get_object_or_404(Application, pk=app_id)
@@ -70,13 +70,12 @@ def submit(request):
     if request.method == 'POST':
         form = SubmitForm(request.POST)
         if form.is_valid():
-            print form.cleaned_data
-            wdj_url = form.cleaned_data['wandoujia_url']
-            package_name = get_package_name(wdj_url)
+            source_url = form.cleaned_data['source_url']
+            package_name = get_package_name(source_url)
 
             application, created = Application.objects.get_or_create(package_name=package_name)
-            application.wandoujia_url = wdj_url
-            parse_wdj_url(application)
+            application.source_url = source_url
+            parse_url(application)
 
             if created:
                 application.status = Application.CONFIRM

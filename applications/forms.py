@@ -8,11 +8,11 @@ class SubmitForm(ModelForm):
     class Meta:
         model = Application
 
-        fields = ('wandoujia_url', )
+        fields = ('source_url', )
 
         labels = {
-            'wandoujia_url': _(u'豌豆荚链接'),
+            'source_url': _(u'应用链接'),
         }
         help_texts = {
-            'wandoujia_url': _(u'豌豆荚的应用详情链接，例如http://www.wandoujia.com/apps/com.taobao.caipiao'),
+            'source_url': _(u'目前只支持豌豆荚的应用详情链接，例如http://www.wandoujia.com/apps/com.taobao.caipiao'),
         }
