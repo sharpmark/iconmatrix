@@ -5,7 +5,7 @@
 <html lang="zh-cn">
   <head>
     <meta charset="utf-8">
-    <title>Icon Matrix</title>
+    <title>{% block title %}首页{% endblock %} | Icon Matrix</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="{% get_static_prefix %}css/bootstrap.min.css" rel="stylesheet">
     <link href="{% get_static_prefix %}css/bootstrap-theme.min.css" rel="stylesheet">
@@ -26,7 +26,7 @@
                       <li class="{% active index_url %}"><a href="{% url 'index' %}">Icon Matrix</a></li>
                       <li class="{% active list_confirm_url %}"><a href="{% url 'list-confirm' %}">认领图标</a></li>
                       <li class="{% active app_submit_url %}"><a href="{% url 'app-submit' %}">提交应用</a></li>
-                      {% block nav-custom %}{% endblock %}
+                      {% block customnav %}{% endblock %}
                   </ul>
                   <ul class="nav navbar-nav navbar-right">
                       {% if user.is_authenticated %}

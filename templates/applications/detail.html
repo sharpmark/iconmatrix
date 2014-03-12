@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
 {% load static %}
+
+{% block title %}{{ application.name }}{% endblock %}
+{% block customnav %}<li class="active"><a href="#">{{ application.name }}</a></li>{% endblock %}
+
 {% block container %}
     <div class="content container">
         <div class="row detail-app-info">
