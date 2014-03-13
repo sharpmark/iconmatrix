@@ -61,15 +61,16 @@ class Icon(models.Model):
 
 
     def public_image(self):
-        self.public_image_field(self.image_192px.name)
-        self.public_image_field(self.image_128px.name)
+        _public_image_field(self.image_192px.name, icon_dir='192')
+        _public_image_field(self.image_128px.name, icon_dir='128')
 
 
-    def public_image_field(self, field):
-        filename, ext = os.path.splitext(field)
-        field_name = os.path.join(settings.MEDIA_ROOT, field)
-        public_name = os.path.join(settings.MEDIA_ROOT, 'public/' + filename[:-17] + ext)
-        shutil.copy2(field_name, public_name)
+def _public_image_field(field, icon_dir):
+    filename, ext = os.path.splitext(field)
+    field_name = os.path.join(settings.MEDIA_ROOT, field)
+    #TODO: hard code!
+    public_name = os.path.join(settings.MEDIA_ROOT, 'public', icon_dir, filename[6:-23] + ext)
+    shutil.copy2(field_name, public_name)
 
 
 class Comment(models.Model):

@@ -37,7 +37,7 @@
                       <li class="{% active auth_logout_url %}"><a href="#">{{ user.username }}</a></li>
                       <li class="{% active auth_logout_url %}"><a href="{% url 'auth-logout' %}">退出</a></li>
                       {% else %}
-                      <li class="{% active auth_login_url %}"><a href="{% url 'auth-login' %}">登录</a></li>
+                      <li class="{% active auth_login_url %}"><a href="{% url 'auth-login' %}?next={{ request.path }}">登录</a></li>
                       {% endif %}
                   </ul>
               </nav>

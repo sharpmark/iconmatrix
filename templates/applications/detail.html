@@ -36,7 +36,7 @@
                         等待设计师认领
                         {% endif %}
                         {% else %}
-                        设计师<a href="/accounts/login/">登录</a>后可以认领图标
+                        设计师<a href="{% url 'auth-login' %}?next={{ request.path }}">登录</a>后可以认领图标
                         {% endif %}
                     </h4>
                 {% endif %}
