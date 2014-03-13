@@ -8,8 +8,6 @@ from django.contrib.auth.decorators import login_required
 from applications.models import Application
 from icons.models import Icon
 
-from django import forms
-
 from applications.forms import SubmitForm
 from icons.forms import UploadForm
 
@@ -81,9 +79,7 @@ def submit(request):
 
             application = get_app_from_url(form.cleaned_data['source_url'])
 
-            if application == None:
-                raise forms.ValidationError("输入的网址中没有应用信息。")
-            elif application.uploader == None:
+            if application.uploader == None:
                 application.uploader = request.user
 
             application.save()
