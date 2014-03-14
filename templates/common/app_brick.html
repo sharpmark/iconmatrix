@@ -11,9 +11,9 @@
             {% endif %}
         </a>
         <div class="brick-app-info">
-            <h2 class="text-center"><strong>
+            <h2 class="text-center">
                 <a href="{% url 'app-detail' app.id %}">{{ app.name|truncatechars:8 }}</a>
-            </strong></h2>
+            </h2>
         </div>
     </div>
     {% if request.user.is_authenticated and user|is_ui %}{% if app.status == 'CO' %}

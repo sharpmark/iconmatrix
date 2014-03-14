@@ -16,8 +16,7 @@ def get_upload(value):
 
 @register.filter
 def is_ui(value):
-    # return True # for debug.
-    return value.groups.filter(name='设计部').count() != 0
+    return value.groups.filter(name='UI设计部').count() != 0
 
 @register.filter
 def is_pm(value):
