@@ -28,7 +28,7 @@ body, h1, h2, h3, h4, h5, h6 {
 }
 
 .brick-icon-192 {
-    margin-top: 100px;
+    margin-top: 103px;
     max-width: 192px;
     max-height: 192px;
 }
@@ -45,11 +45,12 @@ body, h1, h2, h3, h4, h5, h6 {
 
 .brick-app-info {
     margin-top: 40px;
-    text-shadow: rgba(0, 0, 0, .8) 0 2px 2px;
+    text-shadow: rgba(0, 0, 0, .7) 0 5px 6px;
 }
 
 .brick-app-info, .brick-app-info a, a.hover {
-    color: #fff;
+    font-size: 40px;
+    color: #a0a0a0;
     text-decoration: none;
 }
 
