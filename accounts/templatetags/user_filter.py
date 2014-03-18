@@ -3,6 +3,7 @@
 from django import template
 from applications.models import Application
 from django.contrib.auth.models import User, Group
+from django.conf import settings
 
 register = template.Library()
 
@@ -16,8 +17,21 @@ def get_upload(value):
 
 @register.filter
 def is_ui(value):
-    return value.groups.filter(name='UI设计部').count() != 0
+    if settings.DEBUG:
+        return True
+    else:
+        return value.groups.filter(name='UI设计部').count() != 0
 
 @register.filter
 def is_pm(value):
-    return value.groups.filter(name='产品规划部').count() != 0
+    if settings.DEBUG:
+        return True
+    else:
+        return value.groups.filter(name='产品规划部').count() != 0
+
+@register.filter
+def is_admin(value):
+    if settings.DEBUG:
+        return True
+    else:
+        return value.groups.filter(name='网站管理员').count() != 0

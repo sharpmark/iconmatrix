@@ -22,8 +22,8 @@ def parse_url(wandoujia_url):
         app.package_name = _get_package_name(wandoujia_url)
         app.source_url = wandoujia_url
 
-        if created:
-            app.status = Application.CONFIRM
+        #if app.status == Application.CREATE:
+        #    app.status = Application.CONFIRM
 
         return app
     else:

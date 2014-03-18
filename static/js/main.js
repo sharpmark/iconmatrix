@@ -10,4 +10,17 @@ $(document).ready(function(){
     {
         $('.user-claim-count').show();
     };
+
+    $("#selectall").on('change', function(){
+
+        if($(this).is(":checked"))
+        {
+            $("#app-list tbody td input:checkbox:not(:disabled)").prop("checked", true);
+        }
+        else
+        {
+            $("#app-list tbody td input:checkbox:not(:disabled)").prop("checked", false);
+        }
+    });
+
 });

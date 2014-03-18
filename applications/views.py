@@ -8,9 +8,8 @@ from django.contrib.auth.decorators import login_required
 from applications.models import Application
 from icons.models import Icon
 
-from applications.forms import SubmitForm
+from applications.forms import SubmitForm, CreateFormSet
 from icons.forms import UploadForm
-
 from app_parser.parser import get_app_from_url
 
 def detail(request, app_id):
@@ -50,12 +49,44 @@ def detail(request, app_id):
 def list(request):
     return __list_apps(request, statuses = [Application.UPLOAD, Application.FINISH])
 
+
+@login_required
+def list_create(request):
+    from accounts.templatetags.user_filter import is_admin
+
+    if not is_admin(request.user): return HttpResponseRedirect('/')
+
+    if request.method == 'POST':
+        print 'in post'
+        action = request.POST.get('action')
+        print action
+        formset = CreateFormSet(request.POST, queryset=Application.objects.filter(status=Application.CREATE))
+        #print formset
+
+        if formset.is_valid():
+            for form in formset.forms:
+                if form.cleaned_data.get('is_checked'):
+                    app = form.save(commit=False)
+                    if action == 'confirm':
+                        app.status = Application.CONFIRM
+                    if action == 'abandon':
+                        app.status = Application.ABANDON
+                    app.save()
+
+            return HttpResponseRedirect(request.path)
+
+    else:
+        formset = CreateFormSet(queryset=Application.objects.filter(status=Application.CREATE))
+
+    return __list_apps(request, statuses = [Application.CREATE], template='applications/list-create.html', content={'formset': formset, })
+
+
 @login_required
 def list_confirm(request):
     from accounts.templatetags.user_filter import is_ui
 
     if is_ui(request.user):
-        return __list_apps(request, statuses = [Application.CREATE, Application.CONFIRM])
+        return __list_apps(request, statuses = [Application.CONFIRM])
     else:
         return HttpResponseRedirect('/')
 
@@ -66,10 +97,10 @@ def list_claim(request):
 def list_finish(request):
     return __list_apps(request, statuses = [Application.FINISH])
 
-def __list_apps(request, statuses):
-    return render(request, 'applications/list.html', {
+def __list_apps(request, statuses, template='applications/list-launcher.html', content={}):
+    return render(request, template, dict(content.items() + {
         'app_list': Application.objects.filter(status__in=statuses).order_by('-last_icon__timestamp_upload'),
-    })
+    }.items()))
 
 @login_required
 def submit(request):

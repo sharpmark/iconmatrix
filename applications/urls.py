@@ -8,6 +8,7 @@ urlpatterns = patterns('',
     url(r'^apps/(?P<app_id>\d+)/unclaim/$', views.unclaim, name='app-unclaim'),
 
     url(r'^apps/submit/$', views.submit, name='app-submit'),
+    url(r'^apps/create/$', views.list_create, name='list-create'),
     url(r'^apps/confirm/$', views.list_confirm, name='list-confirm'),
     url(r'^apps/claim/$', views.list_claim, name='list-claim'),
     url(r'^apps/finish/$', views.list_finish, name='list-finish'),
