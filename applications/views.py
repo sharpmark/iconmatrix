@@ -68,7 +68,7 @@ def list_finish(request):
 
 def __list_apps(request, statuses):
     return render(request, 'applications/list.html', {
-        'app_list': Application.objects.filter(status__in=statuses).order_by('-last_icon__timestamp_upload'),
+        'app_list': Application.objects.filter(status__in=statuses).order_by('-last_icon__timestamp_upload')[:99],
     })
 
 @login_required
