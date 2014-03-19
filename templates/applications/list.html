@@ -11,11 +11,11 @@
     </div>
   <div id="pagination" class="container">
     <ul class="pagination">
-      <li>{% if prepage == 0 %}<span class="disabled">&laquo;</span>{% else %}<a href="/apps/page/{{ prepage }}/">&laquo;</a>{% endif %}</li>
+      <li>{% if prepage == 0 %}<span class="disabled">上一页</span>{% else %}<a href="/apps/page/{{ prepage }}/">上一页</a>{% endif %}</li>
       {% for p in pages %}
       <li>{% if current_page == p %}<span class="disabled">{{ p }}</span>{% else %}<a href="/apps/page/{{ p }}/">{{ p }}</a>{% endif %}</li>
       {% endfor %}
-      <li>{% if nextpage == 0 %}<span class="disabled">&raquo;</span>{% else %}<a href="/apps/page/{{ nextpage }}/">&raquo;</a>{% endif %}</li>
+      <li>{% if nextpage == 0 %}<span class="disabled">下一页</span>{% else %}<a href="/apps/page/{{ nextpage }}/">下一页</a>{% endif %}</li>
     </ul>
   </div>
 {% endblock %}
