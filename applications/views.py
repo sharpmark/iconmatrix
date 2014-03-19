@@ -96,7 +96,8 @@ def _list_apps(request, statuses, page_id):
     page_count = _get_page_count(apps_count, apps_pre_page)
 
     if page_count < page_id or page_id < 1:
-        return HttpResponseRedirect('/')
+        page_id = 1
+        #return HttpResponseRedirect('/')
 
     return render(request, 'applications/list.html', {
         'current_page': page_id, 'pages': _get_page_list(apps_count, apps_pre_page, page_id),
