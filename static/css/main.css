@@ -1,6 +1,5 @@
 body {
     padding-top: 60px;
-    padding-bottom: 40px;
     -webkit-font-smoothing:antialiased;
 }
 
@@ -16,15 +15,38 @@ body, h1, h2, h3, h4, h5, h6 {
 }
 
 .brick {
-
-}
-
-.brick-dark {
-    background: url(/static/images/app-brick-dark.png);
     width: 358px;
     height: 458px;
     float: left;
     margin: 1px;
+}
+
+.brick-dark-1 {
+    background: url(/static/images/app-brick-dark-1.png);
+}
+.brick-dark-2 {
+    background: url(/static/images/app-brick-dark-2.png);
+}
+.brick-dark-3 {
+    background: url(/static/images/app-brick-dark-3.png);
+}
+.brick-dark-4 {
+    background: url(/static/images/app-brick-dark-4.png);
+}
+.brick-dark-5 {
+    background: url(/static/images/app-brick-dark-5.png);
+}
+.brick-dark-6 {
+    background: url(/static/images/app-brick-dark-6.png);
+}
+.brick-dark-7 {
+    background: url(/static/images/app-brick-dark-7.png);
+}
+.brick-dark-8 {
+    background: url(/static/images/app-brick-dark-8.png);
+}
+.brick-dark-9 {
+    background: url(/static/images/app-brick-dark-9.png);
 }
 
 .brick-icon-192 {
@@ -91,4 +113,9 @@ body, h1, h2, h3, h4, h5, h6 {
 }
 .detail-icon-rating {
     margin-top: 40px;
+}
+
+#pagination {
+    width: 1080px;
+    text-align: center;
 }

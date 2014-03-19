@@ -47,28 +47,61 @@ def detail(request, app_id):
     })
 
 
-def list(request):
-    return __list_apps(request, statuses = [Application.UPLOAD, Application.FINISH])
+def list(request, page_id=1):
+    return _list_apps(request, statuses = [Application.UPLOAD, Application.FINISH], page_id=page_id)
 
 @login_required
-def list_confirm(request):
+def list_confirm(request, page_id=1):
     from accounts.templatetags.user_filter import is_ui
 
     if is_ui(request.user):
-        return __list_apps(request, statuses = [Application.CREATE, Application.CONFIRM])
+        return _list_apps(request, statuses = [Application.CREATE, Application.CONFIRM], page_id=page_id)
     else:
         return HttpResponseRedirect('/')
 
-def list_claim(request):
-    return __list_apps(request, statuses = [Application.CLAIM])
+def list_claim(request, page_id=1):
+    return _list_apps(request, statuses = [Application.CLAIM], page_id=page_id)
 
 
-def list_finish(request):
-    return __list_apps(request, statuses = [Application.FINISH])
+def list_finish(request, page_id=1):
+    return _list_apps(request, statuses = [Application.FINISH], page_id=page_id)
 
-def __list_apps(request, statuses):
+def _get_page_count(total, pre=9):
+    if total % pre == 0:
+        return total / pre
+    else:
+        return total / pre + 1
+
+def _get_page_list(total, pre=9, current=1):
+
+    pages = _get_page_count(total, pre)
+
+    if current < 6:
+        start = 1
+        end = min(pages, 9)
+    elif current + 4 > pages:
+        end = pages
+        start = max(pages - 9, 1)
+    else:
+        start = current - 4
+        end = current + 4
+
+    return range(start, end + 1)
+
+def _list_apps(request, statuses, page_id):
+
+    apps_pre_page = 9                   # 每页显示多少个
+    page_id = int(page_id)              # 第几页
+    apps_count = Application.objects.filter(status__in=statuses).count()
+    page_count = _get_page_count(apps_count, apps_pre_page)
+
+    if page_count < page_id or page_id < 1:
+        return HttpResponseRedirect('/')
+
     return render(request, 'applications/list.html', {
-        'app_list': Application.objects.filter(status__in=statuses).order_by('-last_icon__timestamp_upload')[:99],
+        'current_page': page_id, 'pages': _get_page_list(apps_count, apps_pre_page, page_id),
+        'prepage': page_id - 1, 'nextpage': 0 if page_id == page_count else page_id + 1,
+        'app_list': Application.objects.filter(status__in=statuses).order_by('-last_icon__timestamp_upload')[(page_id - 1) * 9: page_id * 9],
     })
 
 @login_required

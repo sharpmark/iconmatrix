@@ -1,7 +1,6 @@
 {% load static %}
 {% load user_filter %}
 
-<div class="brick-dark brick">
     <div class="brick-icon-192 center-block">
         <a href="{% url 'app-detail' app.id %}" class="text-center">
             {% if app.last_icon %}
@@ -21,4 +20,3 @@
         <p><a href="/apps/{{ app.id }}/claim/" class="btn btn-primary btn-lg" role="button">认领</a></p>
     </div>
     {% endif %}{% endif %}
-</div>
