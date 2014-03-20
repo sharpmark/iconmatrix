@@ -55,13 +55,12 @@ def list_confirm(request, page_id=1):
     from accounts.templatetags.user_filter import is_ui
 
     if is_ui(request.user):
-        return _list_apps(request, statuses = [Application.CREATE, Application.CONFIRM], page_id=page_id)
+        return _list_apps(request, statuses = [Application.CREATE, Application.CONFIRM], page_id=page_id, template='applications/list-confirm.html')
     else:
         return HttpResponseRedirect('/')
 
 def list_claim(request, page_id=1):
     return _list_apps(request, statuses = [Application.CLAIM], page_id=page_id)
-
 
 def list_finish(request, page_id=1):
     return _list_apps(request, statuses = [Application.FINISH], page_id=page_id)
@@ -88,7 +87,7 @@ def _get_page_list(total, pre=9, current=1):
 
     return range(start, end + 1)
 
-def _list_apps(request, statuses, page_id):
+def _list_apps(request, statuses, page_id, template='applications/list.html'):
 
     apps_pre_page = 9                   # 每页显示多少个
     page_id = int(page_id)              # 第几页
@@ -99,7 +98,7 @@ def _list_apps(request, statuses, page_id):
         page_id = 1
         #return HttpResponseRedirect('/')
 
-    return render(request, 'applications/list.html', {
+    return render(request, template, {
         'current_page': page_id, 'pages': _get_page_list(apps_count, apps_pre_page, page_id),
         'prepage': page_id - 1, 'nextpage': 0 if page_id == page_count else page_id + 1,
         'app_list': Application.objects.filter(status__in=statuses).order_by('-last_icon__timestamp_upload')[(page_id - 1) * 9: page_id * 9],
