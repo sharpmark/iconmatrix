@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block container %}
+    <div class="launcher container">
+        {% for app in app_list %}
+        <div class="brick-dark-{% cycle '1' '2' '3' '4' '5' '6' '7' '8' '9'%} brick">
+        {% include 'common/app_brick.html' %}
+        </div>
+        {% empty %}
+        <h2 class="text-center brick-app-info">没有图标 o(╯□╰)o</h2>
+        {% endfor %}
+    </div>
+  <div id="pagination" class="container">
+    <ul class="pagination pagination-lg">
+      <li>{% if prepage == 0 %}<span class="disabled">上一页</span>{% else %}<a href="/apps/confirm/page/{{ prepage }}/">上一页</a>{% endif %}</li>
+      {% for p in pages %}
+      <li>{% if current_page == p %}<span class="disabled">{{ p }}</span>{% else %}<a href="/apps/confirm/page/{{ p }}/">{{ p }}</a>{% endif %}</li>
+      {% endfor %}
+      <li>{% if nextpage == 0 %}<span class="disabled">下一页</span>{% else %}<a href="/apps/confirm/page/{{ nextpage }}/">下一页</a>{% endif %}</li>
+    </ul>
+  </div>
+{% endblock %}

@@ -5,6 +5,7 @@
 {% block container %}
 <div class="container"><div class="center-block">
     <h4>请使用内网账户登录，用户名为姓名全拼，没有邮箱后缀。</h4>
+    <p>如果您尚未修改初始密码，请点击<a href="http://password.smartisan.cn" target="_blank">此处</a>修改，忘记密码可以联系贺炜、管志成进行重置。</p>
 <form method="post" action=".">
     {% csrf_token %}
     {% for field in form %}
