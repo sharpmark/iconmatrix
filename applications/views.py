@@ -12,6 +12,8 @@ from applications.forms import SubmitForm, CreateFormSet
 from icons.forms import UploadForm
 from app_parser.parser import get_app_from_url
 
+import random
+
 def detail(request, app_id):
     application = get_object_or_404(Application, pk=app_id)
 
@@ -21,7 +23,6 @@ def detail(request, app_id):
             icon = icon_upload_form.save(commit=False)
             icon.application = application
             icon.artist = request.user
-            icon.timestamp_upload = timezone.now()
             icon.save()
 
             icon.public_image()
@@ -46,8 +47,51 @@ def detail(request, app_id):
     })
 
 
-def list(request, page_id=1):
-    return _list_apps(request, statuses = [Application.UPLOAD, Application.FINISH], page_id=page_id)
+def list(request):
+
+    max_id = Application.objects.latest('id').id
+
+    if Application.objects.count() > 9:
+        app_list = []
+
+        while len(app_list) < 9:
+            appid = random.randint(1, max_id)
+            can_insert = True
+
+            for app in app_list:
+                if appid == app.id:
+                    can_insert = False
+                    pass
+
+            try:
+                if can_insert:
+                    app = Application.objects.get(id=appid)
+                    app_list.append(app)
+            except:
+                pass
+
+    else:
+        app_list = Application.objects.all()
+
+    return render(request, 'applications/list-launcher.html', {'app_list': app_list,})
+
+def list_paged(request, page_id=1, statuses=[Application.UPLOAD, Application.FINISH]):
+
+    apps_pre_page = 9                   # 每页显示多少个
+
+    apps_count = Application.objects.filter(status__in=statuses).count()
+    page_count = _get_page_count(apps_count, apps_pre_page)
+
+    if page_count < page_id or page_id < 1:
+        page_id = 1
+
+    app_list = Application.objects.filter(status__in=statuses).order_by('-last_icon__timestamp_upload')[(page_id - 1) * 9: page_id * 9]
+
+    return render(request, 'applications/list-launcher.html', {
+        'current_page': page_id, 'pages': _get_page_list(apps_count, apps_pre_page, page_id),
+        'prepage': page_id - 1, 'nextpage': 0 if page_id == page_count else page_id + 1,
+        'app_list': app_list,
+    })
 
 
 @login_required
@@ -57,11 +101,8 @@ def list_create(request):
     if not is_admin(request.user): return HttpResponseRedirect('/')
 
     if request.method == 'POST':
-        print 'in post'
         action = request.POST.get('action')
-        print action
         formset = CreateFormSet(request.POST, queryset=Application.objects.filter(status=Application.CREATE))
-        #print formset
 
         if formset.is_valid():
             for form in formset.forms:
@@ -78,7 +119,10 @@ def list_create(request):
     else:
         formset = CreateFormSet(queryset=Application.objects.filter(status=Application.CREATE))
 
-    return _list_apps(request, page_id=1, statuses = [Application.CREATE], template='applications/list-create.html', content={'formset': formset, })
+    return render(request, 'applications/list-create.html', {
+        'formset': formset,
+        'app_list': Application.objects.filter(status=Application.CREATE).order_by('-timestamp_create'),
+    })
 
 
 @login_required
@@ -86,15 +130,12 @@ def list_confirm(request, page_id=1):
     from accounts.templatetags.user_filter import is_ui
 
     if is_ui(request.user):
-        return _list_apps(request, statuses = [Application.CONFIRM], page_id=page_id, template='applications/list-confirm.html')
+        return render(request, 'applications/list-confirm.html', {
+            'app_list': Application.objects.filter(status=Application.CONFIRM).order_by('-timestamp_create'),
+        })
     else:
         return HttpResponseRedirect('/')
 
-def list_claim(request, page_id=1):
-    return _list_apps(request, statuses = [Application.CLAIM], page_id=page_id)
-
-def list_finish(request, page_id=1):
-    return _list_apps(request, statuses = [Application.FINISH], page_id=page_id)
 
 def _get_page_count(total, pre=9):
     if total % pre == 0:
@@ -118,21 +159,6 @@ def _get_page_list(total, pre=9, current=1):
 
     return range(start, end + 1)
 
-def _list_apps(request, statuses, page_id, template='applications/list-launcher.html', content={}):
-
-    apps_pre_page = 9                   # 每页显示多少个
-    page_id = int(page_id)              # 第几页
-    apps_count = Application.objects.filter(status__in=statuses).count()
-    page_count = _get_page_count(apps_count, apps_pre_page)
-
-    if page_count < page_id or page_id < 1:
-        page_id = 1
-
-    return render(request, template, dict(content.items() + {
-        'current_page': page_id, 'pages': _get_page_list(apps_count, apps_pre_page, page_id),
-        'prepage': page_id - 1, 'nextpage': 0 if page_id == page_count else page_id + 1,
-        'app_list': Application.objects.filter(status__in=statuses).order_by('-last_icon__timestamp_upload')[(page_id - 1) * 9: page_id * 9],
-    }.items()))
 
 @login_required
 def submit(request):
@@ -156,7 +182,7 @@ def submit(request):
 
 
 @login_required
-def claim(request, app_id):
+def detail_claim(request, app_id):
 
     app = Application.objects.get(pk=app_id)
     if app:
@@ -164,11 +190,15 @@ def claim(request, app_id):
             app.artist = request.user
             app.status = Application.CLAIM
             app.save()
-    return HttpResponseRedirect('/apps/%d/' % app.id)
+
+    if request.GET['next']:
+        return HttpResponseRedirect(request.GET['next'])
+    else:
+        return HttpResponseRedirect('/apps/%d/' % app.id)
 
 
 @login_required
-def unclaim(request, app_id):
+def detail_unclaim(request, app_id):
 
     app = Application.objects.get(pk=app_id)
     if app:
@@ -177,6 +207,3 @@ def unclaim(request, app_id):
             app.status = Application.CONFIRM
             app.save()
     return HttpResponseRedirect('/apps/%d/' % app.id)
-
-def review(request):
-    return render(request, 'applications/review.html')

@@ -13,11 +13,14 @@
   </head>
 
     {% url 'index' as index_url %}
-    {% url 'list-confirm' as list_confirm_url %}
-    {% url 'list-create' as list_create_url %}
-    {% url 'app-submit' as app_submit_url %}
+    {% url 'apps-confirm' as apps_confirm_url %}
+    {% url 'apps-create' as apps_create_url %}
+    {% url 'apps-submit' as apps_submit_url %}
     {% url 'auth-logout' as auth_logout_url %}
     {% url 'auth-login' as auth_login_url %}
+    {% url 'aritst-claim' as artist_claim %}
+    {% url 'aritst-upload' as artist_upload %}
+    {% url 'aritst-finish' as artist_finish %}
 
   <body>
       <header class="navbar navbar-inverse navbar-fixed-top" role="banner">
@@ -27,13 +30,13 @@
                       <li class="{% active index_url %}"><a href="{% url 'index' %}">Icon Matrix</a></li>
                       {% if user.is_authenticated %}
                           {% if user|is_ui %}
-                      <li class="{% active list_confirm_url %}"><a href="{% url 'list-confirm' %}">认领图标</a></li>
-                      <li><a href="/artists/{{ user.id }}/apps/claim/">我在绘的图标 <span class="user-claim-count label label-warning" style="display: none;">{{ user|get_claim }}</span></a></li>
-                      <li><a href="/artists/{{ user.id }}/apps/finish/">我已绘的图标</span></a></li>
+                      <li class="{% active apps_confirm_url %}"><a href="{% url 'apps-confirm' %}">认领图标</a></li>
+                      <li class=""><a href="{% url 'artist-claim' user.id %}">我在绘的图标 <span class="user-claim-count label label-warning" style="display: none;">{{ user|get_claim }}</span></a></li>
+                      <li class=""><a href="{% url 'artist-finish' user.id %}">我已绘的图标</span></a></li>
                           {% endif %}
-                      <li class="{% active app_submit_url %}"><a href="{% url 'app-submit' %}">提交应用</a></li>
+                      <li class="{% active apps_submit_url %}"><a href="{% url 'apps-submit' %}">提交应用</a></li>
                           {% if user|is_admin %}
-                      <li class="{% active list_create_url %}"><a href="{% url 'list-create' %}">审核应用</a></li>
+                      <li class="{% active apps_create_url %}"><a href="{% url 'apps-create' %}">审核应用</a></li>
                           {% endif %}
                       {% endif %}
                       {% block customnav %}{% endblock %}
