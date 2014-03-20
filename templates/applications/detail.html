@@ -20,6 +20,9 @@
                     {% endif %}
                 </p>
                 {% endwith %}
+                {% elif application.status == 'CR' %}
+                <img class="detail-icon-192 center-block" src="{% get_static_prefix %}images/icon-exclamation-192px.png" />
+                <h4 class="text-center detail-icon-artist">等待管理员审核该应用</h4>
                 {% elif application.status == 'CL' %}
                 <img class="detail-icon-192 center-block" src="{% get_static_prefix %}images/icon-question-192px.png" />
                 <h4 class="text-center detail-icon-artist"><a href="/artists/{{ application.artist.id }}/apps/finish/">{{ application.artist.last_name }}{{ application.artist.first_name }}</a>正在玩命绘制中！</h4>

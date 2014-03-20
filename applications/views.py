@@ -8,9 +8,8 @@ from django.contrib.auth.decorators import login_required
 from applications.models import Application
 from icons.models import Icon
 
-from applications.forms import SubmitForm
+from applications.forms import SubmitForm, CreateFormSet
 from icons.forms import UploadForm
-
 from app_parser.parser import get_app_from_url
 
 def detail(request, app_id):
@@ -50,12 +49,44 @@ def detail(request, app_id):
 def list(request, page_id=1):
     return _list_apps(request, statuses = [Application.UPLOAD, Application.FINISH], page_id=page_id)
 
+
+@login_required
+def list_create(request):
+    from accounts.templatetags.user_filter import is_admin
+
+    if not is_admin(request.user): return HttpResponseRedirect('/')
+
+    if request.method == 'POST':
+        print 'in post'
+        action = request.POST.get('action')
+        print action
+        formset = CreateFormSet(request.POST, queryset=Application.objects.filter(status=Application.CREATE))
+        #print formset
+
+        if formset.is_valid():
+            for form in formset.forms:
+                if form.cleaned_data.get('is_checked'):
+                    app = form.save(commit=False)
+                    if action == 'confirm':
+                        app.status = Application.CONFIRM
+                    if action == 'abandon':
+                        app.status = Application.ABANDON
+                    app.save()
+
+            return HttpResponseRedirect(request.path)
+
+    else:
+        formset = CreateFormSet(queryset=Application.objects.filter(status=Application.CREATE))
+
+    return _list_apps(request, page_id=1, statuses = [Application.CREATE], template='applications/list-create.html', content={'formset': formset, })
+
+
 @login_required
 def list_confirm(request, page_id=1):
     from accounts.templatetags.user_filter import is_ui
 
     if is_ui(request.user):
-        return _list_apps(request, statuses = [Application.CREATE, Application.CONFIRM], page_id=page_id, template='applications/list-confirm.html')
+        return _list_apps(request, statuses = [Application.CONFIRM], page_id=page_id, template='applications/list-confirm.html')
     else:
         return HttpResponseRedirect('/')
 
@@ -87,7 +118,7 @@ def _get_page_list(total, pre=9, current=1):
 
     return range(start, end + 1)
 
-def _list_apps(request, statuses, page_id, template='applications/list.html'):
+def _list_apps(request, statuses, page_id, template='applications/list-launcher.html', content={}):
 
     apps_pre_page = 9                   # 每页显示多少个
     page_id = int(page_id)              # 第几页
@@ -96,13 +127,12 @@ def _list_apps(request, statuses, page_id, template='applications/list.html'):
 
     if page_count < page_id or page_id < 1:
         page_id = 1
-        #return HttpResponseRedirect('/')
 
-    return render(request, template, {
+    return render(request, template, dict(content.items() + {
         'current_page': page_id, 'pages': _get_page_list(apps_count, apps_pre_page, page_id),
         'prepage': page_id - 1, 'nextpage': 0 if page_id == page_count else page_id + 1,
         'app_list': Application.objects.filter(status__in=statuses).order_by('-last_icon__timestamp_upload')[(page_id - 1) * 9: page_id * 9],
-    })
+    }.items()))
 
 @login_required
 def submit(request):

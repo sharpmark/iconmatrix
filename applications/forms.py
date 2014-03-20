@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 
-from django.forms import Form
-from applications.models import Application
-from django.utils.translation import ugettext_lazy as _
 from django import forms
+from django.forms import ModelForm, Form
+from django.forms.models import modelformset_factory
+from django.utils.translation import ugettext_lazy as _
 
 from app_parser.parser import get_app_from_url
+from applications.models import Application
 
 class SubmitForm(Form):
 
@@ -26,3 +27,12 @@ class SubmitForm(Form):
             raise forms.ValidationError('输入的网址中没有应用信息。')
 
         return raw_url
+
+CreateFormSetBase = modelformset_factory(Application, extra=0, fields={})
+
+class CreateFormSet(CreateFormSetBase):
+
+    def add_fields(self, form, index):
+        super(CreateFormSet, self).add_fields(form, index)
+        form.fields['is_checked'] = forms.BooleanField(required=False)
+        form.fields['is_checked'].widget.attrs['class'] = 'select-app'
