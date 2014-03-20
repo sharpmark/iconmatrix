@@ -3,6 +3,7 @@ from applications.models import Application
 
 import re
 import urllib
+import json
 
 from urlparse import urlparse
 
@@ -28,6 +29,25 @@ def parse_url(wandoujia_url):
         return app
     else:
         return None
+
+def crawl_wdj_weekly_top():
+    STEP = 50
+    MAX = 1000
+    start = 0
+
+    while start < MAX:
+        url = "http://apps.wandoujia.com/api/v1/apps?type=weeklytopapp&max=%s&start=%s&opt_fields=packageName" %(STEP, start)
+        data_in_string = urllib.urlopen(url).read()
+
+        data = json.loads(data_in_string)
+
+        for item in data:
+            app_url = "http://www.wandoujia.com/apps/%s" %item['packageName']
+            print app_url
+            app = parse_url(app_url)
+            app.save()
+
+        start = start + STEP
 
 def _get_name(application_html):
     pattern_string = '<p class="app-name">[\s\S]*?<span class="title" itemprop="name">([\S\s]*?)</span>'
