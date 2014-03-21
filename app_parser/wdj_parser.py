@@ -42,7 +42,7 @@ def crawl_wdj_weekly_top():
             app_url = "http://www.wandoujia.com/apps/%s" %item['packageName']
             print app_url
             app = parse_url(app_url)
-            app.save()
+            if app: app.save()
 
         start = start + STEP
 

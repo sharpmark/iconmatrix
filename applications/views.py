@@ -9,6 +9,7 @@ from applications.models import Application
 from icons.models import Icon
 
 from applications.forms import SubmitForm, CreateFormSet
+from django.forms.formsets import formset_factory
 from icons.forms import UploadForm
 from app_parser.parser import get_app_from_url
 
@@ -55,17 +56,11 @@ def list(request):
         app_list = []
 
         while len(app_list) < 9:
-            appid = random.randint(1, max_id)
-            can_insert = True
-
-            for app in app_list:
-                if appid == app.id:
-                    can_insert = False
-                    pass
 
             try:
-                if can_insert:
-                    app = Application.objects.get(id=appid)
+                appid = random.randint(1, max_id)
+                app = Application.objects.get(id=appid)
+                if not app in app_list and app.status in [Application.UPLOAD, Application.FINISH]:
                     app_list.append(app)
             except:
                 pass
@@ -162,22 +157,29 @@ def _get_page_list(total, pre=9, current=1):
 
 @login_required
 def submit(request):
+    SubmitFormSet = formset_factory(SubmitForm, extra=2)
     if request.method == 'POST':
-        form = SubmitForm(request.POST)
-        if form.is_valid():
+        formset = SubmitFormSet(request.POST)
+        if formset.is_valid():
+            for form in formset.forms:
 
-            application = get_app_from_url(form.cleaned_data['source_url'])
+                if form.cleaned_data.get('source_url') is None: pass
 
-            if application.uploader == None:
-                application.uploader = request.user
+                application = get_app_from_url(form.cleaned_data.get('source_url'))
 
-            application.save()
+                if application is None: pass
+                if application.uploader == None:
+                    application.uploader = request.user
 
-            return HttpResponseRedirect('/apps/%d/' % application.id)
+                application.save()
+
+            return HttpResponseRedirect('/apps/submit/')
+
     else:
-        form = SubmitForm()
+        formset = SubmitFormSet()
+
     return render(request, 'applications/submit.html', {
-        'form': form,
+        'formset': formset,
     })
 
 
