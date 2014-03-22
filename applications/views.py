@@ -19,6 +19,7 @@ def detail(request, app_id):
     application = get_object_or_404(Application, pk=app_id)
 
     if request.method == 'POST':
+        #todo: 检查是不是当前设计师
         icon_upload_form = UploadForm(request.POST, request.FILES, instance=Icon())
         if icon_upload_form.is_valid():
             icon = icon_upload_form.save(commit=False)
@@ -218,24 +219,16 @@ def detail_unclaim(request, app_id):
 
 def search(request):
     if request.method == 'POST':
-        print 'in search app'
         form = SearchForm(request.POST)
-        print form
         if form.is_valid():
-            print 'is valid', form.cleaned_data['query']
             try:
                 application = Application.objects.get(name=form.cleaned_data['query'])
-                print 'get application from name.'
-
                 return HttpResponseRedirect('/apps/%d/' % application.id)
-            except Exception, e:
-                print e
+            except:
                 pass
 
             try:
                 application = Application.objects.get(package_name=form.cleaned_data['query'])
-                print 'get application from package name.'
-
                 return HttpResponseRedirect('/apps/%d/' % application.id)
             except:
                 pass

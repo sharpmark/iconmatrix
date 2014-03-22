@@ -29,3 +29,17 @@ def rate(request, icon_id, score):
         like.save()
 
     return HttpResponseRedirect('/apps/%d/' % icon.application.id)
+
+
+@login_required
+def isauthor(request, icon_id):
+    from accounts.templatetags.user_filter import is_ui
+    if is_ui(request.user):
+        icon = get_object_or_404(Icon, pk=icon_id)
+        icon.artist = request.user
+        icon.save()
+
+        icon.application.artist = request.user
+        icon.application.save()
+
+    return HttpResponseRedirect('/apps/%d/' % icon.application.id)

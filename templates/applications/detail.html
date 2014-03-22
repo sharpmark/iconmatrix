@@ -11,7 +11,12 @@
             <div class="col-md-3">
                 {% if application.last_icon %}{% with icon=application.last_icon %}
                 <img class="detail-icon-192 center-block" src="/uploads/{{ icon.image_192px }}" />
+                {# 处理导入数据没有设计师的问题 #}
+                {% if icon.artist.id == 1 and request.user|is_ui %}
+                <h4 class="text-center detail-icon-artist"><a href="/icons/{{ icon.id }}/isauthor/" class="btn btn-default" role="button">我是作者</a></h4><span>如果你是图标作者，请点此按钮，操作不可逆，请确认后再点击！</span>
+                {% else %}
                 <h4 class="text-center detail-icon-artist">作者：{{ icon.artist.last_name }}{{ icon.artist.first_name }}</h4>
+                {% endif %}
                 {% include 'common/app_like.html' %}
                 {% endwith %}
                 {% elif application.status == 'CR' %}

@@ -15,6 +15,7 @@ class Command(BaseCommand):
 
         dir_dest = './uploads/'
 
+        #todo
         artist = User.objects.get(pk=1)
 
         for root, dirs, files in os.walk(os.path.join(dir_base, dir_128px)):
