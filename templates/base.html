@@ -31,8 +31,6 @@
                       {% if user.is_authenticated %}
                           {% if user|is_ui %}
                       <li class="{% active apps_confirm_url %}"><a href="{% url 'apps-confirm' %}">认领图标</a></li>
-                      <li class="{% active artist_my_claim %}"><a href="{% url 'artist-my-claim' %}">我在绘的图标 <span class="user-claim-count label label-warning" style="display: none;">{{ user|get_claim }}</span></a></li>
-                      <li class="{% active artist_my_finish %}"><a href="{% url 'artist-my-finish' %}">我已绘的图标</span></a></li>
                           {% endif %}
                       <li class="{% active apps_submit_url %}"><a href="{% url 'apps-submit' %}">提交应用</a></li>
                           {% if user|is_admin %}
@@ -41,14 +39,28 @@
                       {% endif %}
                       {% block customnav %}{% endblock %}
                   </ul>
+
                   <ul class="nav navbar-nav navbar-right">
+                      <form class="navbar-form navbar-left" role="search" action="/apps/search/" method="post">{% csrf_token %}
+                              <input id="id_query" maxlength="100" name="query" class="form-control" placeholder="搜索应用">
+                      </form>
                       {% if user.is_authenticated %}
-                      <li class="{% active auth_logout_url %}"><a href="#">{{ user.username }}</a></li>
-                      <li class="{% active auth_logout_url %}"><a href="{% url 'auth-logout' %}">退出</a></li>
+                      <li class="dropdown">
+                          <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ user.username }} <span class="label label-warning user-claim-count" style="display: none;">{{ user|get_claim }}</span><b class="caret"></b></a>
+                          <ul class="dropdown-menu">
+                              {% if user|is_ui %}
+                              <li><a href="{% url 'artist-my-claim' %}">我在绘的图标 <span class="user-claim-count label label-warning" style="display: none;">{{ user|get_claim }}</span></a></li>
+                              <li><a href="{% url 'artist-my-finish' %}">我已绘的图标</span></a></li>
+                              {% endif %}
+                              <li class="{% active auth_logout_url %}"><a href="{% url 'auth-logout' %}">退出</a></li>
+                          </ul>
+                      </li>
                       {% else %}
-                      <li class="{% active auth_login_url %}"><a href="{% url 'auth-login' %}?next={{ request.path }}">登录</a></li>
+                      <li class="{% active auth_login_url %}"><a href="{% url 'auth-login' %}">登录</a></li>
                       {% endif %}
                   </ul>
+
+
               </nav>
           </div>
       </header>

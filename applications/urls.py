@@ -12,6 +12,8 @@ urlpatterns = patterns('',
     # 应用操作
     url(r'^apps/submit/$', views.submit, name='apps-submit'),         # 提交应用
     url(r'^apps/create/$', views.list_create, name='apps-create'),    # 审核应用
+    url(r'^apps/search/$', views.search, name='apps-search'),         # 搜索应用
+    url(r'^apps/search/notfound/$', views.search_notfound, name='apps-search-notfound'),         # 搜索应用
 
     # 已确认，待认领
     url(r'^apps/confirm/$', views.list_confirm, name='apps-confirm'),

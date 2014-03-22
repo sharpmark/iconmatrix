@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from applications.models import Application
 from icons.models import Icon
 
-from applications.forms import SubmitForm, CreateFormSet
+from applications.forms import SubmitForm, CreateFormSet, SearchForm
 from django.forms.formsets import formset_factory
 from icons.forms import UploadForm
 from app_parser.parser import get_app_from_url
@@ -214,3 +214,34 @@ def detail_unclaim(request, app_id):
             app.status = Application.CONFIRM
             app.save()
     return HttpResponseRedirect('/apps/%d/' % app.id)
+
+
+def search(request):
+    if request.method == 'POST':
+        print 'in search app'
+        form = SearchForm(request.POST)
+        print form
+        if form.is_valid():
+            print 'is valid', form.cleaned_data['query']
+            try:
+                application = Application.objects.get(name=form.cleaned_data['query'])
+                print 'get application from name.'
+
+                return HttpResponseRedirect('/apps/%d/' % application.id)
+            except Exception, e:
+                print e
+                pass
+
+            try:
+                application = Application.objects.get(package_name=form.cleaned_data['query'])
+                print 'get application from package name.'
+
+                return HttpResponseRedirect('/apps/%d/' % application.id)
+            except:
+                pass
+
+    return HttpResponseRedirect('/apps/search/notfound/')
+
+
+def search_notfound(request):
+    return render(request, 'applications/search-notfound.html')

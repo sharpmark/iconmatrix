@@ -28,6 +28,12 @@ class SubmitForm(Form):
 
         return raw_url
 
+
+class SearchForm(Form):
+
+    query = forms.CharField(max_length=200)
+
+
 CreateFormSetBase = modelformset_factory(Application, extra=0, fields={})
 
 class CreateFormSet(CreateFormSetBase):

@@ -1,0 +1,12 @@
+<p class="text-center detail-icon-rating">
+    {% if my_score == 0 %}
+    <a href="/icons/{{ icon.id }}/rate/1/" class="btn btn-default" role="button"><span class="glyphicon glyphicon-thumbs-up"></span> 赞({{ icon.like_count }})</a>
+    <a href="/icons/{{ icon.id }}/rate/-1/" class="btn btn-default" role="button"><span class="glyphicon glyphicon-thumbs-down"></span> 无爱({{ icon.unlike_count }})</a>
+    {% elif my_score == 1 %}
+    <a href="/icons/{{ icon.id }}/rate/0/" class="btn btn-primary active" role="button"><span class="glyphicon glyphicon-thumbs-up"></span> 赞({{ icon.like_count }})</a>
+    <a href="/icons/{{ icon.id }}/rate/-1/" class="btn btn-default" role="button"><span class="glyphicon glyphicon-thumbs-down"></span> 无爱({{ icon.unlike_count }})</a>
+    {% elif my_score == -1 %}
+    <a href="/icons/{{ icon.id }}/rate/1/" class="btn btn-default" role="button"><span class="glyphicon glyphicon-thumbs-up"></span> 赞({{ icon.like_count }})</a>
+    <a href="/icons/{{ icon.id }}/rate/0/" class="btn btn-primary active" role="button"><span class="glyphicon glyphicon-thumbs-down"></span> 无爱({{ icon.unlike_count }})</a>
+    {% endif %}
+</p>

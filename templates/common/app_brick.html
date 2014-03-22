@@ -15,8 +15,8 @@
             </h2>
         </div>
     </div>
-    {% if request.user.is_authenticated and user|is_ui %}{% if app.status == 'CO' %}
-    <div class="brick-app-extinfo text-center" style="display: none;">
-        <p><a href="/apps/{{ app.id }}/claim/" class="btn btn-primary btn-lg" role="button">认领</a></p>
-    </div>
-    {% endif %}{% endif %}
+    {% if request.user.is_authenticated %}
+    <!--div class="brick-app-extinfo text-center" style="display: none;">
+        {% include 'common/app_like.html' %}
+    </div-->
+    {% endif %}

@@ -12,16 +12,7 @@
                 {% if application.last_icon %}{% with icon=application.last_icon %}
                 <img class="detail-icon-192 center-block" src="/uploads/{{ icon.image_192px }}" />
                 <h4 class="text-center detail-icon-artist">作者：{{ icon.artist.last_name }}{{ icon.artist.first_name }}</h4>
-                <p class="text-center detail-icon-rating">{% if my_score == 0 %}
-                    <a href="/icons/{{ icon.id }}/rate/1/" class="btn btn-default" role="button"><span class="glyphicon glyphicon-thumbs-up"></span> 赞({{ icon.like_count }})</a>
-                    <a href="/icons/{{ icon.id }}/rate/-1/" class="btn btn-default" role="button"><span class="glyphicon glyphicon-thumbs-down"></span> 无爱({{ icon.unlike_count }})</a>
-                    {% elif my_score == 1 %}
-                    <a href="/icons/{{ icon.id }}/rate/0/" class="btn btn-primary active" role="button"><span class="glyphicon glyphicon-thumbs-up"></span> 赞({{ icon.like_count }})</a>
-                    <a href="/icons/{{ icon.id }}/rate/-1/" class="btn btn-default" role="button"><span class="glyphicon glyphicon-thumbs-down"></span> 无爱({{ icon.unlike_count }})</a>
-                    {% elif my_score == -1 %}
-                    <a href="/icons/{{ icon.id }}/rate/1/" class="btn btn-default" role="button"><span class="glyphicon glyphicon-thumbs-up"></span> 赞({{ icon.like_count }})</a>
-                    <a href="/icons/{{ icon.id }}/rate/0/" class="btn btn-primary active" role="button"><span class="glyphicon glyphicon-thumbs-down"></span> 无爱({{ icon.unlike_count }})</a>
-                    {% endif %}</p>
+                {% include 'common/app_like.html' %}
                 {% endwith %}
                 {% elif application.status == 'CR' %}
                 <img class="detail-icon-192 center-block" src="{% get_static_prefix %}images/icon-exclamation-192px.png" />
