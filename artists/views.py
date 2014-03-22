@@ -20,17 +20,22 @@ def list(request):
     })
 
 
-def claim(request, artist_id):
-    return __artist_application_list(request, artist_id, [Application.CLAIM])
+def claim(request, artist_id=0):
+    return _artist_application_list(request, artist_id, [Application.CLAIM])
 
-def upload(request, artist_id):
-    return __artist_application_list(request, artist_id, [Application.UPLOAD, Application.FINISH])
+def upload(request, artist_id=0):
+    return _artist_application_list(request, artist_id, [Application.UPLOAD, Application.FINISH])
 
-def finish(request, artist_id):
-    return __artist_application_list(request, artist_id, [Application.UPLOAD, Application.FINISH])
+def finish(request, artist_id=0):
+    return _artist_application_list(request, artist_id, [Application.UPLOAD, Application.FINISH])
 
-def __artist_application_list(request, artist_id, status):
-    #TODO：验证是否为当前用户
+def _artist_application_list(request, artist_id, status):
+    if artist_id == 0:
+        if request.user.is_authenticated:
+            artist_id = request.user.id
+        else:
+            return HttpResponseRedirect('/')
+
     artist = get_object_or_404(Artist, pk=artist_id)
     app_list = artist.draws.filter(status__in=status).order_by('-last_icon__timestamp_upload')
     return render(request, 'artists/applications.html', {

@@ -9,18 +9,18 @@
         <h2 class="text-center brick-app-info">没有图标 o(╯□╰)o</h2>
         {% endfor %}
     </div>
-    <div id="pagination" class="container">
-      <ul class="pagination pagination-lg">
-        <li><a href="/apps/random/">换一组</a></li>
-      </ul>
-      </div>
-  <!--div id="pagination" class="container">
+  <div id="pagination" class="container">
     <ul class="pagination pagination-lg">
-      <li>{% if prepage == 0 %}<span class="disabled">上一页</span>{% else %}<a href="/apps/page/{{ prepage }}/">上一页</a>{% endif %}</li>
-      {% for p in pages %}
-      <li>{% if current_page == p %}<span class="disabled">{{ p }}</span>{% else %}<a href="/apps/page/{{ p }}/">{{ p }}</a>{% endif %}</li>
-      {% endfor %}
-      <li>{% if nextpage == 0 %}<span class="disabled">下一页</span>{% else %}<a href="/apps/page/{{ nextpage }}/">下一页</a>{% endif %}</li>
+      <li><a href="/apps/random/">随机换一组</a></li>
     </ul>
-    </div-->
+    <ul class="pagination pagination-lg">
+        <li>{% if firstpage == current_page %}<span class="disabled">首页</span>{% else %}<a href="/apps/page/{{ firstpage }}/">首页</a>{% endif %}</li>
+        <li>{% if prepage == 0 %}<span class="disabled">上一页</span>{% else %}<a href="/apps/page/{{ prepage }}/">上一页</a>{% endif %}</li>
+        {% for p in pages %}
+        <li{% if current_page == p %} class="active"><span class="disabled">{{ p }}</span>{% else %}><a href="/apps/page/{{ p }}/">{{ p }}</a>{% endif %}</li>
+        {% endfor %}
+        <li>{% if nextpage == 0 %}<span class="disabled">下一页</span>{% else %}<a href="/apps/page/{{ nextpage }}/">下一页</a>{% endif %}</li>
+        <li>{% if lastpage == current_page %}<span class="disabled">尾页</span>{% else %}<a href="/apps/page/{{ lastpage }}/">尾页</a>{% endif %}</li>
+    </ul>
+    </div>
 {% endblock %}

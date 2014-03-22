@@ -66,13 +66,22 @@ def list(request):
                 pass
 
     else:
-        app_list = Application.objects.all()
+        app_list = Application.objects.filter(status__in=[Application.UPLOAD, Application.FINISH])
 
-    return render(request, 'applications/list-launcher.html', {'app_list': app_list,})
+    page_count = Application.objects.filter(status__in=[Application.UPLOAD, Application.FINISH]).count()
 
-def list_paged(request, page_id=1, statuses=[Application.UPLOAD, Application.FINISH]):
+    return render(request, 'applications/list-launcher.html', {
+        'app_list': app_list, 'current_page': 0,
+        'pages': _get_page_list(page_count, 9, 0),
+        'prepage': 0, 'nextpage': 1, 'firstpage': 1, 'lastpage': page_count,
+        'app_list': app_list,
+    })
 
+def list_paged(request, page_id=1):
+
+    page_id = int(page_id)
     apps_pre_page = 9                   # 每页显示多少个
+    statuses=[Application.UPLOAD, Application.FINISH]
 
     apps_count = Application.objects.filter(status__in=statuses).count()
     page_count = _get_page_count(apps_count, apps_pre_page)
@@ -85,6 +94,7 @@ def list_paged(request, page_id=1, statuses=[Application.UPLOAD, Application.FIN
     return render(request, 'applications/list-launcher.html', {
         'current_page': page_id, 'pages': _get_page_list(apps_count, apps_pre_page, page_id),
         'prepage': page_id - 1, 'nextpage': 0 if page_id == page_count else page_id + 1,
+        'firstpage': 1, 'lastpage': page_count,
         'app_list': app_list,
     })
 
@@ -157,24 +167,19 @@ def _get_page_list(total, pre=9, current=1):
 
 @login_required
 def submit(request):
-    SubmitFormSet = formset_factory(SubmitForm, extra=2)
+    SubmitFormSet = formset_factory(SubmitForm, extra=1)
     if request.method == 'POST':
         formset = SubmitFormSet(request.POST)
         if formset.is_valid():
             for form in formset.forms:
 
-                if form.cleaned_data.get('source_url') is None: pass
+                if form.cleaned_data.get('source_url'):
+                    application = get_app_from_url(form.cleaned_data['source_url'])
 
-                application = get_app_from_url(form.cleaned_data.get('source_url'))
+                    if application.uploader == None:
+                        application.uploader = request.user
 
-                if application is None: pass
-                if application.uploader == None:
-                    application.uploader = request.user
-
-                application.save()
-
-            return HttpResponseRedirect('/apps/submit/')
-
+                    application.save()
     else:
         formset = SubmitFormSet()
 

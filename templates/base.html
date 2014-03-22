@@ -18,9 +18,9 @@
     {% url 'apps-submit' as apps_submit_url %}
     {% url 'auth-logout' as auth_logout_url %}
     {% url 'auth-login' as auth_login_url %}
-    {% url 'aritst-claim' as artist_claim %}
-    {% url 'aritst-upload' as artist_upload %}
-    {% url 'aritst-finish' as artist_finish %}
+    {% url 'artist-my-claim' as artist_my_claim %}
+    {% url 'artist-my-upload' as artist_my_upload %}
+    {% url 'artist-my-finish' as artist_my_finish %}
 
   <body>
       <header class="navbar navbar-inverse navbar-fixed-top" role="banner">
@@ -31,8 +31,8 @@
                       {% if user.is_authenticated %}
                           {% if user|is_ui %}
                       <li class="{% active apps_confirm_url %}"><a href="{% url 'apps-confirm' %}">认领图标</a></li>
-                      <li class=""><a href="{% url 'artist-claim' user.id %}">我在绘的图标 <span class="user-claim-count label label-warning" style="display: none;">{{ user|get_claim }}</span></a></li>
-                      <li class=""><a href="{% url 'artist-finish' user.id %}">我已绘的图标</span></a></li>
+                      <li class="{% active artist_my_claim %}"><a href="{% url 'artist-my-claim' %}">我在绘的图标 <span class="user-claim-count label label-warning" style="display: none;">{{ user|get_claim }}</span></a></li>
+                      <li class="{% active artist_my_finish %}"><a href="{% url 'artist-my-finish' %}">我已绘的图标</span></a></li>
                           {% endif %}
                       <li class="{% active apps_submit_url %}"><a href="{% url 'apps-submit' %}">提交应用</a></li>
                           {% if user|is_admin %}
