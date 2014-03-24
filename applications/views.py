@@ -12,6 +12,7 @@ from applications.forms import SubmitForm, CreateFormSet, SearchForm
 from django.forms.formsets import formset_factory
 from icons.forms import UploadForm
 from app_parser.parser import get_app_from_url
+from django.db.models import Q
 
 import random
 
@@ -218,23 +219,17 @@ def detail_unclaim(request, app_id):
 
 
 def search(request):
+    app_list = []
+
     if request.method == 'POST':
         form = SearchForm(request.POST)
         if form.is_valid():
-            try:
-                application = Application.objects.get(name=form.cleaned_data['query'])
-                return HttpResponseRedirect('/apps/%d/' % application.id)
-            except:
-                pass
+            print form.cleaned_data['query']
+            app_list = Application.objects.filter(Q(name__icontains=form.cleaned_data['query']) | Q( package_name__icontains=form.cleaned_data['query']))
 
-            try:
-                application = Application.objects.get(package_name=form.cleaned_data['query'])
-                return HttpResponseRedirect('/apps/%d/' % application.id)
-            except:
-                pass
+            if len(app_list) == 1:
+                return HttpResponseRedirect('/apps/%d/' % app_list[0].id)
 
-    return HttpResponseRedirect('/apps/search/notfound/')
-
-
-def search_notfound(request):
-    return render(request, 'applications/search-notfound.html')
+    return render(request, 'applications/list-search.html', {
+        'app_list': app_list,
+    })
