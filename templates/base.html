@@ -30,7 +30,7 @@
                       <li class="{% active index_url %}"><a href="{% url 'index' %}">Icon Matrix</a></li>
                       {% if user.is_authenticated %}
                           {% if user|is_ui %}
-                      <li class="{% active apps_confirm_url %}"><a href="{% url 'apps-confirm' %}">认领图标</a></li>
+                      <!--li class="{% active apps_confirm_url %}"><a href="{% url 'apps-confirm' %}">认领图标</a></li-->
                           {% endif %}
                       <li class="{% active apps_submit_url %}"><a href="{% url 'apps-submit' %}">提交应用</a></li>
                           {% if user|is_admin %}

@@ -70,7 +70,7 @@
         </div>
     </div>
     <div class="content container uploader">
-        {% if application.status == 'UP' or application.status == 'CL' %}
+        {% if application.status == 'UP' or application.status == 'CL' or application.status == 'FI' %}
         {% if request.user.is_authenticated and request.user == application.artist %}
         <form enctype="multipart/form-data" method="post" class="form-horizontal" role="form">{% csrf_token %}
             <legend><span class="col-sm-offset-1">上传</span> (支持多次上传)</legend>
