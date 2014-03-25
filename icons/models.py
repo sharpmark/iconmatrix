@@ -8,6 +8,8 @@ from django.contrib.auth.models import User
 from django.conf import settings
 from applications.models import Application
 
+from django.utils.html import format_html
+
 
 def image_192px_name(instance, filename):
     return upload_image_name(instance, filename, '192px')
@@ -43,6 +45,8 @@ class Icon(models.Model):
 
     timestamp_upload = models.DateTimeField(auto_now_add=True)
 
+    def __unicode__(self):
+        return self.application.name
 
     def my_score(self, user):
         try:
@@ -64,6 +68,10 @@ class Icon(models.Model):
         _public_image_field(self.image_192px.name, icon_dir='192')
         _public_image_field(self.image_128px.name, icon_dir='128')
 
+    def image_icon(self):
+        return format_html('<img style="" src="/uploads/{0}" />', self.image_128px)
+
+    image_icon.allow_tags = True
 
 def _public_image_field(field, icon_dir):
     filename, ext = os.path.splitext(field)

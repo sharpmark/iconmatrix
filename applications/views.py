@@ -224,7 +224,6 @@ def search(request):
     if request.method == 'POST':
         form = SearchForm(request.POST)
         if form.is_valid():
-            print form.cleaned_data['query']
             app_list = Application.objects.filter(Q(name__icontains=form.cleaned_data['query']) | Q( package_name__icontains=form.cleaned_data['query']))
 
             if len(app_list) == 1:

@@ -42,3 +42,6 @@ class Application(models.Model):
     #timestamp_upload = models.DateTimeField(null=True)
     timestamp_finish = models.DateTimeField(null=True)
     timestamp_abandon = models.DateTimeField(null=True)
+
+    def __unicode__(self):
+        return self.name
