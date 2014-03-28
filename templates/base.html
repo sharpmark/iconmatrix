@@ -69,13 +69,16 @@
     {% block container %}
         <h1>Icon Matrix</h1>
     {% endblock %}
-    <!--hr>
+    </div>
+    <!--hr-->
     <footer>
+    {% block footer %}
+    {% endblock %}
     </footer>
-    </div--> <!-- /container -->
     <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.0.3.min.js"></script>
     <script src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
     <script src="{{ STATIC_URL }}js/main.js"></script>
+    <script src="{{ STATIC_URL }}js/jquery.popupoverlay.js"></script>
 
   </body>
 </html>

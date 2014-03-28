@@ -1,4 +1,15 @@
-$(document).ready(function(){
+$(document).ready(function() {
+
+    $('#icon-detail').popup({
+      transition: 'all 0.3s'
+    });
+
+    $('.brick-small').click(function() {
+        $('#icon-detail').html($.ajax({url:'/icons/'+$(this).attr('sid')+'/', async:false}).responseText);
+
+        $('#icon-detail').popup('show');
+    });
+
     $(".brick").on("mouseenter",function() {
 		$(this).find(".brick-app-extinfo").fadeIn(300);
 	});

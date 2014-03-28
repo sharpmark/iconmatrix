@@ -1,0 +1,44 @@
+{% load static %}
+{% load user_filter %}
+
+<div class="row detail-app-info detail-block">
+    <div class="col-md-6">
+        {% if application.last_icon %}{% with icon=application.last_icon %}
+        <img class="detail-icon-192 center-block" src="/uploads/{{ icon.image_192px }}" />
+        {# 处理导入数据没有设计师的问题 #}
+        {% if icon.artist.id == 1 and request.user|is_ui %}
+        <h4 class="text-center detail-icon-artist"><a href="/icons/{{ icon.id }}/isauthor/" class="btn btn-default" role="button">我是作者</a></h4><span>如果你是图标作者，请点此按钮，操作不可逆，请确认后再点击！</span>
+        {% else %}
+        <h4 class="text-center detail-icon-artist">作者：{{ icon.artist.last_name }}{{ icon.artist.first_name }}</h4>
+        {% endif %}
+        {% include 'common/app_like.html' %}
+        {% endwith %}
+        {% elif application.status == 'CR' %}
+        <img class="detail-icon-192 center-block" src="{% get_static_prefix %}images/icon-exclamation-192px.png" />
+        <h4 class="text-center detail-icon-artist">等待管理员审核该应用</h4>
+        {% elif application.status == 'CL' %}
+        <img class="detail-icon-192 center-block" src="{% get_static_prefix %}images/icon-question-192px.png" />
+        <h4 class="text-center detail-icon-artist"><a href="/artists/{{ application.artist.id }}/apps/finish/">{{ application.artist.last_name }}{{ application.artist.first_name }}</a>正在玩命绘制中！</h4>
+        {% if request.user.is_authenticated and request.user == application.artist %}
+        <h4 class="text-center detail-icon-artist"><a href="/apps/{{ application.id }}/unclaim/" class="btn btn-default" role="button">取消认领</a></h4>
+        {% endif %}
+        {% elif application.status == 'CO' %}
+        <img class="detail-icon-192 center-block" src="{% get_static_prefix %}images/icon-exclamation-192px.png" />
+        <h4 class="text-center detail-icon-artist">
+            {% if request.user.is_authenticated %}
+            {% if user|is_ui %}
+            <a href="/apps/{{ application.id }}/claim/" class="btn btn-primary" role="button">认领</a>
+            {% else %}
+            等待设计师认领
+            {% endif %}
+            {% else %}
+            设计师<a href="{% url 'auth-login' %}?next={{ request.path }}">登录</a>后可以认领图标
+            {% endif %}
+        </h4>
+        {% endif %}
+    </div>
+    <div class="col-md-6">
+        <img class="detail-icon-192 center-block" src="{{ application.original_icon_image }}" />
+        <h4 class="text-center detail-icon-artist">原始图标</h4>
+    </div>
+</div>

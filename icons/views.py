@@ -4,6 +4,14 @@ from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from icons.models import Icon, Like
+from applications.models import Application
+from django.shortcuts import render
+
+def detail(request, app_id):
+    app = get_object_or_404(Application, pk=app_id)
+    return render(request, 'applications/detail-block.html', {
+        'application': app,
+    })
 
 @login_required
 def rate(request, icon_id, score):
