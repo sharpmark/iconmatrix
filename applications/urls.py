@@ -5,9 +5,9 @@ from applications import views
 
 urlpatterns = patterns('',
     # 已绘应用列表
-    url(r'^apps/$', views.list, name='app-list'),
-    url(r'^apps/random/$', views.list, name='app-list'),
-    url(r'^apps/page/(?P<page_id>\d+)/$', views.list_paged, name='app-list-paged'),
+    url(r'^apps/$', views.list_launcher, name='app-list'),
+    url(r'^apps/random/$', views.list_launcher, name='app-list'),
+    url(r'^apps/page/(?P<page_id>\d+)/$', views.list_upload, name='app-list-upload'),
 
     # 应用操作
     url(r'^apps/submit/$', views.submit, name='apps-submit'),         # 提交应用

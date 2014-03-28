@@ -50,7 +50,7 @@ def detail(request, app_id):
     })
 
 
-def list(request):
+def list_launcher(request):
 
     max_id = Application.objects.latest('id').id
 
@@ -79,10 +79,10 @@ def list(request):
         'app_list': app_list,
     })
 
-def list_paged(request, page_id=1):
+def list_upload(request, page_id=1):
 
     page_id = int(page_id)
-    apps_pre_page = 9                   # 每页显示多少个
+    apps_pre_page = 30                   # 每页显示多少个
     statuses=[Application.UPLOAD, Application.FINISH]
 
     apps_count = Application.objects.filter(status__in=statuses).count()
@@ -91,9 +91,9 @@ def list_paged(request, page_id=1):
     if page_count < page_id or page_id < 1:
         page_id = 1
 
-    app_list = Application.objects.filter(status__in=statuses).order_by('-last_icon__timestamp_upload')[(page_id - 1) * 9: page_id * 9]
+    app_list = Application.objects.filter(status__in=statuses).order_by('-last_icon__timestamp_upload')[(page_id - 1) * apps_pre_page: page_id * apps_pre_page]
 
-    return render(request, 'applications/list-launcher.html', {
+    return render(request, 'applications/list-upload.html', {
         'current_page': page_id, 'pages': _get_page_list(apps_count, apps_pre_page, page_id),
         'prepage': page_id - 1, 'nextpage': 0 if page_id == page_count else page_id + 1,
         'firstpage': 1, 'lastpage': page_count,
@@ -182,6 +182,7 @@ def submit(request):
                         application.uploader = request.user
 
                     application.save()
+            return HttpResponseRedirect('/apps/submit/')
     else:
         formset = SubmitFormSet()
 

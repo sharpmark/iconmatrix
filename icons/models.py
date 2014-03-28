@@ -73,6 +73,12 @@ class Icon(models.Model):
 
     image_icon.allow_tags = True
 
+
+    def image_raw(self):
+        return format_html('<img style="width: 128px; height: 128px;" src="{0}" />', self.application.original_icon_image)
+
+    image_icon.allow_tags = True
+
 def _public_image_field(field, icon_dir):
     filename, ext = os.path.splitext(field)
     field_name = os.path.join(settings.MEDIA_ROOT, field)

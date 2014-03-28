@@ -9,11 +9,12 @@
             <img class="" src="{{ app.original_icon_image }}" alt="{{ app.name }}">
             {% endif %}
         </a>
-        <div class="brick-app-info">
-            <h2 class="text-center">
-                <a href="{% url 'app-detail' app.id %}">{{ app.name|truncatechars:8 }}</a>
-            </h2>
-        </div>
+
+    </div>
+    <div class="brick-app-info">
+        <h2 class="text-center">
+            <a href="{% url 'app-detail' app.id %}"><div class="text-center text-overflow">{{ app.name }}</div></a>
+        </h2>
     </div>
     {% if request.user.is_authenticated %}
     <!--div class="brick-app-extinfo text-center" style="display: none;">

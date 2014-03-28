@@ -1,6 +1,7 @@
 body {
     padding-top: 60px;
     -webkit-font-smoothing:antialiased;
+    background: #303030;
 }
 
 body, h1, h2, h3, h4, h5, h6 {
@@ -8,15 +9,26 @@ body, h1, h2, h3, h4, h5, h6 {
 }
 
 .launcher {
-    background: #111;
+    background: #222327;
     width: 1080px;
     padding: 0px;
     height: 100%;
 }
 
+.content {
+    background: #eee;
+}
+
 .brick {
     width: 358px;
     height: 458px;
+    float: left;
+    margin: 1px;
+}
+
+.brick-small {
+    width: 178px;
+    height: 228px;
     float: left;
     margin: 1px;
 }
@@ -55,6 +67,20 @@ body, h1, h2, h3, h4, h5, h6 {
     max-height: 192px;
 }
 
+.brick-icon-96 {
+    margin-top: 51px;
+    max-width: 96px;
+    max-height: 96px;
+}
+.brick-icon-96 img {
+    max-width: 96px;
+    max-height: 96px;
+    -webkit-filter: drop-shadow(0 5px 5px rgba(0,0,0,.8));
+    -moz-filter: drop-shadow(0 5px 5px rgba(0,0,0,.8));
+    -ms-filter: drop-shadow(0 5px 5px rgba(0,0,0,.8));
+    -o-filter: drop-shadow(0 5px 5px rgba(0,0,0,.8));
+    filter: drop-shadow(0 5px 5px rgba(0,0,0,.8));
+}
 .brick-icon-192 img {
     max-width: 192px;
     max-height: 192px;
@@ -70,6 +96,34 @@ body, h1, h2, h3, h4, h5, h6 {
     text-shadow: rgba(0, 0, 0, .7) 0 5px 6px;
 }
 
+.brick-app-info-small {
+    margin-top: 20px;
+    text-shadow: rgba(0, 0, 0, .7) 0 2px 3px;
+}
+
+.text-overflow {
+    width: 260px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+    overflow: hidden;
+    margin: auto;
+}
+
+.text-overflow-small {
+    width: 130px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+    overflow: hidden;
+    margin: auto;
+}
+
+.brick-app-info-small, .brick-app-info-small a, a.hover {
+    font-size: 16px;
+    color: #a0a0a0;
+    text-decoration: none;
+}
 .brick-app-info, .brick-app-info a, a.hover {
     font-size: 40px;
     color: #a0a0a0;

@@ -8,7 +8,7 @@ from applications import views as app_views
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    url(r'^$', app_views.list, name='index'),
+    url(r'^$', app_views.list_launcher, name='index'),
     url(r'', include('icons.urls')),
     url(r'', include('accounts.urls')),
     url(r'', include('applications.urls')),
