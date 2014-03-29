@@ -48,7 +48,7 @@ class Icon(models.Model):
     def __unicode__(self):
         return self.application.name
 
-    def my_score(self, user):
+    def score(self, user):
         try:
             like = Like.objects.get(icon=self, user=user)
             return int(like.score)

@@ -57,3 +57,19 @@ $('#add_more').click(function() {
 
     $(selector).after(newElement);
 });
+
+function rate(icon_id, score, csrf) {
+
+    post_data = {};
+    post_data['icon_id'] = icon_id;
+    post_data['score'] = score;
+    post_data['csrfmiddlewaretoken'] = csrf;
+
+    $.post('/icons/' + icon_id + '/rate/' + score + '/', post_data,
+        function(data){
+            $('#icon-score').html(data);
+        },
+        'html');
+
+    event.stopPropagation();
+};

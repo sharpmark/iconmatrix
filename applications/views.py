@@ -38,15 +38,9 @@ def detail(request, app_id):
     else:
         icon_upload_form = UploadForm()
 
-    my_score = 0
-
-    if application.last_icon:
-        my_score = application.last_icon.my_score(request.user)
-
     return render(request, 'applications/detail.html', {
         'application': application,
         'icon_upload_form': icon_upload_form,
-        'my_score': my_score,
     })
 
 

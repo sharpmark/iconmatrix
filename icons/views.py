@@ -36,7 +36,7 @@ def rate(request, icon_id, score):
         like.score = score
         like.save()
 
-    return HttpResponseRedirect('/apps/%d/' % icon.application.id)
+    return render(request, 'common/app_like.html', {'icon': icon,})
 
 
 @login_required
