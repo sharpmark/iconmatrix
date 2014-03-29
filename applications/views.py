@@ -46,12 +46,13 @@ def detail(request, app_id):
 
 def list_launcher(request):
 
+    apps_pre_page = 30                   # 每页显示多少个
     max_id = Application.objects.latest('id').id
 
-    if Application.objects.count() > 9:
+    if Application.objects.count() > apps_pre_page:
         app_list = []
 
-        while len(app_list) < 9:
+        while len(app_list) < apps_pre_page:
 
             try:
                 appid = random.randint(1, max_id)
@@ -66,9 +67,9 @@ def list_launcher(request):
 
     page_count = Application.objects.filter(status__in=[Application.UPLOAD, Application.FINISH]).count()
 
-    return render(request, 'applications/list-launcher.html', {
+    return render(request, 'applications/list-upload.html', {
         'app_list': app_list, 'current_page': 0,
-        'pages': _get_page_list(page_count, 9, 0),
+        'pages': _get_page_list(page_count, apps_pre_page, 0),
         'prepage': 0, 'nextpage': 1, 'firstpage': 1, 'lastpage': page_count,
         'app_list': app_list,
     })
