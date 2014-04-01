@@ -5,8 +5,7 @@ $(document).ready(function() {
     });
 
     $('.brick-small').click(function() {
-        $('#icon-detail').html($.ajax({url:'/icons/'+$(this).attr('sid')+'/', async:false}).responseText);
-
+        $('#icon-detail').html($.ajax({url:$(this).attr('iconurl'), async:false}).responseText);
         $('#icon-detail').popup('show');
     });
 

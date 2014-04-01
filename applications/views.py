@@ -31,6 +31,13 @@ def detail(request, app_id):
         return _unclaim_application(request, app)
 
 
+def detail_thumb(request, app_id):
+    app = get_object_or_404(Application, pk=app_id)
+
+    return render(request, 'applications/detail-thumb.html', {
+        'application': app,
+    })
+
 def list_launcher(request, page_id=0):
 
     page_id = int(page_id)
@@ -38,7 +45,7 @@ def list_launcher(request, page_id=0):
     statuses = [Application.UPLOAD, Application.FINISH]
 
     apps_count = Application.objects.filter(status__in=statuses).count()
-    page_count = _get_page_count(apps_count, apps_pre_page)
+    page_count = _get_page_count(apps_count)
 
     if page_id == 0:
         app_list = _list_random(statuses)
@@ -46,10 +53,10 @@ def list_launcher(request, page_id=0):
         if page_count < page_id or page_id < 1: page_id = 1
         app_list = _list(page_id, statuses)
 
-    return render(request, 'applications/list-upload.html', {
+    return render(request, 'applications/launcher.html', {
         'app_list': app_list,
         'current_page': page_id,
-        'pages': _get_page_list(apps_count, apps_pre_page, page_id),
+        'pages': _get_page_list(apps_count, current=page_id),
         'prepage': page_id - 1,
         'nextpage': 0 if page_id == page_count else page_id + 1,
         'lastpage': page_count,
@@ -129,13 +136,13 @@ def list_confirm(request, page_id=1):
 
 
 
-def _get_page_count(total, pre=9):
+def _get_page_count(total, pre=DEFAULT_APPS):
     if total % pre == 0:
         return total / pre
     else:
         return total / pre + 1
 
-def _get_page_list(total, pre=9, current=1):
+def _get_page_list(total, pre=DEFAULT_APPS, current=1):
 
     pages = _get_page_count(total, pre)
 

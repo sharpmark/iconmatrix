@@ -48,13 +48,18 @@ class Icon(models.Model):
     def __unicode__(self):
         return self.application.name
 
+    def get_absolute_url(self):
+        #TODO use reverse
+        #from django.core.urlresolvers import reverse
+        #return reverse('icons.views.detail', args=[self.application.id, self.id])
+        return '/apps/%d/icons/%d/' % (self.application.id, self.id)
+
     def score(self, user):
         try:
             like = Like.objects.get(icon=self, user=user)
             return int(like.score)
         except:
             return 0
-
 
     def like_count(self):
         return Like.objects.filter(icon=self, score=1).count()
