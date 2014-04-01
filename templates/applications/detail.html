@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load user_filter %}
+{% csrf_token %}
 
 {% block title %}{{ application.name }}{% endblock %}
 {% block customnav %}<li class="active"><a href="#">{{ application.name }}</a></li>{% endblock %}
@@ -26,14 +27,14 @@
                 <img class="detail-icon-192 center-block" src="{% get_static_prefix %}images/icon-question-192px.png" />
                 <h4 class="text-center detail-icon-artist"><a href="/artists/{{ application.artist.id }}/apps/finish/">{{ application.artist.last_name }}{{ application.artist.first_name }}</a>正在玩命绘制中！</h4>
                     {% if request.user.is_authenticated and request.user == application.artist %}
-                    <h4 class="text-center detail-icon-artist"><a href="/apps/{{ application.id }}/unclaim/" class="btn btn-default" role="button">取消认领</a></h4>
+                    <h4 class="text-center detail-icon-artist"><a href="#" onclick="app_claim({{ application.id }}, 'unclaim', '{{ csrf_token }}')" class="btn btn-default" role="button">取消认领</a></h4>
                     {% endif %}
                 {% elif application.status == 'CO' %}
                 <img class="detail-icon-192 center-block" src="{% get_static_prefix %}images/icon-exclamation-192px.png" />
                     <h4 class="text-center detail-icon-artist">
                         {% if request.user.is_authenticated %}
                         {% if user|is_ui %}
-                        <a href="/apps/{{ application.id }}/claim/" class="btn btn-primary" role="button">认领</a>
+                        <a href="#" onclick="app_claim({{ application.id }}, 'claim', '{{ csrf_token }}')" class="btn btn-primary" role="button">认领</a>
                         {% else %}
                         等待设计师认领
                         {% endif %}
@@ -77,6 +78,7 @@
             {% for field in icon_upload_form %}
                 {% include 'common/form_field.html' %}
             {% endfor %}
+            <input type='hidden' name='action_type' value='upload'>
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
                   <button type="submit" name="upload" class="btn btn-success">上传</button>

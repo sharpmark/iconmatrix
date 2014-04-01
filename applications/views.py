@@ -1,40 +1,58 @@
 # -*- coding: utf-8 -*-
-from django.utils import timezone
-from django.http import HttpResponse, HttpResponseRedirect, Http404
-from django.shortcuts import render, render_to_response, get_object_or_404, redirect
-
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
+from django.forms.formsets import formset_factory
 
 from applications.models import Application
 from icons.models import Icon
 
 from applications.forms import SubmitForm, CreateFormSet, SearchForm
-from django.forms.formsets import formset_factory
 from icons.forms import UploadForm
-from app_parser.parser import get_app_from_url
-from django.db.models import Q
 
-import random
+from app_parser.parser import get_app_from_url
 
 def detail(request, app_id):
     application = get_object_or_404(Application, pk=app_id)
 
     if request.method == 'POST':
-        #todo: 检查是不是当前设计师
-        icon_upload_form = UploadForm(request.POST, request.FILES, instance=Icon())
-        if icon_upload_form.is_valid():
-            icon = icon_upload_form.save(commit=False)
-            icon.application = application
-            icon.artist = request.user
-            icon.save()
+        action = request.POST['action']
+        if not request.user.is_authenticated(): redirect('/accounts/login/?next=/apps/%d/' % app_id)
 
-            icon.public_image()
+        if action == 'upload':
+            # 应该是post /icons/
+            if not request.user == application.artist: return redirect(application)
 
-            application.status = Application.UPLOAD
-            application.last_icon = icon
-            application.save()
+            icon_upload_form = UploadForm(request.POST, request.FILES, instance=Icon())
+            if icon_upload_form.is_valid():
+                icon = icon_upload_form.save(commit=False)
+                icon.application = application
+                icon.artist = request.user
+                icon.save()
 
-            return HttpResponseRedirect('/apps/%d/' % application.id)
+                icon.public_image()
+
+                application.status = Application.UPLOAD
+                application.last_icon = icon
+                application.save()
+
+        elif action == 'claim':
+            if application.status in [Application.CONFIRM, Application.CREATE]:
+                application.artist = request.user
+                application.status = Application.CLAIM
+                application.save()
+
+        elif action == 'unclaim':
+            if application.status == Application.CLAIM:
+                application.artist = None
+                application.status = Application.CONFIRM
+                application.save()
+
+        #if request.GET['next']:
+        #    return redirect(request.GET['next'])
+        #else:
+        return redirect(application)
+
+
     else:
         icon_upload_form = UploadForm()
 
@@ -45,11 +63,11 @@ def detail(request, app_id):
 
 
 def list_launcher(request):
-
-    apps_pre_page = 30                   # 每页显示多少个
+    import random
+    apps_pre_page = 18                   # 每页显示多少个
     max_id = Application.objects.latest('id').id
 
-    if Application.objects.count() > apps_pre_page:
+    if Application.objects.filter(status__in=[Application.UPLOAD, Application.FINISH]).count() > apps_pre_page:
         app_list = []
 
         while len(app_list) < apps_pre_page:
@@ -77,7 +95,7 @@ def list_launcher(request):
 def list_upload(request, page_id=1):
 
     page_id = int(page_id)
-    apps_pre_page = 30                   # 每页显示多少个
+    apps_pre_page = 18                   # 每页显示多少个
     statuses=[Application.UPLOAD, Application.FINISH]
 
     apps_count = Application.objects.filter(status__in=statuses).count()
@@ -100,7 +118,7 @@ def list_upload(request, page_id=1):
 def list_create(request):
     from accounts.templatetags.user_filter import is_admin
 
-    if not is_admin(request.user): return HttpResponseRedirect('/')
+    if not is_admin(request.user): return redirect('/')
 
     if request.method == 'POST':
         action = request.POST.get('action')
@@ -116,7 +134,7 @@ def list_create(request):
                         app.status = Application.ABANDON
                     app.save()
 
-            return HttpResponseRedirect(request.path)
+            return redirect(request.path)
 
     else:
         formset = CreateFormSet(queryset=Application.objects.filter(status=Application.CREATE))
@@ -136,7 +154,7 @@ def list_confirm(request, page_id=1):
             'app_list': Application.objects.filter(status=Application.CONFIRM).order_by('-timestamp_create'),
         })
     else:
-        return HttpResponseRedirect('/')
+        return redirect('/')
 
 
 def _get_page_count(total, pre=9):
@@ -177,7 +195,7 @@ def submit(request):
                         application.uploader = request.user
 
                     application.save()
-            return HttpResponseRedirect('/apps/submit/')
+            return redirect('/apps/submit/')
     else:
         formset = SubmitFormSet()
 
@@ -186,35 +204,9 @@ def submit(request):
     })
 
 
-@login_required
-def detail_claim(request, app_id):
-
-    app = Application.objects.get(pk=app_id)
-    if app:
-        if app.status == Application.CONFIRM or app.status == Application.CREATE:
-            app.artist = request.user
-            app.status = Application.CLAIM
-            app.save()
-
-    if request.GET['next']:
-        return HttpResponseRedirect(request.GET['next'])
-    else:
-        return HttpResponseRedirect('/apps/%d/' % app.id)
-
-
-@login_required
-def detail_unclaim(request, app_id):
-
-    app = Application.objects.get(pk=app_id)
-    if app:
-        if app.status == Application.CLAIM:
-            app.artist = None
-            app.status = Application.CONFIRM
-            app.save()
-    return HttpResponseRedirect('/apps/%d/' % app.id)
-
-
 def search(request):
+    from django.db.models import Q
+
     app_list = []
 
     if request.method == 'POST':
@@ -223,7 +215,7 @@ def search(request):
             app_list = Application.objects.filter(Q(name__icontains=form.cleaned_data['query']) | Q( package_name__icontains=form.cleaned_data['query']))
 
             if len(app_list) == 1:
-                return HttpResponseRedirect('/apps/%d/' % app_list[0].id)
+                return redirect('/apps/%d/' % app_list[0].id)
 
     return render(request, 'applications/list-search.html', {
         'app_list': app_list,

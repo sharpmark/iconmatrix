@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 {% block container %}
+{% csrf_token %}
+
     <div class="container content">
     <table class="table table-hover app-list" id="app-list">
         <thead>
@@ -15,7 +17,7 @@
         {% for app in app_list %}
             <tr>
                 <td>
-                    <a href="{% url 'app-claim' app.id %}?next={{ request.path }}" class="btn btn-primary" role="button">认领</a>
+                    <a href="#" onclick="app_claim({{ app.id }}, 'claim', '{{ csrf_token }}')" class="btn btn-primary" role="button">认领</a>
                 </td>
                 <td><a href="{% url 'app-detail' app.id %}"><img src="{{ app.original_icon_image }}" class="detail-icon-128"/></a></td>
                 <td><p class=" app-list-info">{{ app.name }}</p></td>

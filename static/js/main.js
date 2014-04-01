@@ -73,3 +73,15 @@ function rate(icon_id, score, csrf) {
 
     event.stopPropagation();
 };
+
+function app_claim(app_id, action, csrf) {
+    console.log('test');
+    post_data = {};
+    post_data['app_id'] = app_id;
+    post_data['action'] = action;
+    post_data['csrfmiddlewaretoken'] = csrf;
+
+    $.post('/apps/'+app_id+'/', post_data);
+
+    event.stopPropagation();
+}

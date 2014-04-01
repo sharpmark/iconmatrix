@@ -20,10 +20,4 @@ urlpatterns = patterns('',
 
     # 应用详情
     url(r'^apps/(?P<app_id>\d+)/$', views.detail, name='app-detail'),
-    url(r'^apps/(?P<app_id>\d+)/claim/$', views.detail_claim, name='app-claim'),        # 应用认领
-    url(r'^apps/(?P<app_id>\d+)/unclaim/$', views.detail_unclaim, name='app-unclaim'),  # 应用取消认领
-
-    #url(r'^apps/finish/$', views.list_finish, name='list-finish'),
-    #url(r'^apps/finish/page/(?P<page_id>\d+)/$', views.list_finish, name='list-finish'),
-    #url(r'^apps/review/$', views.review, name='app-review'),
 )
