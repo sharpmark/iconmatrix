@@ -208,6 +208,7 @@ def _claim_application(request, app):
         app.artist = request.user
         app.status = Application.CLAIM
         app.save()
+    #TODO: 认领返回的还有问题
     return redirect(app)
 
 

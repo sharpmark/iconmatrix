@@ -19,13 +19,11 @@ def list(request, app_id):
         return _upload_icon(request, app)
 
 
-def detail(request, app_id, icon_id):
-    app = get_object_or_404(Application, pk=app_id)
+def detail(request, icon_id):
     icon = get_object_or_404(Icon, pk=icon_id)
+    app = icon.application
 
     if request.method == 'GET': return redirect(app)
-
-    if not icon.application == app: return redirect(app)
 
     # 以下为处理 POST 请求
     action = request.POST['action']
@@ -36,11 +34,12 @@ def detail(request, app_id, icon_id):
     if action == 'is_author':
         return _is_author(request, icon)
 
-    return redirect(icon.application)
+    return redirect(app)
 
 
 @login_required
 def _upload_icon(request, app):
+    from icons.forms import UploadForm
     icon_upload_form = UploadForm(request.POST, request.FILES, instance=Icon())
 
     if icon_upload_form.is_valid():
@@ -84,7 +83,7 @@ def _rate_icon(request, icon):
         like.score = score
         like.save()
 
-    return render(request, 'common/app_like.html', {'icon': icon,})
+    return render(request, 'icons/like.html', {'icon': icon,})
 
 
 @login_required
@@ -97,4 +96,4 @@ def _is_author(request, icon):
         icon.application.artist = request.user
         icon.application.save()
 
-    return render(request, 'common/icon_action.html', {'icon': icon})
+    return render(request, 'icons/action.html', {'application': icon.application})

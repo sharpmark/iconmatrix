@@ -3,5 +3,5 @@ from icons import views
 
 urlpatterns = patterns('',
     url(r'^apps/(?P<app_id>\d+)/icons/$', views.list, name='icon-list'),
-    url(r'^apps/(?P<app_id>\d+)/icons/(?P<icon_id>\d+)/$', views.detail, name='icon-detail'),
+    url(r'^icons/(?P<icon_id>\d+)/$', views.detail, name='icon-detail'),
 )

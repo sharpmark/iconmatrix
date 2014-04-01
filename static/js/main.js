@@ -57,14 +57,14 @@ $('#add_more').click(function() {
     $(selector).after(newElement);
 });
 
-function rate(icon_id, score, csrf) {
-
+function icon_rate(icon_id, score, csrf) {
     post_data = {};
     post_data['icon_id'] = icon_id;
     post_data['score'] = score;
+    post_data['action'] = 'rate';
     post_data['csrfmiddlewaretoken'] = csrf;
 
-    $.post('/icons/' + icon_id + '/rate/' + score + '/', post_data,
+    $.post('/icons/' + icon_id + '/', post_data,
         function(data){
             $('#icon-score').html(data);
         },
@@ -74,13 +74,27 @@ function rate(icon_id, score, csrf) {
 };
 
 function app_claim(app_id, action, csrf) {
-    console.log('test');
     post_data = {};
     post_data['app_id'] = app_id;
     post_data['action'] = action;
     post_data['csrfmiddlewaretoken'] = csrf;
 
     $.post('/apps/'+app_id+'/', post_data);
+
+    event.stopPropagation();
+}
+
+function icon_is_author(icon_id, csrf) {
+    post_data = {};
+    post_data['icon_id'] = icon_id;
+    post_data['action'] = 'is_author';
+    post_data['csrfmiddlewaretoken'] = csrf;
+
+    $.post('/icons/' + icon_id + '/', post_data,
+        function(data){
+            $('#icon-action').html(data);
+        },
+        'html');
 
     event.stopPropagation();
 }
