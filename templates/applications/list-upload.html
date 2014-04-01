@@ -29,7 +29,7 @@
       <li><a href="/apps/random/">随机换一组</a></li>
     </ul>
     <ul class="pagination">
-        <li>{% if firstpage == current_page %}<span class="disabled">首页</span>{% else %}<a href="/apps/page/{{ firstpage }}/">首页</a>{% endif %}</li>
+        <li>{% if firstpage == current_page %}<span class="disabled">首页</span>{% else %}<a href="/apps/page/1/">首页</a>{% endif %}</li>
         <li>{% if prepage == 0 %}<span class="disabled">上一页</span>{% else %}<a href="/apps/page/{{ prepage }}/">上一页</a>{% endif %}</li>
         {% for p in pages %}
         <li{% if current_page == p %} class="active"><span class="disabled">{{ p }}</span>{% else %}><a href="/apps/page/{{ p }}/">{{ p }}</a>{% endif %}</li>

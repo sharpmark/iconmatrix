@@ -1,22 +1,70 @@
 # -*- coding: utf-8 -*-
 
 from django.shortcuts import get_object_or_404
-from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from icons.models import Icon, Like
 from applications.models import Application
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
-def detail(request, app_id):
+
+def list(request, app_id):
     app = get_object_or_404(Application, pk=app_id)
-    return render(request, 'applications/detail-block.html', {
-        'application': app,
-    })
+    if request.method == 'GET':
+        #TODO return HttpResponse obj.
+        return Icon.objects.filter(application=app)
+
+    action = request.POST['action']
+
+    if action == 'upload':
+        return _upload_icon(request, app)
+
+
+def detail(request, app_id, icon_id):
+    app = get_object_or_404(Application, pk=app_id)
+    icon = get_object_or_404(Icon, pk=icon_id)
+
+    if request.method == 'GET': return redirect(app)
+
+    if not icon.application == app: return redirect(app)
+
+    # 以下为处理 POST 请求
+    action = request.POST['action']
+
+    if action == 'rate':
+        return _rate_icon(request, icon)
+
+    if action == 'is_author':
+        return _is_author(request, icon)
+
+    return redirect(icon.application)
+
 
 @login_required
-def rate(request, icon_id, score):
-    icon = get_object_or_404(Icon, pk=icon_id)
-    if int(score) == 0:
+def _upload_icon(request, app):
+    icon_upload_form = UploadForm(request.POST, request.FILES, instance=Icon())
+
+    if icon_upload_form.is_valid():
+        icon = icon_upload_form.save(commit=False)
+        icon.application = app
+        icon.artist = request.user
+        icon.save()
+
+        icon.public_image()
+
+        # 将验证是否为认领应用的设计师收到这里，是为了以后可以允许不同的设计师上传图标
+        if request.user == app.artist:
+            app.status = Application.UPLOAD
+            app.last_icon = icon
+            app.save()
+
+    return redirect(app)
+
+
+@login_required
+def _rate_icon(request, icon):
+    score = int(request.POST['score'])
+
+    if score == 0:
         try:
             like = Like.objects.get(icon=icon, user=request.user)
             like.delete()
@@ -40,14 +88,13 @@ def rate(request, icon_id, score):
 
 
 @login_required
-def isauthor(request, icon_id):
+def _is_author(request, icon):
     from accounts.templatetags.user_filter import is_ui
     if is_ui(request.user):
-        icon = get_object_or_404(Icon, pk=icon_id)
         icon.artist = request.user
         icon.save()
 
         icon.application.artist = request.user
         icon.application.save()
 
-    return HttpResponseRedirect('/apps/%d/' % icon.application.id)
+    return render(request, 'common/icon_action.html', {'icon': icon})

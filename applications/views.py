@@ -11,63 +11,56 @@ from icons.forms import UploadForm
 
 from app_parser.parser import get_app_from_url
 
+DEFAULT_APPS = 18
+
 def detail(request, app_id):
-    application = get_object_or_404(Application, pk=app_id)
+    app = get_object_or_404(Application, pk=app_id)
 
-    if request.method == 'POST':
-        action = request.POST['action']
-        if not request.user.is_authenticated(): redirect('/accounts/login/?next=/apps/%d/' % app_id)
-
-        if action == 'upload':
-            # 应该是post /icons/
-            if not request.user == application.artist: return redirect(application)
-
-            icon_upload_form = UploadForm(request.POST, request.FILES, instance=Icon())
-            if icon_upload_form.is_valid():
-                icon = icon_upload_form.save(commit=False)
-                icon.application = application
-                icon.artist = request.user
-                icon.save()
-
-                icon.public_image()
-
-                application.status = Application.UPLOAD
-                application.last_icon = icon
-                application.save()
-
-        elif action == 'claim':
-            if application.status in [Application.CONFIRM, Application.CREATE]:
-                application.artist = request.user
-                application.status = Application.CLAIM
-                application.save()
-
-        elif action == 'unclaim':
-            if application.status == Application.CLAIM:
-                application.artist = None
-                application.status = Application.CONFIRM
-                application.save()
-
-        #if request.GET['next']:
-        #    return redirect(request.GET['next'])
-        #else:
-        return redirect(application)
+    if request.method == 'GET':
+        return render(request, 'applications/detail.html', {
+            'application': app,
+            'icon_upload_form': UploadForm(), #TODO
+        })
 
 
+    action = request.POST['action']
+
+    if action == 'claim':
+        return _claim_application(request, app)
+    elif action == 'unclaim':
+        return _unclaim_application(request, app)
+
+
+def list_launcher(request, page_id=0):
+
+    page_id = int(page_id)
+
+    statuses = [Application.UPLOAD, Application.FINISH]
+
+    apps_count = Application.objects.filter(status__in=statuses).count()
+    page_count = _get_page_count(apps_count, apps_pre_page)
+
+    if page_id == 0:
+        app_list = _list_random(statuses)
     else:
-        icon_upload_form = UploadForm()
+        if page_count < page_id or page_id < 1: page_id = 1
+        app_list = _list(page_id, statuses)
 
-    return render(request, 'applications/detail.html', {
-        'application': application,
-        'icon_upload_form': icon_upload_form,
+    return render(request, 'applications/list-upload.html', {
+        'app_list': app_list,
+        'current_page': page_id,
+        'pages': _get_page_list(apps_count, apps_pre_page, page_id),
+        'prepage': page_id - 1,
+        'nextpage': 0 if page_id == page_count else page_id + 1,
+        'lastpage': page_count,
+        'app_list': app_list,
     })
 
-
-def list_launcher(request):
+def _list_random(statuses, apps_pre_page=DEFAULT_APPS):
     import random
-    apps_pre_page = 18                   # 每页显示多少个
     max_id = Application.objects.latest('id').id
 
-    if Application.objects.filter(status__in=[Application.UPLOAD, Application.FINISH]).count() > apps_pre_page:
+    if Application.objects.filter(status__in=statuses).count() > apps_pre_page:
         app_list = []
 
         while len(app_list) < apps_pre_page:
@@ -75,7 +68,7 @@ def list_launcher(request):
             try:
                 appid = random.randint(1, max_id)
                 app = Application.objects.get(id=appid)
-                if not app in app_list and app.status in [Application.UPLOAD, Application.FINISH]:
+                if not app in app_list and app.status in statuses:
                     app_list.append(app)
             except:
                 pass
@@ -83,41 +76,18 @@ def list_launcher(request):
     else:
         app_list = Application.objects.filter(status__in=[Application.UPLOAD, Application.FINISH])
 
-    page_count = Application.objects.filter(status__in=[Application.UPLOAD, Application.FINISH]).count()
+    return app_list
 
-    return render(request, 'applications/list-upload.html', {
-        'app_list': app_list, 'current_page': 0,
-        'pages': _get_page_list(page_count, apps_pre_page, 0),
-        'prepage': 0, 'nextpage': 1, 'firstpage': 1, 'lastpage': page_count,
-        'app_list': app_list,
-    })
-
-def list_upload(request, page_id=1):
-
-    page_id = int(page_id)
-    apps_pre_page = 18                   # 每页显示多少个
-    statuses=[Application.UPLOAD, Application.FINISH]
-
-    apps_count = Application.objects.filter(status__in=statuses).count()
-    page_count = _get_page_count(apps_count, apps_pre_page)
-
-    if page_count < page_id or page_id < 1:
-        page_id = 1
-
-    app_list = Application.objects.filter(status__in=statuses).order_by('-last_icon__timestamp_upload')[(page_id - 1) * apps_pre_page: page_id * apps_pre_page]
-
-    return render(request, 'applications/list-upload.html', {
-        'current_page': page_id, 'pages': _get_page_list(apps_count, apps_pre_page, page_id),
-        'prepage': page_id - 1, 'nextpage': 0 if page_id == page_count else page_id + 1,
-        'firstpage': 1, 'lastpage': page_count,
-        'app_list': app_list,
-    })
+def _list(page_id, statuses, apps_pre_page=DEFAULT_APPS):
+    return Application.objects.filter(status__in=statuses)\
+        .order_by('-last_icon__timestamp_upload')\
+        [(page_id - 1) * apps_pre_page: page_id * apps_pre_page]
 
 
 @login_required
 def list_create(request):
+    #TODO rewrite is_admin / is_ui to decorators
     from accounts.templatetags.user_filter import is_admin
-
     if not is_admin(request.user): return redirect('/')
 
     if request.method == 'POST':
@@ -141,7 +111,8 @@ def list_create(request):
 
     return render(request, 'applications/list-create.html', {
         'formset': formset,
-        'app_list': Application.objects.filter(status=Application.CREATE).order_by('-timestamp_create'),
+        'app_list': Application.objects.filter(status=Application.CREATE)\
+            .order_by('-timestamp_create'),
     })
 
 
@@ -149,12 +120,13 @@ def list_create(request):
 def list_confirm(request, page_id=1):
     from accounts.templatetags.user_filter import is_ui
 
-    if is_ui(request.user):
-        return render(request, 'applications/list-confirm.html', {
-            'app_list': Application.objects.filter(status=Application.CONFIRM).order_by('-timestamp_create'),
+    if not is_ui(request.user): return redirect('/')
+
+    return render(request, 'applications/list-confirm.html', {
+            'app_list': Application.objects.filter(status=Application.CONFIRM)\
+                .order_by('-timestamp_create'),
         })
-    else:
-        return redirect('/')
+
 
 
 def _get_page_count(total, pre=9):
@@ -195,6 +167,7 @@ def submit(request):
                         application.uploader = request.user
 
                     application.save()
+            #TODO: 显示上传成功几个应用
             return redirect('/apps/submit/')
     else:
         formset = SubmitFormSet()
@@ -205,6 +178,7 @@ def submit(request):
 
 
 def search(request):
+    #TODO: rewrite to RESTFul
     from django.db.models import Q
 
     app_list = []
@@ -220,3 +194,19 @@ def search(request):
     return render(request, 'applications/list-search.html', {
         'app_list': app_list,
     })
+
+
+def _claim_application(request, app):
+    if app.status in [Application.CONFIRM, Application.CREATE]:
+        app.artist = request.user
+        app.status = Application.CLAIM
+        app.save()
+    return redirect(app)
+
+
+def _unclaim_application(request, app):
+    if app.status == Application.CLAIM:
+        app.artist = None
+        app.status = Application.CONFIRM
+        app.save()
+    return redirect(app)
