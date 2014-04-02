@@ -4,7 +4,7 @@ $(document).ready(function() {
       transition: 'all 0.3s'
     });
 
-    $('.brick-small').click(function() {
+    $('.brick').click(function() {
         $('#icon-detail').html($.ajax({url:$(this).attr('iconurl'), async:false}).responseText);
         $('#icon-detail').popup('show');
     });

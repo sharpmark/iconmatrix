@@ -1,7 +1,6 @@
 body {
     padding-top: 60px;
     -webkit-font-smoothing:antialiased;
-    background: #303030;
 }
 
 body, h1, h2, h3, h4, h5, h6 {
@@ -9,7 +8,6 @@ body, h1, h2, h3, h4, h5, h6 {
 }
 
 .launcher {
-    background: #222327;
     width: 1080px;
     padding: 0px;
     height: 100%;
@@ -20,59 +18,19 @@ body, h1, h2, h3, h4, h5, h6 {
 }
 
 .brick {
-    width: 358px;
-    height: 458px;
     float: left;
     margin: 1px;
-}
-
-.brick-small {
     width: 178px;
     height: 228px;
-    float: left;
-    margin: 1px;
 }
 
-.brick-dark-1 {
-    background: url(/static/images/app-brick-dark-1.png);
-}
-.brick-dark-2 {
-    background: url(/static/images/app-brick-dark-2.png);
-}
-.brick-dark-3 {
-    background: url(/static/images/app-brick-dark-3.png);
-}
-.brick-dark-4 {
-    background: url(/static/images/app-brick-dark-4.png);
-}
-.brick-dark-5 {
-    background: url(/static/images/app-brick-dark-5.png);
-}
-.brick-dark-6 {
-    background: url(/static/images/app-brick-dark-6.png);
-}
-.brick-dark-7 {
-    background: url(/static/images/app-brick-dark-7.png);
-}
-.brick-dark-8 {
-    background: url(/static/images/app-brick-dark-8.png);
-}
-.brick-dark-9 {
-    background: url(/static/images/app-brick-dark-9.png);
-}
-
-.brick-icon-192 {
-    margin-top: 103px;
-    max-width: 192px;
-    max-height: 192px;
-}
-
-.brick-icon-96 {
+.brick-icon {
     margin-top: 51px;
     max-width: 96px;
     max-height: 96px;
 }
-.brick-icon-96 img {
+
+.brick-icon img {
     max-width: 96px;
     max-height: 96px;
     -webkit-filter: drop-shadow(0 5px 5px rgba(0,0,0,.8));
@@ -81,53 +39,24 @@ body, h1, h2, h3, h4, h5, h6 {
     -o-filter: drop-shadow(0 5px 5px rgba(0,0,0,.8));
     filter: drop-shadow(0 5px 5px rgba(0,0,0,.8));
 }
-.brick-icon-192 img {
-    max-width: 192px;
-    max-height: 192px;
-    -webkit-filter: drop-shadow(0 10px 10px rgba(0,0,0,.8));
-    -moz-filter: drop-shadow(0 10px 10px rgba(0,0,0,.8));
-    -ms-filter: drop-shadow(0 10px 10px rgba(0,0,0,.8));
-    -o-filter: drop-shadow(0 10px 10px rgba(0,0,0,.8));
-    filter: drop-shadow(0 10px 10px rgba(0,0,0,.8));
-}
 
 .brick-app-info {
-    margin-top: 40px;
-    text-shadow: rgba(0, 0, 0, .7) 0 5px 6px;
-}
-
-.brick-app-info-small {
     margin-top: 20px;
     text-shadow: rgba(0, 0, 0, .7) 0 2px 3px;
 }
 
-.text-overflow {
-    width: 260px;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    -o-text-overflow: ellipsis;
-    overflow: hidden;
-    margin: auto;
+.brick-app-info, .brick-app-info span {
+    font-size: 16px;
+    text-decoration: none;
 }
 
-.text-overflow-small {
+.text-overflow {
     width: 130px;
     white-space: nowrap;
     text-overflow: ellipsis;
     -o-text-overflow: ellipsis;
     overflow: hidden;
     margin: auto;
-}
-
-.brick-app-info-small, .brick-app-info-small span {
-    font-size: 16px;
-    color: #a0a0a0;
-    text-decoration: none;
-}
-.brick-app-info, .brick-app-info a, a.hover {
-    font-size: 40px;
-    color: #a0a0a0;
-    text-decoration: none;
 }
 
 .brick-app-extinfo {

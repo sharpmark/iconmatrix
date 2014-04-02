@@ -3,8 +3,8 @@
 {% block container %}
     <div class="launcher container">
         {% for app in app_list %}
-        <div class="brick-dark-{% cycle '1' '2' '3' '1' '2' '3' '4' '5' '6' '4' '5' '6' '7' '8' '9' '7' '8' '9' %} brick-small" iconurl="{{ app.get_absolute_url }}thumb/">
-            <div class="brick-icon-96 center-block">
+        <div class="brick-{% cycle '1' '2' '3' '1' '2' '3' '4' '5' '6' '4' '5' '6' '7' '8' '9' '7' '8' '9' %} brick" iconurl="{{ app.get_absolute_url }}thumb/">
+            <div class="brick-icon center-block">
 
                     {% if app.last_icon %}
                     <img class="" src="{% get_media_prefix %}{{ app.last_icon.image_192px }}" alt="{{ app.name }}">
@@ -13,9 +13,9 @@
                     {% endif %}
 
             </div>
-            <div class="brick-app-info-small">
+            <div class="brick-app-info">
                 <h5 class="text-center">
-                    <div class="text-center text-overflow-small"><span>{{ app.name }}</span></div>
+                    <div class="text-center text-overflow"><span>{{ app.name }}</span></div>
                 </h5>
             </div>
         </div>

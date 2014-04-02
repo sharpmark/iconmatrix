@@ -1,0 +1,38 @@
+body {
+    background: #cd9868;
+}
+
+.launcher {
+    background: #222327;
+}
+
+.brick-1 {
+    background: url(/static/images/launcher/wood9/back1.png);
+}
+.brick-2 {
+    background: url(/static/images/launcher/wood9/back2.png);
+}
+.brick-3 {
+    background: url(/static/images/launcher/wood9/back3.png);
+}
+.brick-4 {
+    background: url(/static/images/launcher/wood9/back4.png);
+}
+.brick-5 {
+    background: url(/static/images/launcher/wood9/back5.png);
+}
+.brick-6 {
+    background: url(/static/images/launcher/wood9/back6.png);
+}
+.brick-7 {
+    background: url(/static/images/launcher/wood9/back7.png);
+}
+.brick-8 {
+    background: url(/static/images/launcher/wood9/back8.png);
+}
+.brick-9 {
+    background: url(/static/images/launcher/wood9/back9.png);
+}
+.brick-app-info span{
+    color: #eee;
+}
