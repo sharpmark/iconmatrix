@@ -8,3 +8,4 @@ iconmatrix/ldap_settings.py
 output.txt
 notfound.txt
 icons/admin_set_artist.py
+static/images/launcher/
