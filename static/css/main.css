@@ -71,8 +71,8 @@ body, h1, h2, h3, h4, h5, h6 {
     vertical-align: middle;
 }
 
-.detail-app-info {
-    margin-top: 20px;
+.detail-block {
+    width: 720px;
 }
 
 .detail-icon-128 {
@@ -84,7 +84,7 @@ body, h1, h2, h3, h4, h5, h6 {
     max-height: 192px;
 }
 .detail-original-icon {
-    float: left;
+    border-radius: 32px;
 }
 
 .detail-app-desc {
@@ -108,12 +108,12 @@ body, h1, h2, h3, h4, h5, h6 {
 }
 
 #icon-detail {
-    background: #fff;
+    background: #aaa;
     -webkit-transform: scale(0.8);
        -moz-transform: scale(0.8);
         -ms-transform: scale(0.8);
             transform: scale(0.8);
-    padding: 50px;
+    padding: 0px 20px 20px;
 }
 
 .popup_visible #icon-detail {

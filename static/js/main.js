@@ -92,7 +92,7 @@ function icon_is_author(icon_id, csrf) {
 
     $.post('/icons/' + icon_id + '/', post_data,
         function(data){
-            $('#icon-action').html(data);
+            $('#icon-detail').html(data);
         },
         'html');
 

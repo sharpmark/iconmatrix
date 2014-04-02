@@ -1,6 +1,6 @@
 {% load icon_tags %}
 <div id="icon-score">
-<p class="text-center detail-icon-rating">
+<span class="text-center detail-icon-rating">
     {% if icon|score:request.user == 0 %}
     <a href="#" onclick="icon_rate({{ icon.id }}, 1, '{{ csrf_token }}')" class="btn btn-default" role="button"><span class="glyphicon glyphicon-thumbs-up"></span> 赞({{ icon.like_count }})</a>
     <a href="#" onclick="icon_rate({{ icon.id }}, -1, '{{ csrf_token }}')" class="btn btn-default" role="button"><span class="glyphicon glyphicon-thumbs-down"></span> 无爱({{ icon.unlike_count }})</a>
@@ -11,5 +11,5 @@
     <a href="#" onclick="icon_rate({{ icon.id }}, 1, '{{ csrf_token }}')" class="btn btn-default" role="button"><span class="glyphicon glyphicon-thumbs-up"></span> 赞({{ icon.like_count }})</a>
     <a href="#" onclick="icon_rate({{ icon.id }}, 0, '{{ csrf_token }}')" class="btn btn-primary active" role="button"><span class="glyphicon glyphicon-thumbs-down"></span> 无爱({{ icon.unlike_count }})</a>
     {% endif %}
-</p>
+</span>
 </div>

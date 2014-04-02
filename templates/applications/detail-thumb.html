@@ -1,9 +1,43 @@
-<div class="row detail-app-info detail-block">
+<div class="detail-block">
+<div class="row">
+    <div class="col-md-12">
+    <h1>{{ application.name }}</h1>
+    {% if application.last_icon %}{% with icon=application.last_icon %}
+    {% include 'icons/like.html' %}
+    {% endwith %}{% endif %}
+</div>
+</div>
+<hr />
+<div class="row">
     <div class="col-md-6">
         {% include 'icons/action.html' %}
     </div>
     <div class="col-md-6">
-        <img class="detail-icon-192 center-block" src="{{ application.original_icon_image }}" />
+        <img class="detail-icon-192 center-block detail-original-icon" src="{{ application.original_icon_image }}" />
         <h4 class="text-center detail-icon-artist">原始图标</h4>
     </div>
+</div>
+<hr />
+<div class="row">
+    <div class="col-md-12">{{ application.description }}</div>
+</div>
+<div class="row">
+    <div class="col-md-12"><div class="uploader">
+        {% if application.status == 'UP' or application.status == 'CL' or application.status == 'FI' %}
+        {% if request.user.is_authenticated and request.user == application.artist %}
+        <form enctype="multipart/form-data" method="post" class="form-horizontal" role="form" action='/apps/{{ application.id }}/icons/'>{% csrf_token %}
+            <legend><span class="col-sm-offset-1">上传</span> (支持多次上传)</legend>
+            {% for field in icon_upload_form %}
+                {% include 'common/form_field.html' %}
+            {% endfor %}
+            <input type='hidden' name='action' value='upload'>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                  <button type="submit" name="upload" class="btn btn-success">上传</button>
+                </div>
+            </div>
+        </form>
+        {% endif %}{% endif %}
+    </div></div>
+</div>
 </div>

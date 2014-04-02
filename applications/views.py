@@ -36,6 +36,7 @@ def detail_thumb(request, app_id):
 
     return render(request, 'applications/detail-thumb.html', {
         'application': app,
+        'icon_upload_form': UploadForm(),
     })
 
 def list_launcher(request, page_id=0):

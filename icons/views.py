@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from icons.models import Icon, Like
 from applications.models import Application
 from django.shortcuts import render, redirect
-
+from icons.forms import UploadForm
 
 def list(request, app_id):
     app = get_object_or_404(Application, pk=app_id)
@@ -96,4 +96,7 @@ def _is_author(request, icon):
         icon.application.artist = request.user
         icon.application.save()
 
-    return render(request, 'icons/action.html', {'application': icon.application})
+    return render(request, 'applications/detail-thumb.html', {
+        'application': icon.application,
+        'icon_upload_form': UploadForm(),
+    })

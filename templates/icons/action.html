@@ -10,7 +10,6 @@
 {% else %}
 <h4 class="text-center detail-icon-artist">作者：{{ icon.artist.last_name }}{{ icon.artist.first_name }}</h4>
 {% endif %}
-{% include 'icons/like.html' %}
 {% endwith %}
 {% elif application.status == 'CR' %}
 <img class="detail-icon-192 center-block" src="{% get_static_prefix %}images/icon-exclamation-192px.png" />
