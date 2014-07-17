@@ -5,3 +5,6 @@ logs/
 iconmatrix/ldap_settings.py
 *.log
 .DS_Store
+icons/admin_set_artist.py
+notfound.txt
+static/images/launcher/wood9/
