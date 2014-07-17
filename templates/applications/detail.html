@@ -10,7 +10,7 @@
         <div class="row detail-app-info">
             <div class="col-md-3">
                 {% if application.last_icon %}{% with icon=application.last_icon %}
-                <img class="detail-icon-192 center-block" src="{% get_media_prefix %}{{ icon.image_192px }}" />
+                <img class="detail-icon-192 center-block" src="{% get_media_prefix %}{{ icon.image }}" />
                 <h4 class="text-center detail-icon-artist">作者：<a href="/artists/{{ icon.artist.id }}/apps/finish/">{{ icon.artist.last_name }}{{ icon.artist.first_name }}</a></h4>
                 <p class="text-center detail-icon-rating">
                     {% if my_score == 1 %}

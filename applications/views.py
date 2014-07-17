@@ -61,7 +61,6 @@ def list_create(request):
         action = request.POST.get('action')
         print action
         formset = CreateFormSet(request.POST, queryset=Application.objects.filter(status=Application.CREATE))
-        #print formset
 
         if formset.is_valid():
             for form in formset.forms:
@@ -89,6 +88,7 @@ def list_confirm(request):
         return __list_apps(request, statuses = [Application.CONFIRM])
     else:
         return HttpResponseRedirect('/')
+
 
 def list_claim(request):
     return __list_apps(request, statuses = [Application.CLAIM])
