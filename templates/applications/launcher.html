@@ -7,9 +7,9 @@
             <div class="brick-icon center-block">
 
                     {% if app.last_icon %}
-                    <img class="" src="{% get_media_prefix %}{{ app.last_icon.image_192px }}" alt="{{ app.name }}">
+                    <img class="icon-image" src="{% get_media_prefix %}{{ app.last_icon.image_192px }}" alt="{{ app.name }}">
                     {% else %}
-                    <img class="" src="{{ app.original_icon_image }}" alt="{{ app.name }}">
+                    <img class="icon-image" src="{{ app.original_icon_image }}" alt="{{ app.name }}">
                     {% endif %}
 
             </div>

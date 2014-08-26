@@ -1,25 +1,25 @@
 <div class="detail-block">
-<div class="row">
+<div class="row detail-title">
     <div class="col-md-12">
-    <h1>{{ application.name }}</h1>
-    {% if application.last_icon %}{% with icon=application.last_icon %}
-    {% include 'icons/like.html' %}
-    {% endwith %}{% endif %}
-</div>
+        <span class="detail-app-name">{{ application.name }}</span>
+        {% if application.last_icon %}{% with icon=application.last_icon %}
+        <span style="float: right;">{% include 'icons/like.html' %}</span>
+        {% endwith %}{% endif %}
+    </div>
 </div>
 <hr />
-<div class="row">
+<div class="row detail-icons">
     <div class="col-md-6">
         {% include 'icons/action.html' %}
     </div>
     <div class="col-md-6">
         <img class="detail-icon-192 center-block detail-original-icon" src="{{ application.original_icon_image }}" />
-        <h4 class="text-center detail-icon-artist">原始图标</h4>
+        <h5 class="text-center detail-icon-artist">原始图标</h5>
     </div>
 </div>
 <hr />
-<div class="row">
-    <div class="col-md-12">{{ application.description }}</div>
+<div class="row detail-desc">
+    <div class="col-md-12">{{ application.description|safe }}</div>
 </div>
 <div class="row">
     <div class="col-md-12"><div class="uploader">
