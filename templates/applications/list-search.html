@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block container %}
+    <div class="container">
+    <table class="table table-hover app-list" id="app-list">
+        <thead>
+            <tr>
+                <th>已绘图标</th>
+                <th>原始图标</th>
+                <th>名称</th>
+                <th>下载次数</th>
+                <th>原始链接</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for app in app_list %}
+            <tr>
+                <td>{% if app.last_icon %}<a href="{% url 'app-detail' app.id %}">
+                    <img src="{% get_media_prefix %}{{ app.last_icon.image_192px }}" class="detail-icon-128" /></a>{% else %}{{ app.get_status_display }}{% endif %}</td>
+                <td><a href="{% url 'app-detail' app.id %}"><img src="{{ app.original_icon_image }}"  class="detail-icon-128"/></a></td>
+                <td><p class=" app-list-info"><strong>{{ app.name }}</strong></p><br />{{ app.package_name }}</td>
+                <td>{{ app.download_count }}</td>
+                <td><a href="{{ app.source_url }}" target="_blank">应用链接</a></td>
+            </tr>
+        {% empty %}
+            <tr><td colspan="6"><h2 class="text-center">没有找到匹配的应用</h2></td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <form action="." method="post" accept-charset="utf-8">
+
+
+    </form>
+    </div>
+{% endblock %}

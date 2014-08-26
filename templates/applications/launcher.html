@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block container %}
+    <div class="launcher container">
+        {% for app in app_list %}
+        <div class="brick-{% cycle '1' '2' '3' '1' '2' '3' '4' '5' '6' '4' '5' '6' '7' '8' '9' '7' '8' '9' %} brick" iconurl="{{ app.get_absolute_url }}thumb/">
+            <div class="brick-icon center-block">
+
+                    {% if app.last_icon %}
+                    <img class="icon-image" src="{% get_media_prefix %}{{ app.last_icon.image_192px }}" alt="{{ app.name }}">
+                    {% else %}
+                    <img class="icon-image" src="{{ app.original_icon_image }}" alt="{{ app.name }}">
+                    {% endif %}
+
+            </div>
+            <div class="brick-app-info">
+                <h5 class="text-center">
+                    <div class="text-center text-overflow"><span>{{ app.name }}</span></div>
+                </h5>
+            </div>
+        </div>
+        {% empty %}
+        <h2 class="text-center brick-app-info">没有图标 o(╯□╰)o</h2>
+        {% endfor %}
+    </div>{% endblock %}
+  {% block footer%}
+  <div id="pagination" class="container">
+    <ul class="pagination">
+      <li><a href="/apps/random/">随机换一组</a></li>
+    </ul>
+    <ul class="pagination">
+        <li>{% if firstpage == current_page %}<span class="disabled">首页</span>{% else %}<a href="/apps/page/1/">首页</a>{% endif %}</li>
+        <li>{% if prepage == 0 %}<span class="disabled">上一页</span>{% else %}<a href="/apps/page/{{ prepage }}/">上一页</a>{% endif %}</li>
+        {% for p in pages %}
+        <li{% if current_page == p %} class="active"><span class="disabled">{{ p }}</span>{% else %}><a href="/apps/page/{{ p }}/">{{ p }}</a>{% endif %}</li>
+        {% endfor %}
+        <li>{% if nextpage == 0 %}<span class="disabled">下一页</span>{% else %}<a href="/apps/page/{{ nextpage }}/">下一页</a>{% endif %}</li>
+        <li>{% if lastpage == current_page %}<span class="disabled">尾页</span>{% else %}<a href="/apps/page/{{ lastpage }}/">尾页</a>{% endif %}</li>
+    </ul>
+    </div>
+    <div id="icon-detail" style="display: none;"></div>
+{% endblock %}

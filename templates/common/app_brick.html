@@ -1,24 +1,23 @@
 {% load static %}
 {% load user_filter %}
 
-<div class="brick-dark brick">
     <div class="brick-icon-192 center-block">
         <a href="{% url 'app-detail' app.id %}" class="text-center">
             {% if app.last_icon %}
-            <img class="" src="{% get_media_prefix %}{{ app.last_icon.image }}" alt="{{ app.name }}">
+            <img class="" src="{% get_media_prefix %}{{ app.last_icon.image_192px }}" alt="{{ app.name }}">
             {% else %}
             <img class="" src="{{ app.original_icon_image }}" alt="{{ app.name }}">
             {% endif %}
         </a>
-        <div class="brick-app-info">
-            <h2 class="text-center">
-                <a href="{% url 'app-detail' app.id %}">{{ app.name|truncatechars:8 }}</a>
-            </h2>
-        </div>
+
     </div>
-    {% if request.user.is_authenticated and user|is_ui %}{% if app.status == 'CO' %}
-    <div class="brick-app-extinfo text-center" style="display: none;">
-        <p><a href="/apps/{{ app.id }}/claim/" class="btn btn-primary btn-lg" role="button">认领</a></p>
+    <div class="brick-app-info">
+        <h2 class="text-center">
+            <a href="{% url 'app-detail' app.id %}"><div class="text-center text-overflow">{{ app.name }}</div></a>
+        </h2>
     </div>
-    {% endif %}{% endif %}
-</div>
+    {% if request.user.is_authenticated %}
+    <!--div class="brick-app-extinfo text-center" style="display: none;">
+        {% include 'common/app_like.html' %}
+    </div-->
+    {% endif %}

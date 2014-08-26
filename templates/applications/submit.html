@@ -5,25 +5,26 @@
 {% block container %}
     <div class="content container">
         <form action="/apps/submit/" method="post" class="form-horizontal" role="form">{% csrf_token %}
-            <legend><span class="col-sm-offset-1">上传</span></legend>
-            {% for field in form %}
+            <legend>
+                <span class="col-sm-offset-1">上传</span>
+                <small>目前只支持豌豆荚的应用详情链接，例如http://www.wandoujia.com/apps/com.taobao.caipiao</small>
+            </legend>
+            <div id="form-table">
+            {% for form in formset %}{% for field in form %}
                 {% include 'common/form_field.html' %}
-            {% endfor %}
-            <div class="form-group">
+            {% endfor %}{% endfor %}</div>
+            <div class="form-submit">
+                {{ formset.management_form }}
                 <div class="col-sm-offset-2 col-sm-10">
                   <button type="submit" class="btn btn-default">提交</button>
                   &nbsp;<button type="reset" class="btn">取消</button>
+                  &nbsp;<button type="button" id="add_more" class="btn btn-default">增加新的</button>
                 </div>
             </div>
+
         </form>
         <script type="text/javascript">
-            $(function(){
-                $(".alert-message").alert();
-                $('#mainForm').submit(function(){
-                    $('#submit').button('loading');
-                })
-            });
-            document.forms[1].elements[2].focus();
+
         </script>
     </div>
 {% endblock %}

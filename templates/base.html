@@ -10,12 +10,10 @@
     <link href="{% get_static_prefix %}css/bootstrap.min.css" rel="stylesheet">
     <link href="{% get_static_prefix %}css/bootstrap-theme.min.css" rel="stylesheet">
     <link href="{% get_static_prefix %}css/main.css" rel="stylesheet">
+    <link href="{% get_static_prefix %}css/theme-dark.css" rel="stylesheet">
   </head>
 
     {% url 'index' as index_url %}
-    {% url 'list-confirm' as list_confirm_url %}
-    {% url 'list-create' as list_create_url %}
-    {% url 'app-submit' as app_submit_url %}
     {% url 'auth-logout' as auth_logout_url %}
     {% url 'auth-login' as auth_login_url %}
 
@@ -25,25 +23,24 @@
               <nav class="collapse navbar-collapse" role="navigation">
                   <ul class="nav navbar-nav">
                       <li class="{% active index_url %}"><a href="{% url 'index' %}">Icon Matrix</a></li>
-                      {% if user.is_authenticated %}
-                          {% if user|is_ui %}
-                      <li class="{% active list_confirm_url %}"><a href="{% url 'list-confirm' %}">认领图标</a></li>
-                      <li><a href="/artists/{{ user.id }}/apps/claim/">我在绘的图标 <span class="user-claim-count label label-warning" style="display: none;">{{ user|get_claim }}</span></a></li>
-                      <li><a href="/artists/{{ user.id }}/apps/finish/">我已绘的图标</span></a></li>
-                          {% endif %}
-                      <li class="{% active app_submit_url %}"><a href="{% url 'app-submit' %}">提交应用</a></li>
-                          {% if user|is_admin %}
-                      <li class="{% active list_create_url %}"><a href="{% url 'list-create' %}">审核应用</a></li>
-                          {% endif %}
-                      {% endif %}
-                      {% block customnav %}{% endblock %}
                   </ul>
+
                   <ul class="nav navbar-nav navbar-right">
+                      <!--form class="navbar-form navbar-left" role="search" action="/apps/search/" method="post">{% csrf_token %}
+                              <input id="id_query" maxlength="100" name="query" class="form-control" placeholder="搜索应用">
+                      </form-->
                       {% if user.is_authenticated %}
-                      <li class="{% active auth_logout_url %}"><a href="#">{{ user.username }}</a></li>
-                      <li class="{% active auth_logout_url %}"><a href="{% url 'auth-logout' %}">退出</a></li>
+                      <li class="dropdown">
+                          <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ user.username }}</a>
+                          <ul class="dropdown-menu">
+                              {% if user|is_ui %}
+                              <li><a href="{% url 'artist-my-finish' %}">我已绘的图标</span></a></li>
+                              {% endif %}
+                              <li class="{% active auth_logout_url %}"><a href="{% url 'auth-logout' %}">退出</a></li>
+                          </ul>
+                      </li>
                       {% else %}
-                      <li class="{% active auth_login_url %}"><a href="{% url 'auth-login' %}?next={{ request.path }}">登录</a></li>
+                      <li class="{% active auth_login_url %}"><a href="{% url 'auth-login' %}">登录</a></li>
                       {% endif %}
                   </ul>
               </nav>
@@ -54,13 +51,16 @@
     {% block container %}
         <h1>Icon Matrix</h1>
     {% endblock %}
-    <hr>
+    </div>
+    <!--hr-->
     <footer>
+    {% block footer %}
+    {% endblock %}
     </footer>
-    </div> <!-- /container -->
     <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.0.3.min.js"></script>
     <script src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
     <script src="{{ STATIC_URL }}js/main.js"></script>
+    <script src="{{ STATIC_URL }}js/jquery.popupoverlay.js"></script>
 
   </body>
 </html>

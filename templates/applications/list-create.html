@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block container %}
-    <div class="container">
+    <div class="container content">
     <form method="post" class="form-horizontal" role="form">{% csrf_token %}
         <legend><span class="col-sm-offset-1">审核应用</span></legend>
         <table class="table table-hover app-list" id="app-list">
@@ -25,8 +25,10 @@
                     <td><p class=" app-list-info">{{ form.instance.name }}</p></td>
                     <td>{{ form.instance.uploader.last_name }}{{ form.instance.uploader.first_name }}</td>
                     <td>{{ form.instance.download_count }}</td>
-                    <td><a href="{{ form.instance.name }}" target="_blank">应用链接</a></td>
+                    <td><a href="{{ form.instance.source_url }}" target="_blank">应用链接</a></td>
                 </tr>
+            {% empty %}
+                <tr><td colspan="6"><h2 class="text-center">没有图标需要审核</h2></td></tr>
             {% endfor %}
             </tbody>
         </table>
@@ -37,11 +39,6 @@
                 <button type="submit" name="action" value="abandon" class="btn btn-error">拒绝</button>
             </div>
         </div>
-    </form>
-
-    <form action="." method="post" accept-charset="utf-8">
-
-
     </form>
     </div>
 {% endblock %}

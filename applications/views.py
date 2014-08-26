@@ -1,150 +1,49 @@
 # -*- coding: utf-8 -*-
-from django.utils import timezone
-from django.http import HttpResponse, HttpResponseRedirect, Http404
-from django.shortcuts import render, render_to_response, get_object_or_404, redirect
-
-from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
 
 from applications.models import Application
-from icons.models import Icon
 
-from applications.forms import SubmitForm, CreateFormSet
-from icons.forms import UploadForm
-from app_parser.parser import get_app_from_url
 
 def detail(request, app_id):
+
     application = get_object_or_404(Application, pk=app_id)
-
-    if request.method == 'POST':
-        icon_upload_form = UploadForm(request.POST, request.FILES, instance=Icon())
-        if icon_upload_form.is_valid():
-            icon = icon_upload_form.save(commit=False)
-            icon.application = application
-            icon.artist = request.user
-            icon.timestamp_upload = timezone.now()
-            icon.save()
-
-            icon.public_image()
-
-            application.status = Application.UPLOAD
-            application.last_icon = icon
-            application.save()
-
-            return HttpResponseRedirect('/apps/%d/' % application.id)
-    else:
-        icon_upload_form = UploadForm()
 
     my_score = 0
 
-    if application.last_icon:
-        my_score = application.last_icon.my_score(request.user)
+    my_score = application.icon.my_score(request.user)
 
     return render(request, 'applications/detail.html', {
         'application': application,
-        'icon_upload_form': icon_upload_form,
         'my_score': my_score,
     })
 
 
 def list(request):
-    return __list_apps(request, statuses = [Application.UPLOAD, Application.FINISH])
 
-
-@login_required
-def list_create(request):
-    from accounts.templatetags.user_filter import is_admin
-
-    if not is_admin(request.user): return HttpResponseRedirect('/')
-
-    if request.method == 'POST':
-        print 'in post'
-        action = request.POST.get('action')
-        print action
-        formset = CreateFormSet(request.POST, queryset=Application.objects.filter(status=Application.CREATE))
-
-        if formset.is_valid():
-            for form in formset.forms:
-                if form.cleaned_data.get('is_checked'):
-                    app = form.save(commit=False)
-                    if action == 'confirm':
-                        app.status = Application.CONFIRM
-                    if action == 'abandon':
-                        app.status = Application.ABANDON
-                    app.save()
-
-            return HttpResponseRedirect(request.path)
-
-    else:
-        formset = CreateFormSet(queryset=Application.objects.filter(status=Application.CREATE))
-
-    return __list_apps(request, statuses = [Application.CREATE], template='applications/list-create.html', content={'formset': formset, })
-
-
-@login_required
-def list_confirm(request):
-    from accounts.templatetags.user_filter import is_ui
-
-    if is_ui(request.user):
-        return __list_apps(request, statuses = [Application.CONFIRM])
-    else:
-        return HttpResponseRedirect('/')
-
-
-def list_claim(request):
-    return __list_apps(request, statuses = [Application.CLAIM])
-
-
-def list_finish(request):
-    return __list_apps(request, statuses = [Application.FINISH])
-
-def __list_apps(request, statuses, template='applications/list-launcher.html', content={}):
-    return render(request, template, dict(content.items() + {
-        'app_list': Application.objects.filter(status__in=statuses).order_by('-last_icon__timestamp_upload'),
-    }.items()))
-
-@login_required
-def submit(request):
-    if request.method == 'POST':
-        form = SubmitForm(request.POST)
-        if form.is_valid():
-
-            application = get_app_from_url(form.cleaned_data['source_url'])
-
-            if application.uploader == None:
-                application.uploader = request.user
-
-            application.save()
-
-            return HttpResponseRedirect('/apps/%d/' % application.id)
-    else:
-        form = SubmitForm()
-    return render(request, 'applications/submit.html', {
-        'form': form,
+    return render(request, 'applications/launcher.html', {
+        'app_list': Application.objects.all().order_by('-timestamp_draw'),
     })
 
+def rate(request, app_id, score):
+    app = get_object_or_404(Icon, pk=app_id)
+    if int(score) == 0:
+        try:
+            like = Like.objects.get(application=app, user=request.user)
+            like.delete()
+        except:
+            pass
+    else:
 
-@login_required
-def claim(request, app_id):
+        try:
+            like = Like.objects.get(application=app, user=request.user)
+        except:
+            like = Like()
+            like.user = request.user
+            like.application = app
+            like.score = score
+            like.save()
 
-    app = Application.objects.get(pk=app_id)
-    if app:
-        if app.status == Application.CONFIRM or app.status == Application.CREATE:
-            app.artist = request.user
-            app.status = Application.CLAIM
-            app.save()
-    return HttpResponseRedirect('/apps/%d/' % app.id)
+        like.score = score
+        like.save()
 
-
-@login_required
-def unclaim(request, app_id):
-
-    app = Application.objects.get(pk=app_id)
-    if app:
-        if app.status == Application.CLAIM:
-            app.artist = None
-            app.status = Application.CONFIRM
-            app.save()
-    return HttpResponseRedirect('/apps/%d/' % app.id)
-
-def review(request):
-    return render(request, 'applications/review.html')
+    return HttpResponseRedirect('/apps/%d/' % icon.application.id)

@@ -124,23 +124,16 @@ TEMPLATE_DIRS = (
 )
 
 INSTALLED_APPS = (
-    'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.admin',
     'bootstrap_toolkit',
-    'django_auth_ldap',
     'iconmatrix',
-    'icons',
-    'artists',
     'accounts',
     'applications',
-    #'active_directory',
-    # Uncomment the next line to enable admin documentation:
-    # 'django.contrib.admindocs',
+    'artists',
 )
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
