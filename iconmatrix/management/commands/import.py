@@ -10,15 +10,15 @@ from accounts.models import User
 class Command(BaseCommand):
     def handle(self, *args, **options):
 
-        icon_dir = './uploads/icons'
-
         #TODO:artist = User.objects.get(pk=1)
 
-        for root, dirs, files in os.walk(os.path.join(icon_dir)):
+        for root, dirs, files in os.walk(os.path.join('./uploads/icons')):
             for name in files:
                 app = get_app(package_name = name[:-9].replace('_', '.'))
 
-                if app.icon == '':
-                    app.icon = name
-                    #icon.artist = artist
-                    app.save()
+                if app != None:
+                    if app.icon == '':
+                        app.icon = name
+                        app.save()
+                else:
+                    print package_name

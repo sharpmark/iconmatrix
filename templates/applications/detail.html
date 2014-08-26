@@ -7,9 +7,6 @@
     <div class="content container">
         <div class="row detail-app-info">
             <div class="col-md-3">
-                {% include 'icons/action.html' %}
-            </div>
-            <div class="col-md-3">
                 <img class="detail-icon-192 center-block" src="{{ application.original_icon_image }}" />
                 <h4 class="text-center detail-icon-artist">原始图标</h4>
             </div>
@@ -35,21 +32,4 @@
             </div>
         </div>
     </div>
-    <div class="content container uploader">
-        {% if application.status == 'UP' or application.status == 'CL' or application.status == 'FI' %}
-        {% if request.user.is_authenticated and request.user == application.artist %}
-        <form enctype="multipart/form-data" method="post" class="form-horizontal" role="form" action='/apps/{{ application.id }}/icons/'>{% csrf_token %}
-            <legend><span class="col-sm-offset-1">上传</span> (支持多次上传)</legend>
-            {% for field in icon_upload_form %}
-                {% include 'common/form_field.html' %}
-            {% endfor %}
-            <input type='hidden' name='action' value='upload'>
-            <div class="form-group">
-                <div class="col-sm-offset-2 col-sm-10">
-                  <button type="submit" name="upload" class="btn btn-success">上传</button>
-                </div>
-            </div>
-        </form>
-        {% endif %}{% endif %}
-    </div></div>
 {% endblock %}

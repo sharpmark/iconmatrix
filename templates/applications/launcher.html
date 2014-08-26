@@ -3,15 +3,9 @@
 {% block container %}
     <div class="launcher container">
         {% for app in app_list %}
-        <div class="brick-{% cycle '1' '2' '3' '1' '2' '3' '4' '5' '6' '4' '5' '6' '7' '8' '9' '7' '8' '9' %} brick" iconurl="{{ app.get_absolute_url }}thumb/">
+        <div class="brick-{% cycle '1' '2' '3' '1' '2' '3' '4' '5' '6' '4' '5' '6' '7' '8' '9' '7' '8' '9' %} brick" appurl="{{ app.get_absolute_url }}thumb/">
             <div class="brick-icon center-block">
-
-                    {% if app.last_icon %}
-                    <img class="icon-image" src="{% get_media_prefix %}{{ app.last_icon.image_192px }}" alt="{{ app.name }}">
-                    {% else %}
-                    <img class="icon-image" src="{{ app.original_icon_image }}" alt="{{ app.name }}">
-                    {% endif %}
-
+                <img class="icon-image" src="{% get_media_prefix %}{{ app.get_icon_url }}" alt="{{ app.name }}">
             </div>
             <div class="brick-app-info">
                 <h5 class="text-center">
@@ -38,5 +32,5 @@
         <li>{% if lastpage == current_page %}<span class="disabled">尾页</span>{% else %}<a href="/apps/page/{{ lastpage }}/">尾页</a>{% endif %}</li>
     </ul>
     </div>
-    <div id="icon-detail" style="display: none;"></div>
+    <div id="app-detail" style="display: none;"></div>
 {% endblock %}

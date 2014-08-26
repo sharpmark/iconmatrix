@@ -8,10 +8,20 @@ from accounts.models import User as Artist
 from applications.models import Application
 
 def apps(request, artist_id):
+
+    if artist_id == 0:
+        if request.user.is_authenticated:
+            artist_id = request.user.id
+        else:
+            return HttpResponseRedirect('/')
+
     artist = get_object_or_404(Artist, pk=artist_id)
-    return render(request, 'artist/apps.html', {
+    app_list = artist.draws.filter(status__in=status).order_by('-timestamp_draw')
+    return render(request, 'artists/applications.html', {
         'artist': artist,
+        'app_list': app_list,
     })
+
 
 def list(request):
     return render(request, 'artist/list.html', {

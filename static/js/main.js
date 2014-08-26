@@ -1,12 +1,12 @@
 $(document).ready(function() {
 
-    $('#icon-detail').popup({
+    $('#app-detail').popup({
       transition: 'all 0.3s'
     });
 
     $('.brick').click(function() {
-        $('#icon-detail').html($.ajax({url:$(this).attr('iconurl'), async:false}).responseText);
-        $('#icon-detail').popup('show');
+        $('#app-detail').html($.ajax({url:$(this).attr('appurl'), async:false}).responseText);
+        $('#app-detail').popup('show');
     });
 
     $(".brick").on("mouseenter",function() {
@@ -35,36 +35,15 @@ $(document).ready(function() {
 
 });
 
-$('#add_more').click(function() {
-
-    selector = '.form-group:last';
-    var newElement = $(selector).clone(true);
-    var total = $('#id_form-TOTAL_FORMS').val();
-
-    newElement.find(':input').each(function() {
-        var name = $(this).attr('name').replace('-' + (total-1) + '-','-' + total + '-');
-        var id = 'id_' + name;
-        $(this).attr({'name': name, 'id': id}).val('').removeAttr('checked');
-    });
-
-    newElement.find('label').each(function() {
-        var newFor = $(this).attr('for').replace('-' + (total-1) + '-','-' + total + '-');
-        $(this).attr('for', newFor);
-    });
-
-    $('#id_form-TOTAL_FORMS').val(total + 1);
-
-    $(selector).after(newElement);
-});
 
 function app_rate(app_id, score, csrf) {
     post_data = {};
-    post_data['app_id'] = icon_id;
+    post_data['app_id'] = app_id;
     post_data['score'] = score;
     post_data['action'] = 'rate';
     post_data['csrfmiddlewaretoken'] = csrf;
 
-    $.post('/apps/' + icon_id + '/', post_data,
+    $.post('/apps/' + app_id + '/', post_data,
         function(data){
             $('#app-score').html(data);
         },
@@ -84,15 +63,15 @@ function app_claim(app_id, action, csrf) {
     event.stopPropagation();
 }
 
-function icon_is_author(icon_id, csrf) {
+function app_is_author(app_id, csrf) {
     post_data = {};
-    post_data['icon_id'] = icon_id;
+    post_data['app_id'] = app_id;
     post_data['action'] = 'is_author';
     post_data['csrfmiddlewaretoken'] = csrf;
 
-    $.post('/icons/' + icon_id + '/', post_data,
+    $.post('/apps/' + app_id + '/', post_data,
         function(data){
-            $('#icon-detail').html(data);
+            $('#app-detail').html(data);
         },
         'html');
 

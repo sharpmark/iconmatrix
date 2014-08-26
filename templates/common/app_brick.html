@@ -3,11 +3,7 @@
 
     <div class="brick-icon-192 center-block">
         <a href="{% url 'app-detail' app.id %}" class="text-center">
-            {% if app.last_icon %}
-            <img class="" src="{% get_media_prefix %}{{ app.last_icon.image_192px }}" alt="{{ app.name }}">
-            {% else %}
-            <img class="" src="{{ app.original_icon_image }}" alt="{{ app.name }}">
-            {% endif %}
+            <img class="" src="{% get_media_prefix %}{{ app.icon }}" alt="{{ app.name }}">
         </a>
 
     </div>

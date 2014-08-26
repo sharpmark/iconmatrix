@@ -6,24 +6,27 @@ import urllib
 
 from urlparse import urlparse
 
-def parse_url(app):
+def parse(package_name):
 
-    wandoujia_url = 'http://www.wandoujia.com/apps/' + app.package_name
-    print wandoujia_url
+    wandoujia_url = 'http://www.wandoujia.com/apps/' + package_name
 
     application_html = urllib.urlopen(wandoujia_url).read()
     package_name = _get_package_name(wandoujia_url)
 
     if _get_name(application_html) != 'Null' and package_name != 'Null':
+        app, created = Application.objects.get_or_create(package_name=package_name)
 
+        app = Application.objects.get(package_name=)
         app.name = _get_name(application_html)
-        print app.name
         app.original_icon_image = _get_original_icon(application_html)
         app.description = _get_description(application_html)
         app.download_count = _get_download_count(application_html)
         app.version = _get_version(application_html)
         app.source_url = wandoujia_url
-        app.save()
+
+        return app
+    else:
+        return None
 
 def _get_name(application_html):
     pattern_string = '<p class="app-name">[\s\S]*?<span class="title" itemprop="name">([\S\s]*?)</span>'

@@ -2,7 +2,6 @@
 *.sqlite
 uploads/
 logs/
-iconmatrix/ldap_settings.py
 *.log
 .DS_Store
 icons/admin_set_artist.py

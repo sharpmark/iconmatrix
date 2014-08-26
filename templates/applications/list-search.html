@@ -16,8 +16,8 @@
         <tbody>
         {% for app in app_list %}
             <tr>
-                <td>{% if app.last_icon %}<a href="{% url 'app-detail' app.id %}">
-                    <img src="{% get_media_prefix %}{{ app.last_icon.image_192px }}" class="detail-icon-128" /></a>{% else %}{{ app.get_status_display }}{% endif %}</td>
+                <td><a href="{% url 'app-detail' app.id %}">
+                    <img src="{% get_media_prefix %}{{ app.icon }}" class="detail-icon-128" /></a></td>
                 <td><a href="{% url 'app-detail' app.id %}"><img src="{{ app.original_icon_image }}"  class="detail-icon-128"/></a></td>
                 <td><p class=" app-list-info"><strong>{{ app.name }}</strong></p><br />{{ app.package_name }}</td>
                 <td>{{ app.download_count }}</td>
