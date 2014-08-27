@@ -1,6 +1,5 @@
 {% load app_tags %}
-<div id="app-score">
-<span class="text-center detail-app-rating">
+<div class="text-center app-rating">
     {% if application|score:request.user == 0 %}
     <a href="#" onclick="app_rate({{ application.id }}, 1, '{{ csrf_token }}')" class="btn btn-default" role="button"><span class="glyphicon glyphicon-thumbs-up"></span> 赞</a>
     <a href="#" onclick="app_rate({{ application.id }}, -1, '{{ csrf_token }}')" class="btn btn-default" role="button"><span class="glyphicon glyphicon-thumbs-down"></span> 无爱</a>
@@ -11,5 +10,4 @@
     <a href="#" onclick="app_rate({{ application.id }}, 1, '{{ csrf_token }}')" class="btn btn-default" role="button"><span class="glyphicon glyphicon-thumbs-up"></span> 赞</a>
     <a href="#" onclick="app_rate({{ application.id }}, 0, '{{ csrf_token }}')" class="btn btn-primary active" role="button"><span class="glyphicon glyphicon-thumbs-down"></span> 无爱</a>
     {% endif %}
-</span>
 </div>

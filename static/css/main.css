@@ -7,6 +7,8 @@ body, h1, h2, h3, h4, h5, h6 {
     font-family: "Open Sans",Arial,"Hiragino Sans GB","Microsoft YaHei","微软雅黑","STHeiti","WenQuanYi Micro Hei",SimSun,sans-serif;
 }
 
+/* Launcher */
+
 .launcher {
     width: 1080px;
     padding: 0px;
@@ -30,7 +32,7 @@ body, h1, h2, h3, h4, h5, h6 {
     max-height: 96px;
 }
 
-.icon-image {
+.brick-icon img {
     max-width: 96px;
     max-height: 96px;
     -webkit-filter: drop-shadow(0 5px 5px rgba(0,0,0,.8));
@@ -40,12 +42,12 @@ body, h1, h2, h3, h4, h5, h6 {
     filter: drop-shadow(0 5px 5px rgba(0,0,0,.8));
 }
 
-.brick-app-info {
+.brick-info {
     margin-top: 20px;
     text-shadow: rgba(0, 0, 0, .7) 0 2px 3px;
 }
 
-.brick-app-info, .brick-app-info span {
+.brick-info, .brick-info span {
     font-size: 16px;
     text-decoration: none;
 }
@@ -59,27 +61,21 @@ body, h1, h2, h3, h4, h5, h6 {
     margin: auto;
 }
 
-.brick-app-extinfo {
+.brick-extinfo {
     margin-top: 65px;
     height: 100px;
     background: #fff;
     opacity: .85;
 }
 
-.brick-app-extinfo p {
+.brick-extinfo p {
     line-height: 100px;
     vertical-align: middle;
 }
 
-.detail-block {
-    width: 720px;
-}
+/* app */
 
-.detail-icon-128 {
-    max-width: 128px;
-    max-height: 128px;
-}
-.detail-icon-192 {
+.app-icon img {
     max-width: 192px;
     max-height: 192px;
     -webkit-filter: drop-shadow(0 10px 10px rgba(0,0,0,.8));
@@ -89,20 +85,31 @@ body, h1, h2, h3, h4, h5, h6 {
     filter: drop-shadow(0 10px 10px rgba(0,0,0,.8));
 
 }
-.detail-original-icon {
+
+.icon-original {
     border-radius: 32px;
 }
+
+/* detail */
+
+.detail-block {
+    width: 720px;
+}
+
+.detail-icon-128 {
+    max-width: 128px;
+    max-height: 128px;
+}
+
 
 .detail-app-desc {
     font-size: 15px;
 }
 
-.detail-icon-artist {
-    margin-top: 48px;
-}
-.detail-icon-rating {
-    margin-top: 40px;
-}
+
+
+
+/* pagination */
 
 #pagination {
     width: 1080px;
@@ -113,7 +120,9 @@ body, h1, h2, h3, h4, h5, h6 {
     vertical-align: middle;
 }
 
-#app-detail {
+/* thumb */
+
+#app-thumb {
     background: #3a3d3f;
     -webkit-transform: scale(0.8);
        -moz-transform: scale(0.8);
@@ -122,38 +131,48 @@ body, h1, h2, h3, h4, h5, h6 {
     padding: 50px;
     color: #babdc5;
     border-radius: 10px;
+    width: 720px;
 }
-.detail-icons {
+
+.thumb .app-icons {
     margin-top: 40px;
     margin-bottom: 40px;
 }
-.detail-title {
 
-}
-.detail-app-name {
+.thumb .app-name {
     float: left;
     padding-left: 5px;
     font-size: 21px;
 }
-.detail-desc {
+
+.thumb .app-name a {
+    color: #babdc5;
+}
+
+.thumb .app-name a:hover {
+    text-decoration: none;
+    color: #fff;
+}
+
+.thumb .app-desc {
     margin-top: 30px;
     font-size: 14px;
     line-height: 24px;
 }
-.popup_visible #icon-detail {
+
+.thumb .app-artist {
+    margin-top: 48px;
+}
+
+.popup_visible #app-thumb {
     -webkit-transform: scale(1);
        -moz-transform: scale(1);
         -ms-transform: scale(1);
             transform: scale(1);
 }
-#pagination-bakcup ul {display:inline;}
-#pagination-bakcup ul>li {
-    display:inline;
-    color: #999;
-}
-#pagination-bakcup ul>li a {
-    color: #fff;
-}
+
+/* footer */
+
 footer {
     background: #464749;
 }

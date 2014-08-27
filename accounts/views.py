@@ -4,7 +4,15 @@ from django.http import HttpResponseRedirect
 import hashlib, base64, time
 from datetime import datetime
 import json
+
+from django.contrib.auth import authenticate
+from django.contrib.auth import login as auth_login
+from django.contrib.auth import logout as auth_logout
+
 from weibo import APIClient
+
+from iconmatrix.weiboconfig import *
+from accounts.models import User
 
 def login(request):
 
@@ -12,7 +20,7 @@ def login(request):
 
 
 def logout(request):
-
+    auth_logout(request)
     response = HttpResponseRedirect('/') #TODO:支持回调页面
     response.delete_cookie(COOKIE_USER)
     return response
@@ -28,25 +36,10 @@ def callback(request):
 
     u = client.users.show.get(uid=uid)
 
-    try:
-        user = User.objects.get(id=uid)
-        user.auth_token = access.token
-        user.expired_time = expires_in
-    except BaseException:
-        user = User(id=uid, name=u.screen_name, \
-            image_url=u.avatar_large or u.profile_image_url, \
-            statuses_count=u.statuses_count, \
-            friends_count=u.friends_count, \
-            followers_count=u.followers_count, \
-            verified=u.verified, \
-            verified_type=u.verified_type, \
-            auth_token=access_token, \
-            expired_time=expires_in,
-            #last_sync=datetime.today(),
-            #create_time=datetime.today(),
-            )
-
+    user = authenticate(weibo_user=u, token=r)
     user.save()
+
+    auth_login(request, user)
 
     response = HttpResponseRedirect('/') #TODO
 

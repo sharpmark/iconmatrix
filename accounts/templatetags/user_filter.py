@@ -10,6 +10,6 @@ register = template.Library()
 @register.filter
 def is_ui(value):
     if settings.DEBUG:
-        return True
+        return False
     else:
         return False #TODO

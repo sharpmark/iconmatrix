@@ -16,5 +16,5 @@ urlpatterns = patterns('',
     # 应用详情
     url(r'^apps/(?P<app_id>\d+)/$', views.detail, name='app-detail'),
     url(r'^apps/(?P<app_id>\d+)/rate/(?P<score>[\d\-]+)/$', views.rate, name='app-rate'),
-    url(r'^apps/(?P<app_id>\d+)/thumb/$', views.detail_thumb, name='app-thumb'),
+    url(r'^apps/(?P<app_id>\d+)/thumb/$', views.thumb, name='app-thumb'),
 )

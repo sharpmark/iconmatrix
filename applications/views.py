@@ -18,12 +18,12 @@ def detail(request, app_id):
     })
 
 
-def detail_thumb(request, app_id):
+def thumb(request, app_id):
 
     app = get_object_or_404(Application, pk=app_id)
     print app_id
     print app.name
-    return render(request, 'applications/detail-thumb.html', {
+    return render(request, 'applications/thumb.html', {
         'application': app,
     })
 

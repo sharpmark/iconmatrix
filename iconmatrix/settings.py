@@ -136,6 +136,10 @@ INSTALLED_APPS = (
     'artists',
 )
 
+AUTHENTICATION_BACKENDS = (
+    'accounts.backends.WeiboBackend',
+)
+
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
 
 # A sample logging configuration. The only tangible logging

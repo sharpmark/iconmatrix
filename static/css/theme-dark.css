@@ -33,6 +33,6 @@ body {
 .brick-9 {
     background: url(/static/images/launcher/dark9/back9.png);
 }
-.brick-app-info span{
+.brick-info span{
     color: #a0a0a0;
 }

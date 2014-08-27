@@ -1,19 +1,19 @@
 $(document).ready(function() {
 
-    $('#app-detail').popup({
+    $('#app-thumb').popup({
       transition: 'all 0.3s'
     });
 
     $('.brick').click(function() {
-        $('#app-detail').html($.ajax({url:$(this).attr('appurl'), async:false}).responseText);
-        $('#app-detail').popup('show');
+        $('#app-thumb').html($.ajax({url:$(this).attr('appurl'), async:false}).responseText);
+        $('#app-thumb').popup('show');
     });
 
     $(".brick").on("mouseenter",function() {
-		$(this).find(".brick-app-extinfo").fadeIn(300);
+		$(this).find(".brick-extinfo").fadeIn(300);
 	});
 	$(".brick").on("mouseleave",function(){
-		$(this).find(".brick-app-extinfo").fadeOut(300);
+		$(this).find(".brick-extinfo").fadeOut(300);
 	});
 
     if ($('.user-claim-count').text().valueOf() != '0')
