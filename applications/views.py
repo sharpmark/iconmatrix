@@ -21,8 +21,6 @@ def detail(request, app_id):
 def thumb(request, app_id):
 
     app = get_object_or_404(Application, pk=app_id)
-    print app_id
-    print app.name
     return render(request, 'applications/thumb.html', {
         'application': app,
     })
@@ -39,7 +37,7 @@ def list(request, page_id=0):
         app_list = _list_random()
     else:
         if page_count < page_id or page_id < 1: page_id = 1
-        app_list = _list(page_id, statuses)
+        app_list = _list(page_id)
 
     return render(request, 'applications/launcher.html', {
         'app_list': app_list,

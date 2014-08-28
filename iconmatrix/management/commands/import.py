@@ -14,11 +14,15 @@ class Command(BaseCommand):
 
         for root, dirs, files in os.walk(os.path.join('./uploads/icons')):
             for name in files:
-                app = get_app(package_name = name[:-9].replace('_', '.'))
+                package_name = name[:-9].replace('_', '.')
+                try:
+                    app = Application.objects.get(package_name=package_name)
+                except:
+                    app = get_app(package_name=package_name)
 
-                if app != None:
-                    if app.icon == '':
-                        app.icon = name
-                        app.save()
-                else:
-                    print package_name
+                    if app != None:
+                        if app.icon == '':
+                            app.icon = name
+                            app.save()
+                    else:
+                        print package_name
