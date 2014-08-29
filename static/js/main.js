@@ -1,7 +1,7 @@
 $(document).ready(function() {
 
     $('#app-thumb').popup({
-      transition: 'all 0.3s'
+      transition: 'all 0.15s'
     });
 
     $('.brick').click(function() {
@@ -51,17 +51,6 @@ function app_rate(app_id, score, csrf) {
 
     event.stopPropagation();
 };
-
-function app_claim(app_id, action, csrf) {
-    post_data = {};
-    post_data['app_id'] = app_id;
-    post_data['action'] = action;
-    post_data['csrfmiddlewaretoken'] = csrf;
-
-    $.post('/apps/'+app_id+'/', post_data);
-
-    event.stopPropagation();
-}
 
 function app_is_author(app_id, csrf) {
     post_data = {};

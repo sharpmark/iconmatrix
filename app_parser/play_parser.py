@@ -6,9 +6,9 @@ import urllib
 
 from urlparse import urlparse
 
-def wdj_parse(package_name):
+def play_parse(package_name):
 
-    url = 'http://www.wandoujia.com/apps/' + package_name
+    url = 'https://play.google.com/store/apps/details?id=' + package_name
     application_html = urllib.urlopen(url).read()
 
     if _get_name(application_html) != 'Null' and package_name != 'Null':
@@ -20,6 +20,7 @@ def wdj_parse(package_name):
         app.description = _get_description(application_html)
         app.download_count = _get_download_count(application_html)
         app.version = _get_version(application_html)
+
         app.source_url = url
 
         return app
@@ -27,28 +28,28 @@ def wdj_parse(package_name):
         return None
 
 def _get_name(application_html):
-    pattern_string = '<p class="app-name">[\s\S]*?<span class="title" itemprop="name">([\S\s]*?)</span>'
+    pattern_string = '<div class="document-title" itemprop="name">[\s\S]*?<div>([\S\s]*?)</div>'
     return _reg_search(pattern_string, application_html)
 
 def _get_original_icon(application_html):
-    pattern_string = '<div class="app-icon">[\s\S]*?<img src="(\S*?)"'
+    pattern_string = '<div class="cover-container">[\s\S]*?<img class="cover-image" src="(\S*?)"'
     return _reg_search(pattern_string, application_html)
 
 def _get_description(application_html):
-    pattern_string = 'itemprop="description">[\s\S]*?([\s\S]*?)</div>'
+    pattern_string = '<div class="class="id-app-orig-desc" itemprop="description"[\s\S]*?">([\s\S]*?)</div>'
     return _reg_search(pattern_string, application_html)
 
 def _get_download_count(application_html):
-    pattern_string = '<i itemprop="interactionCount" content="UserDownloads:(\d*?)"'
+    pattern_string = '<div class="content" itemprop="numDownloads">([\s\S]*?)</div>'
     return _reg_search(pattern_string, application_html)
 
 def _get_version(application_html):
-    pattern_string = '<dt>版本</dt>[\s\S]*?<dd>(\S*)</dd>'
+    pattern_string = '<div class="content" itemprop="softwareVersion">[\s]*?(\S*)[\s]*? </div>'
     return _reg_search(pattern_string, application_html)
 
 def _get_package_name(application_url):
     path = urlparse(application_url)[2]
-    pattern_string = '/apps/(\S*)'
+    pattern_string = '/apps/details\?id=(\S*)'
     return _reg_search(pattern_string, path)
 
 def _reg_search(pattern_string, application_html):
