@@ -2,7 +2,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 
-from applications.models import Application
+from applications.models import Application, Like
 from applications.forms import SearchForm
 
 DEFAULT_APPS = 18
@@ -12,10 +12,18 @@ def detail(request, app_id):
 
     application = get_object_or_404(Application, pk=app_id)
 
-    return render(request, 'applications/detail.html', {
-        'application': application,
-        #'my_score': application.my_score(request.user),
-    })
+    if request.method == 'GET':
+        return render(request, 'applications/detail.html', {
+            'application': application,
+        })
+
+    # 以下为处理 POST 请求
+    action = request.POST['action']
+
+    if action == 'rate':
+        return _rate(request, application)
+
+    return redirect(app)
 
 
 def thumb(request, app_id):
@@ -73,29 +81,30 @@ def search(request):
 
 
 @login_required
-def rate(request, app_id, score):
-    app = get_object_or_404(Application, pk=app_id)
+def _rate(request, application):
+    score = int(request.POST['score'])
+
     if int(score) == 0:
         try:
-            like = Like.objects.get(application=app, user=request.user)
+            like = Like.objects.get(application=application, user=request.user)
             like.delete()
         except:
             pass
     else:
 
         try:
-            like = Like.objects.get(application=app, user=request.user)
+            like = Like.objects.get(application=application, user=request.user)
         except:
             like = Like()
             like.user = request.user
-            like.application = app
+            like.application = application
             like.score = score
             like.save()
 
         like.score = score
         like.save()
 
-    return HttpResponseRedirect('/apps/%d/' % app.id)
+    return render(request, 'applications/like.html', {'application': application,})
 
 
 def _list_random(apps_pre_page=DEFAULT_APPS):
