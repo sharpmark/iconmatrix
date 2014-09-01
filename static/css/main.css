@@ -7,12 +7,24 @@ body, h1, h2, h3, h4, h5, h6 {
     font-family: "Open Sans",Arial,"Hiragino Sans GB","Microsoft YaHei","微软雅黑","STHeiti","WenQuanYi Micro Hei",SimSun,sans-serif;
 }
 
+/* bootstrap css fix */
+.container {
+    width: 1110px;
+}
+.navbar-brand {
+    padding: 0px;
+}
+.navbar>.container .navbar-brand {
+    margin-left: 0px;
+}
+
 /* Launcher */
 
 .launcher {
     width: 1080px;
     padding: 0px;
     height: 100%;
+    margin-bottom: 10px;
 }
 
 .content {
@@ -112,8 +124,9 @@ body, h1, h2, h3, h4, h5, h6 {
 /* pagination */
 
 #pagination {
-    width: 1080px;
+    width: 100%;
     text-align: center;
+    background: #464749;
 }
 
 .table>tbody>tr>td {
@@ -175,7 +188,13 @@ body, h1, h2, h3, h4, h5, h6 {
 /* footer */
 
 footer {
-    background: #464749;
+}
+
+.copyleft {
+    width: 1110px;
+    margin: 0px auto 0px auto;
+    padding: 10px 15px 5px 15px;
+    color: #a0a0a0;
 }
 
 hr {

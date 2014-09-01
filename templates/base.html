@@ -21,28 +21,22 @@
       <header class="navbar navbar-inverse navbar-fixed-top" role="banner">
           <div class="container">
               <nav class="collapse navbar-collapse" role="navigation">
-                  <ul class="nav navbar-nav">
-                      <li class="{% active index_url %}"><a href="{% url 'index' %}">Icon Matrix</a></li>
-                  </ul>
-
-                  <!--ul class="nav navbar-nav navbar-right">
-                      <form class="navbar-form navbar-left" role="search" action="/apps/search/" imethod="post">{% csrf_token %}
+                  <div class="navbar-header"><a class="navbar-brand" href="/"><img src="/static/images/logo.png"/></a></div>
+                  <ul class="nav navbar-nav navbar-right">
+                      <!--form class="navbar-form navbar-left" role="search" action="/apps/search/" imethod="post">{% csrf_token %}
                               <input id="id_query" maxlength="100" name="query" class="form-control" placeholder="搜索应用">
-                      </form>
+                      </form-->
                       {% if user.is_authenticated %}
                       <li class="dropdown">
                           <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ user.name }}</a>
                           <ul class="dropdown-menu">
-                              {% if user|is_ui %}
-                              <li><a href="{% url 'artist-my-finish' %}">我已绘的图标</span></a></li>
-                              {% endif %}
                               <li class="{% active auth_logout_url %}"><a href="{% url 'auth-logout' %}">退出</a></li>
                           </ul>
                       </li>
                       {% else %}
                       <li class="{% active auth_login_url %}"><a href="{% url 'auth-login' %}">微博登录</a></li>
                       {% endif %}
-                  </ul-->
+                  </ul>
               </nav>
           </div>
       </header>
@@ -54,6 +48,7 @@
     <footer>
     {% block footer %}
     {% endblock %}
+    <div class="copyleft"><p>Icon Matrix 是基于 Smartisan OS 系统的图标的展示网站，纯个人业余制作。所有图标版权归<a href="http://www.smartisan.com/">锤子科技</a>及设计师所有。禁止任何转载和盗用。<a href="mailto:iconmatrix@sharpmark.net">意见反馈邮箱</a> | <a href="http://www.smartisan.com/#/join">应聘锤子科技</a></p></div>
     </footer>
     <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.0.3.min.js"></script>
     <script src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
