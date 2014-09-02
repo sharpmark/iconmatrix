@@ -27,10 +27,6 @@ body, h1, h2, h3, h4, h5, h6 {
     margin-bottom: 10px;
 }
 
-.content {
-    background: #eee;
-}
-
 .brick {
     float: left;
     margin: 1px;
@@ -104,21 +100,51 @@ body, h1, h2, h3, h4, h5, h6 {
 
 /* detail */
 
-.detail-block {
-    width: 720px;
+.detail {
+    background: #3a3d3f;
+    padding: 50px;
+    color: #babdc5;
+    margin: 15px auto 20px;
+    border-radius: 10px;
+    -webkit-filter: drop-shadow(0 1px 5px rgba(0,0,0,.8));
+    -moz-filter: drop-shadow(0 1px 5px rgba(0,0,0,.8));
+    -ms-filter: drop-shadow(0 1px 5px rgba(0,0,0,.8));
+    -o-filter: drop-shadow(0 1px 5px rgba(0,0,0,.8));
+    filter: drop-shadow(0 1px 5px rgba(0,0,0,.8));
 }
 
-.detail-icon-128 {
-    max-width: 128px;
-    max-height: 128px;
+.detail .app-artist {
+    margin-top: 40px;
+    font-size: 18px;
+    margin-bottom: 30px;
 }
 
-
-.detail-app-desc {
-    font-size: 15px;
+.detail .app-name {
+    margin-bottom: 10px;
+    font-size: 21px;
+    float: left;
 }
 
+.detail .app-ops {
+    float: right;
+    font-size: 18px;
+}
 
+.detail .app-ops a:hover {
+    text-decoration: none;
+    color: #fff;
+}
+
+.detail .app-desc {
+    margin-top: 30px;
+    font-size: 14px;
+    line-height: 24px;
+}
+
+.detail .app-title {
+    display: block;
+    height: 68px;
+}
 
 
 /* pagination */
@@ -166,12 +192,6 @@ body, h1, h2, h3, h4, h5, h6 {
 .thumb .app-name a:hover {
     text-decoration: none;
     color: #fff;
-}
-
-.thumb .app-desc {
-    margin-top: 30px;
-    font-size: 14px;
-    line-height: 24px;
 }
 
 .thumb .app-artist {
