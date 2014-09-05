@@ -9,19 +9,18 @@
             <div class="col-md-3 app-icon">
                 <img class="center-block" src="{% get_media_prefix %}{{ application.get_icon_url }}" />
                 <h5 class="text-center app-artist">重绘图标</h5>
-                <span id="app-score">{% include 'applications/like.html' %}</span>
+                <div id="app-score" class="app-score">{% include 'applications/like.html' %}</div>
             </div>
             <div class="col-md-3 app-icon">
                 <img class="center-block icon-original" src="{{ application.original_icon_image }}" />
                 <h5 class="text-center app-artist">原始图标</h5>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6 app-info">
                 <div class="app-title">
                     <h2 class="app-name">{{ application.name }}</h2>
                     <h2 class="app-ops">
-                        <span class="label label-info">{{ application.get_status_display }}</span>
-                        <span class="label label-default"><span class="glyphicon glyphicon-download"></span> 下载量：{{ application.download_count }}</span>
-                        <a href="{{ application.source_url }}"><span class="label label-info">去贵荚下载</span></a>
+                        <a href="{{ application.share_button|safe }}" target="_blank"><span class="label label-info">分享到新浪微博</span></a>
+                        <a href="{{ application.source_url }}"><span class="label label-default">去贵荚下载</span></a>
                     </h2></div><hr />
                 <div class="app-desc">
                     <p>{{ application.description|safe }}</p>

@@ -113,6 +113,10 @@ body, h1, h2, h3, h4, h5, h6 {
     filter: drop-shadow(0 1px 5px rgba(0,0,0,.8));
 }
 
+.detail .app-info {
+    padding: 0 30px 0 45px;
+}
+
 .detail .app-artist {
     margin-top: 40px;
     font-size: 18px;
@@ -146,6 +150,9 @@ body, h1, h2, h3, h4, h5, h6 {
     height: 68px;
 }
 
+.detail .app-score {
+    margin-top: 50px;
+}
 
 /* pagination */
 
@@ -185,8 +192,24 @@ body, h1, h2, h3, h4, h5, h6 {
     font-size: 21px;
 }
 
+.thumb .app-ops {
+    float: right;
+    margin: 0px;
+    font-size: 14px;
+}
+
+.thumb .app-ops a, .thumb .app-ops a:hover {
+    text-decoration: none;
+    color: #fff;
+}
+
 .thumb .app-name a {
     color: #babdc5;
+}
+
+.thumb .app-score {
+    float: right;
+    pading-top: 5px;
 }
 
 .thumb .app-name a:hover {
@@ -195,7 +218,7 @@ body, h1, h2, h3, h4, h5, h6 {
 }
 
 .thumb .app-artist {
-    margin-top: 48px;
+    margin-top: 50px;
 }
 
 .popup_visible #app-thumb {

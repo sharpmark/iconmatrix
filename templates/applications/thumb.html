@@ -1,8 +1,8 @@
 {% load static %}
 <div class="row app-title">
     <div class="col-md-12">
-        <span class="app-name"><a href="http://www.wandoujia.com/apps/{{ application.package_name }}" target="_blank">{{ application.name }}</a></span>
-        <span id="app-score" style="float: right;">{% include 'applications/like.html' %}</span>
+        <span class="app-name"><a href="{{ application.get_absolute_url }}" target="_blank">{{ application.name }}</a></span>
+        <div id="app-score" class="app-score">{% include 'applications/like.html' %}</div>
     </div>
 </div>
 <hr />
@@ -17,3 +17,4 @@
     </div>
 </div>
 <hr />
+<h2 class="app-ops"><a href="{{ application.share_button|safe }}" target="_blank">分享到新浪微博</a></h2>
