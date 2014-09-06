@@ -1,13 +1,13 @@
 {% load app_tags %}
-<div class="text-center app-rating">{% if user.is_authenticated %}
-    {% if application|score:request.user == 0 %}
-    <a href="#" onclick="app_rate({{ application.id }}, 1, '{{ csrf_token }}')" class="btn-default btn-sm" role="button"><span class="glyphicon glyphicon-thumbs-up"></span> 赞 ({{ application.like_count }})</a>
-    <a href="#" onclick="app_rate({{ application.id }}, -1, '{{ csrf_token }}')" class="btn-default btn-sm" role="button"><span class="glyphicon glyphicon-thumbs-down"></span> 无爱</a>
+<div class="text-center app-rating">
+    {% if user.is_authenticated %}{% if application|score:request.user == 0 %}
+    <a href="#" onclick="app_rate('{{ application.package_name }}', 1, '{{ csrf_token }}')" class="btn-default btn-sm" role="button"><span class="glyphicon glyphicon-thumbs-up"></span> 赞 ({{ application.like_count }})</a>
+    <a href="#" onclick="app_rate('{{ application.package_name }}', -1, '{{ csrf_token }}')" class="btn-default btn-sm" role="button"><span class="glyphicon glyphicon-thumbs-down"></span> 无爱</a>
     {% elif application|score:request.user == 1 %}
-    <a href="#" onclick="app_rate({{ application.id }}, 0, '{{ csrf_token }}')" class="btn-primary active btn-sm" role="button"><span class="glyphicon glyphicon-thumbs-up"></span> 赞 ({{ application.like_count }})</a>
-    <a href="#" onclick="app_rate({{ application.id }}, -1, '{{ csrf_token }}')" class="btn-default btn-sm" role="button"><span class="glyphicon glyphicon-thumbs-down"></span> 无爱</a>
+    <a href="#" onclick="app_rate('{{ application.package_name }}', 0, '{{ csrf_token }}')" class="btn-primary active btn-sm" role="button"><span class="glyphicon glyphicon-thumbs-up"></span> 赞 ({{ application.like_count }})</a>
+    <a href="#" onclick="app_rate('{{ application.package_name }}', -1, '{{ csrf_token }}')" class="btn-default btn-sm" role="button"><span class="glyphicon glyphicon-thumbs-down"></span> 无爱</a>
     {% elif application|score:request.user == -1 %}
-    <a href="#" onclick="app_rate({{ application.id }}, 1, '{{ csrf_token }}')" class="btn-default btn-sm" role="button"><span class="glyphicon glyphicon-thumbs-up"></span> 赞 ({{ application.like_count }})</a>
-    <a href="#" onclick="app_rate({{ application.id }}, 0, '{{ csrf_token }}')" class="btn-primary active btn-sm" role="button"><span class="glyphicon glyphicon-thumbs-down"></span> 无爱</a>
+    <a href="#" onclick="app_rate('{{ application.package_name }}', 1, '{{ csrf_token }}')" class="btn-default btn-sm" role="button"><span class="glyphicon glyphicon-thumbs-up"></span> 赞 ({{ application.like_count }})</a>
+    <a href="#" onclick="app_rate('{{ application.package_name }}', 0, '{{ csrf_token }}')" class="btn-primary active btn-sm" role="button"><span class="glyphicon glyphicon-thumbs-down"></span> 无爱</a>
     {% endif %}{% endif %}
 </div>

@@ -14,6 +14,6 @@ urlpatterns = patterns('',
     url(r'^apps/search/$', views.search, name='apps-search'),
 
     # 应用详情
-    url(r'^apps/(?P<app_id>\d+)/$', views.detail, name='app-detail'),
-    url(r'^apps/(?P<app_id>\d+)/thumb/$', views.thumb, name='app-thumb'),
+    url(r'^apps/(?P<package>\S+)/thumb/$', views.thumb, name='app-thumb'),
+    url(r'^apps/(?P<package>\S+)/$', views.detail, name='app-detail'),
 )

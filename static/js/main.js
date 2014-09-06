@@ -16,11 +16,6 @@ $(document).ready(function() {
 		$(this).find(".brick-extinfo").fadeOut(300);
 	});
 
-    if ($('.user-claim-count').text().valueOf() != '0')
-    {
-        $('.user-claim-count').show();
-    };
-
     $("#selectall").on('change', function(){
 
         if($(this).is(":checked"))
@@ -36,14 +31,14 @@ $(document).ready(function() {
 });
 
 
-function app_rate(app_id, score, csrf) {
+function app_rate(package, score, csrf) {
     post_data = {};
-    post_data['app_id'] = app_id;
+    post_data['package_name'] = package;
     post_data['score'] = score;
     post_data['action'] = 'rate';
     post_data['csrfmiddlewaretoken'] = csrf;
 
-    $.post('/apps/' + app_id + '/', post_data,
+    $.post('/apps/' + package + '/', post_data,
         function(data){
             $('#app-score').html(data);
         },
@@ -51,18 +46,3 @@ function app_rate(app_id, score, csrf) {
 
     event.stopPropagation();
 };
-
-function app_is_author(app_id, csrf) {
-    post_data = {};
-    post_data['app_id'] = app_id;
-    post_data['action'] = 'is_author';
-    post_data['csrfmiddlewaretoken'] = csrf;
-
-    $.post('/apps/' + app_id + '/', post_data,
-        function(data){
-            $('#app-detail').html(data);
-        },
-        'html');
-
-    event.stopPropagation();
-}

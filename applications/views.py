@@ -7,10 +7,9 @@ from applications.forms import SearchForm
 
 DEFAULT_APPS = 18
 
+def detail(request, package):
 
-def detail(request, app_id):
-
-    application = get_object_or_404(Application, pk=app_id)
+    application = get_object_or_404(Application, package_name=package)
 
     if request.method == 'GET':
         return render(request, 'applications/detail.html', {
@@ -26,9 +25,9 @@ def detail(request, app_id):
     return redirect(app)
 
 
-def thumb(request, app_id):
+def thumb(request, package):
 
-    app = get_object_or_404(Application, pk=app_id)
+    app = get_object_or_404(Application, package_name=package)
     return render(request, 'applications/thumb.html', {
         'application': app,
     })

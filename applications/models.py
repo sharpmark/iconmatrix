@@ -37,7 +37,7 @@ class Application(models.Model):
         return Like.objects.filter(application=self, score=-1).count()
 
     def get_absolute_url(self):
-        return '/apps/%d/' % self.id
+        return '/apps/%s/' % self.package_name
 
     def get_icon_url(self):
         return 'icons/%s' % self.icon
