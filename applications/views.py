@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 
 from applications.models import Application, Like
@@ -61,6 +61,7 @@ def list(request, page_id=0):
 
 
 def search(request):
+    print 'in search'
     #TODO: rewrite to RESTFul
     from django.db.models import Q
 
@@ -70,10 +71,14 @@ def search(request):
         form = SearchForm(request.POST)
         if form.is_valid():
             app_list = Application.objects.filter(Q(name__icontains=form.cleaned_data['query']) | Q( package_name__icontains=form.cleaned_data['query']))
+            print app_list
 
             if len(app_list) == 1:
-                return redirect('/apps/%d/' % app_list[0].id)
-
+                return redirect(app_list[0].get_absolute_url())
+        else:
+            print 'form not valid'
+    else:
+        print 'not post'
     return render(request, 'applications/list-search.html', {
         'app_list': app_list,
     })

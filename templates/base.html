@@ -23,9 +23,9 @@
               <nav class="collapse navbar-collapse" role="navigation">
                   <div class="navbar-header"><a class="navbar-brand" href="/"><img src="/static/images/logo.png"/></a></div>
                   <ul class="nav navbar-nav navbar-right">
-                      <!--form class="navbar-form navbar-left" role="search" action="/apps/search/" imethod="post">{% csrf_token %}
+                      <form class="navbar-form navbar-left" role="search" action="/apps/search/" method="post">{% csrf_token %}
                               <input id="id_query" maxlength="100" name="query" class="form-control" placeholder="搜索应用">
-                      </form-->
+                      </form>
                       {% if user.is_authenticated %}
                       <li class="dropdown">
                           <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ user.name }}</a>
