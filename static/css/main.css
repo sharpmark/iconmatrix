@@ -18,6 +18,18 @@ body, h1, h2, h3, h4, h5, h6 {
     margin-left: 0px;
 }
 
+.navbar-form input {
+    background-color: #2d2d2d;
+    border: 0px solid #2d2d2d;
+    -webkit-box-shadow: inset 0 1px 2px rgba(0,0,0,.9);
+    -moz-box-shadow: inset 0 1px 2px rgba(0,0,0,.9);
+    box-shadow: inset 0 1px 2px rgba(0,0,0,.9);
+    border-radius: 20px;
+    height: 25px;
+    width: 100px;
+    margin: 4px 0px;
+    }
+
 /* Launcher */
 
 .launcher {
@@ -109,12 +121,6 @@ body, h1, h2, h3, h4, h5, h6 {
     padding: 50px;
     color: #babdc5;
     margin: 15px auto 20px;
-    border-radius: 10px;
-    -webkit-filter: drop-shadow(0 1px 5px rgba(0,0,0,.8));
-    -moz-filter: drop-shadow(0 1px 5px rgba(0,0,0,.8));
-    -ms-filter: drop-shadow(0 1px 5px rgba(0,0,0,.8));
-    -o-filter: drop-shadow(0 1px 5px rgba(0,0,0,.8));
-    filter: drop-shadow(0 1px 5px rgba(0,0,0,.8));
 }
 
 .detail .app-info {
@@ -164,6 +170,34 @@ body, h1, h2, h3, h4, h5, h6 {
     width: 100%;
     text-align: center;
     background: #464749;
+}
+
+.page-nav {
+    display: inline-block;
+    padding-left: 0;
+    margin: 20px 0;
+}
+
+.page-nav>li {
+    display: inline;
+}
+
+.page-nav>li>a, .page-nav>li>span {
+    color: #fff;
+    position: relative;
+    float: left;
+    padding: 3px 9px;
+    margin-left: 5px;
+    line-height: 1.428571429;
+    text-decoration: none;
+}
+
+.page-nav>.active>a, .page-nav>.active>span, .page-nav>.active>a:hover, .page-nav>.active>span:hover, .page-nav>.active>a:focus, .page-nav>.active>span:focus {
+    z-index: 2;
+    color: #464749;
+    cursor: default;
+    background-color: #fff;
+    border-radius: 15px;
 }
 
 .table>tbody>tr>td {

@@ -60,8 +60,10 @@ def list(request, page_id=0):
     })
 
 
+def hot(request):
+    pass
+
 def search(request):
-    print 'in search'
     #TODO: rewrite to RESTFul
     from django.db.models import Q
 
@@ -79,7 +81,7 @@ def search(request):
             print 'form not valid'
     else:
         print 'not post'
-    return render(request, 'applications/list-search.html', {
+    return render(request, 'applications/list-nopaged.html', {
         'app_list': app_list,
     })
 
