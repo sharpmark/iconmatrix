@@ -16,12 +16,16 @@
     {% url 'index' as index_url %}
     {% url 'auth-logout' as auth_logout_url %}
     {% url 'auth-login' as auth_login_url %}
+    {% url 'apps-hot' as apps_hot_url %}
 
   <body>
       <header class="navbar navbar-inverse navbar-fixed-top" role="banner">
           <div class="container">
               <nav class="collapse navbar-collapse" role="navigation">
                   <div class="navbar-header"><a class="navbar-brand" href="/"><img src="/static/images/logo.png"/></a></div>
+                  <ul class="nav navbar-nav">
+                      <li class="{% active apps_hot_url %}"><a href="{% url 'apps-hot' %}">最热应用</a></li>
+                  </ul>
                   <ul class="nav navbar-nav navbar-right">
                       <form class="navbar-form navbar-left" role="search" action="/apps/search/" method="post">{% csrf_token %}
                               <input id="id_query" maxlength="100" name="query" class="form-control" placeholder="搜索应用">

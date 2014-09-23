@@ -21,6 +21,9 @@ class Application(models.Model):
     icon = models.ImageField(upload_to='upload/icons/')
     artist = models.ForeignKey(User, related_name='draws', null=True)
 
+    like_count = models.SmallIntegerField(default=0)
+    unlike_count = models.SmallIntegerField(default=0)
+
     timestamp_draw = models.DateTimeField(null=True)
 
     def score(self, user):
@@ -30,10 +33,10 @@ class Application(models.Model):
         except:
             return 0
 
-    def like_count(self):
+    def get_like_count(self):
         return Like.objects.filter(application=self, score=1).count()
 
-    def unlike_count(self):
+    def get_unlike_count(self):
         return Like.objects.filter(application=self, score=-1).count()
 
     def get_absolute_url(self):

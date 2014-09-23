@@ -55,13 +55,14 @@ def list(request, page_id=0):
         'lastpage': page_count,
         'app_list': app_list,
     })
-    return render(request, 'applications/launcher.html', {
-        'app_list': Application.objects.all().order_by('-timestamp_draw'),
-    })
 
 
 def hot(request):
-    pass
+
+    app_list = _list(1, order_by='-like_count')
+
+    return render(request, 'applications/list-nopaged.html', { 'app_list': app_list })
+
 
 def search(request):
     #TODO: rewrite to RESTFul
@@ -93,6 +94,11 @@ def _rate(request, application):
     if int(score) == 0:
         try:
             like = Like.objects.get(application=application, user=request.user)
+            if like.score > 1:
+                like.application.like_count = like.application.like_count - 1
+            elif like.score < 0:
+                like.application.unlike_count = like.application.unlike_count - 1
+            like.application.save()
             like.delete()
         except:
             pass
@@ -104,10 +110,14 @@ def _rate(request, application):
             like = Like()
             like.user = request.user
             like.application = application
-            like.score = score
-            like.save()
 
-        like.score = score
+        if score > 0:
+            like.score = 1
+            like.application.like_count = like.application.like_count + 1
+        else:
+            like.score = -1
+            like.application.unlike_count = like.application.unlike_count + 1
+        like.application.save()
         like.save()
 
     return render(request, 'applications/like.html', {'application': application,})
@@ -136,9 +146,9 @@ def _list_random(apps_pre_page=DEFAULT_APPS):
     return app_list
 
 
-def _list(page_id, apps_pre_page=DEFAULT_APPS):
+def _list(page_id, apps_pre_page=DEFAULT_APPS, order_by='-timestamp_draw'):
 
-    return Application.objects.all().order_by('-timestamp_draw')\
+    return Application.objects.all().order_by(order_by)\
         [(page_id - 1) * apps_pre_page: page_id * apps_pre_page]
 
 
