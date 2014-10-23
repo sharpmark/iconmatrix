@@ -17,6 +17,7 @@
     {% url 'auth-logout' as auth_logout_url %}
     {% url 'auth-login' as auth_login_url %}
     {% url 'apps-hot' as apps_hot_url %}
+    {% url 'apps-new' as apps_new_url %}
 
   <body>
       <header class="navbar navbar-inverse navbar-fixed-top" role="banner">
@@ -25,6 +26,7 @@
                   <div class="navbar-header"><a class="navbar-brand" href="/"><img src="/static/images/logo.png"/></a></div>
                   <ul class="nav navbar-nav">
                       <li class="{% active apps_hot_url %}"><a href="{% url 'apps-hot' %}">最热应用</a></li>
+                      <li class="{% active apps_new_url %}"><a href="{% url 'apps-new' %}">最新更新</a></li>
                   </ul>
                   <ul class="nav navbar-nav navbar-right">
                       <form class="navbar-form navbar-left" role="search" action="/apps/search/" method="post">{% csrf_token %}

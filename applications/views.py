@@ -64,6 +64,13 @@ def hot(request):
     return render(request, 'applications/list-nopaged.html', { 'app_list': app_list })
 
 
+def new(request):
+
+    app_list = _list(1, order_by='-id')
+
+    return render(request, 'applications/list-nopaged.html', { 'app_list': app_list })
+
+
 def search(request):
     #TODO: rewrite to RESTFul
     from django.db.models import Q
