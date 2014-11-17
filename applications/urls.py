@@ -9,7 +9,7 @@ urlpatterns = patterns('',
     url(r'^apps/$', views.list, name='apps-list'),
     url(r'^apps/random/$', views.list, name='apps-list'),
     url(r'^apps/hot/$', views.hot, name='apps-hot'),
-    url(r'^apps/new/$', views.new, name='app-new'),
+    url(r'^apps/new/$', views.new, name='apps-new'),
     #url(r'^apps/week/(?P<week_id>\d+)/$', views.week, name='app-week'),
     url(r'^apps/page/(?P<page_id>\d+)/$', views.list, name='apps-list'),
 
