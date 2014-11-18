@@ -6,16 +6,16 @@
 {% block container %}
     <div class="detail container">
         <div class="row app-icons">
-            <div class="col-md-3 app-icon">
+            <div class="col-md-3 col-xs-6 app-icon-redraw">
                 <img class="center-block" src="{% get_media_prefix %}{{ application.get_icon_url }}" />
                 <h5 class="text-center app-artist">重绘图标</h5>
                 <div id="app-score" class="app-score">{% include 'applications/like.html' %}</div>
             </div>
-            <div class="col-md-3 app-icon">
+            <div class="col-md-3 col-xs-6 app-icon-original">
                 <img class="center-block icon-original" src="{{ application.original_icon_image }}" />
                 <h5 class="text-center app-artist">原始图标</h5>
             </div>
-            <div class="col-md-6 app-info">
+            <div class="col-md-6 col-xs-12 app-info">
                 <div class="app-title">
                     <h2 class="app-name">{{ application.name }}</h2>
                     <h2 class="app-ops">
@@ -40,6 +40,6 @@
         })();
     </script>
     <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-    
+
     </div>
 {% endblock %}

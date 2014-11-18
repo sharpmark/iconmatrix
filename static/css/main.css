@@ -96,9 +96,21 @@ body, h1, h2, h3, h4, h5, h6 {
 
 /* app */
 
-.app-icon img {
+.app-icon-redraw img {
     max-width: 192px;
     max-height: 192px;
+    -webkit-filter: drop-shadow(0 10px 10px rgba(0,0,0,.8));
+    -moz-filter: drop-shadow(0 10px 10px rgba(0,0,0,.8));
+    -ms-filter: drop-shadow(0 10px 10px rgba(0,0,0,.8));
+    -o-filter: drop-shadow(0 10px 10px rgba(0,0,0,.8));
+    filter: drop-shadow(0 10px 10px rgba(0,0,0,.8));
+
+}
+
+.app-icon-original img {
+    max-width: 192px;
+    max-height: 192px;
+    padding: 32px;
     -webkit-filter: drop-shadow(0 10px 10px rgba(0,0,0,.8));
     -moz-filter: drop-shadow(0 10px 10px rgba(0,0,0,.8));
     -ms-filter: drop-shadow(0 10px 10px rgba(0,0,0,.8));
@@ -112,7 +124,7 @@ body, h1, h2, h3, h4, h5, h6 {
 }
 
 .icon-original {
-    border-radius: 41px;
+    /* border-radius: 41px; */
 }
 
 /* detail */
