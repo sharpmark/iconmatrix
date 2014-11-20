@@ -14,7 +14,7 @@ class Command(BaseCommand):
 
         for root, dirs, files in os.walk(os.path.join('./uploads/icons')):
             for name in files:
-                if name == '.DS_Store': continue
+                if name != '.png': continue
                 package_name = name[:-9].replace('_', '.')
                 try:
                     app = Application.objects.get(package_name=package_name)
