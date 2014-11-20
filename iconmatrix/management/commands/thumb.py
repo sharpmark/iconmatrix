@@ -37,6 +37,7 @@ def load_image(filename):
     if not os.path.exists(filename): return None
 
     image = Image.open(filename)
+    image.load()
 
     if image.mode != 'RGBA':
         image = image.convert('RGBA')
@@ -53,14 +54,18 @@ class Command(BaseCommand):
             for name in files:
                 if name[-4:] != '.png': continue
 
-                redraw = load_image(os.path.join('./uploads/icons', name))
+                try:
 
-                original = load_image(os.path.join('./uploads/original', name))
+                    redraw = load_image(os.path.join('./uploads/icons', name))
 
-                if redraw != None and original != None:
-                    original.thumbnail((128, 128), Image.ANTIALIAS)
+                    original = load_image(os.path.join('./uploads/original', name))
 
-                    thumb = dropShadow(redraw, original)
-                    thumb.save(os.path.join('./uploads/thumb', name))
-                else:
-                    print 'get thumb error: ' + name
+                    if redraw != None and original != None:
+                        original.thumbnail((128, 128), Image.ANTIALIAS)
+
+                        thumb = dropShadow(redraw, original)
+                        thumb.save(os.path.join('./uploads/thumb', name))
+                    else:
+                        print 'warning: miss image ' + name
+                except:
+                    print 'error: read file ', name
