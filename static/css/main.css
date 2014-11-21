@@ -52,16 +52,18 @@ body, h1, h2, h3, h4, h5, h6 {
     margin-top: 51px;
     max-width: 96px;
     max-height: 96px;
+    position: relative;
 }
 
 .brick-icon img {
     max-width: 96px;
     max-height: 96px;
-    -webkit-filter: drop-shadow(0 5px 5px rgba(0,0,0,.8));
-    -moz-filter: drop-shadow(0 5px 5px rgba(0,0,0,.8));
-    -ms-filter: drop-shadow(0 5px 5px rgba(0,0,0,.8));
-    -o-filter: drop-shadow(0 5px 5px rgba(0,0,0,.8));
-    filter: drop-shadow(0 5px 5px rgba(0,0,0,.8));
+}
+
+.brick-icon .icon-fake {
+    position: absolute;
+    top: 0px;
+    left: 0px;
 }
 
 .brick-info {
@@ -100,24 +102,12 @@ body, h1, h2, h3, h4, h5, h6 {
 .app-icon-redraw img {
     max-width: 192px;
     max-height: 192px;
-    -webkit-filter: drop-shadow(0 10px 10px rgba(0,0,0,.8));
-    -moz-filter: drop-shadow(0 10px 10px rgba(0,0,0,.8));
-    -ms-filter: drop-shadow(0 10px 10px rgba(0,0,0,.8));
-    -o-filter: drop-shadow(0 10px 10px rgba(0,0,0,.8));
-    filter: drop-shadow(0 10px 10px rgba(0,0,0,.8));
-
 }
 
 .app-icon-original img {
     max-width: 192px;
     max-height: 192px;
     padding: 32px;
-    -webkit-filter: drop-shadow(0 10px 10px rgba(0,0,0,.8));
-    -moz-filter: drop-shadow(0 10px 10px rgba(0,0,0,.8));
-    -ms-filter: drop-shadow(0 10px 10px rgba(0,0,0,.8));
-    -o-filter: drop-shadow(0 10px 10px rgba(0,0,0,.8));
-    filter: drop-shadow(0 10px 10px rgba(0,0,0,.8));
-
 }
 
 .app-score a:hover {
@@ -126,6 +116,22 @@ body, h1, h2, h3, h4, h5, h6 {
 
 .icon-original {
     /* border-radius: 41px; */
+}
+
+.icon-shadow {
+    -webkit-filter: drop-shadow(0 20px 15px rgba(0,0,0,.2));
+    -moz-filter: drop-shadow(0 20px 15px rgba(0,0,0,.2));
+    -ms-filter: drop-shadow(0 20px 15px rgba(0,0,0,.2));
+    -o-filter: drop-shadow(0 20px 15px rgba(0,0,0,.2));
+    filter: drop-shadow(0 20px 15px rgba(0,0,0,.2));
+}
+
+.icon-shadow2 {
+    -webkit-filter: drop-shadow(0 8px 5px rgba(0,0,0,.2));
+    -moz-filter: drop-shadow(0 8px 5px rgba(0,0,0,.2));
+    -ms-filter: drop-shadow(0 8px 5px rgba(0,0,0,.2));
+    -o-filter: drop-shadow(0 8px 5px rgba(0,0,0,.2));
+    filter: drop-shadow(0 8px 5px rgba(0,0,0,.2));
 }
 
 /* detail */
@@ -176,6 +182,12 @@ body, h1, h2, h3, h4, h5, h6 {
 
 .detail .app-score {
     margin-top: 50px;
+}
+
+.detail .icon-fake {
+    position: absolute;
+    top: 0px;
+    left: 34px;
 }
 
 /* pagination */
@@ -235,6 +247,12 @@ body, h1, h2, h3, h4, h5, h6 {
 .thumb .app-icons {
     margin-top: 40px;
     margin-bottom: 40px;
+}
+
+.thumb .icon-fake {
+    position: absolute;
+    top: 0px;
+    left: 67px;
 }
 
 .thumb .app-name {

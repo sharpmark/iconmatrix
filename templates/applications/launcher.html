@@ -5,7 +5,8 @@
         {% for app in app_list %}
         <div class="brick-{% cycle '1' '2' '3' '1' '2' '3' '4' '5' '6' '4' '5' '6' '7' '8' '9' '7' '8' '9' %} brick" appurl="{{ app.get_absolute_url }}thumb/">
             <div class="brick-icon center-block">
-                <img src="{% get_media_prefix %}{{ app.get_icon_url }}" alt="{{ app.name }}">
+                <img class="redraw-icon icon-shadow" src="{% get_media_prefix %}{{ app.get_icon_url }}" alt="{{ app.name }}" />
+                <img class="icon-fake icon-shadow2" src="{% get_media_prefix %}{{ app.get_icon_url }}" />
             </div>
             <div class="brick-info">
                 <h5 class="text-center">
