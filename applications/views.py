@@ -101,7 +101,7 @@ def _rate(request, application):
     if int(score) == 0:
         try:
             like = Like.objects.get(application=application, user=request.user)
-            if like.score > 1:
+            if like.score > 0:
                 like.application.like_count = like.application.like_count - 1
             elif like.score < 0:
                 like.application.unlike_count = like.application.unlike_count - 1
