@@ -246,4 +246,9 @@ try:
 except ImportError:
     pass
 
+try:
+    from custom_settings import *
+except ImportError:
+    pass
+
 LOGIN_REDIRECT_URL = '/'
