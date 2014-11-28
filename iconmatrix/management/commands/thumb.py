@@ -4,8 +4,8 @@ import os
 import shutil
 from django.core.management.base import BaseCommand, CommandError
 from applications.models import Application
-import ImageFont, ImageDraw
-import ImageFilter, Image
+from PIL import ImageFont, ImageDraw
+from PIL import ImageFilter, Image
 from django.conf import settings
 
 
