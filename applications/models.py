@@ -45,12 +45,18 @@ class Application(models.Model):
     def get_icon_url(self):
         return 'icons/%s' % self.icon
 
+    def get_thumb_url(self):
+        if not os.path.exists('./uploads/thumb/dark/%s' % self.icon):
+            return self.get_icon_url()
+        else:
+            return 'thumb/dark/%s' % self.icon
+
     def share_button(self):
         urlformat = u'http://service.weibo.com/share/share.php?appkey=%d&url=%s&title=%s&pic=%s&source=锤子图标&content=utf8&searchPic=false'
         appkey = 1980984514
         url = 'http://iconmatrix.sharpmark.net/'
         title = u'分享锤子科技重绘“%s' % self.name + u'”的图标一枚：http://iconmatrix.sharpmark.net%s @锤子图标' % self.get_absolute_url()
-        pic = 'http://iconmatrix.sharpmark.net/uploads/' + self.get_icon_url()
+        pic = 'http://iconmatrix.sharpmark.net/uploads/' + self.get_thumb_url()
 
         return urlformat % (appkey, url, title, pic)
 
