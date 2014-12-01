@@ -5,6 +5,8 @@ from django.contrib.auth.decorators import login_required
 from applications.models import Application, Like
 from applications.forms import SearchForm
 
+from django.conf import settings
+
 DEFAULT_APPS = 18
 
 def detail(request, package):
@@ -21,6 +23,8 @@ def detail(request, package):
 
     if action == 'rate':
         return _rate(request, application)
+    elif action == 'be_author':
+        return _be_author(request, application)
 
     return redirect(app)
 
@@ -92,6 +96,16 @@ def search(request):
     return render(request, 'applications/list-nopaged.html', {
         'app_list': app_list,
     })
+
+
+@login_required
+def _be_author(request, application):
+
+    if request.user.id in settings.ARTISTS:
+        application.artist = request.user
+        application.save()
+
+    return render(request, 'applications/author.html', {'application': application,})
 
 
 @login_required

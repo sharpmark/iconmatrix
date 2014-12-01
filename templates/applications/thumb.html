@@ -1,7 +1,7 @@
 {% load static %}
 <div class="row app-title">
     <div class="col-md-12">
-        <span class="app-name"><a href="{{ application.get_absolute_url }}" target="_blank">{{ application.name }}</a></span>
+        <span class="app-name"><a href="{{ application.get_absolute_url }}" target="_blank">{{ application.name }}</a></span>{% include 'applications/author.html' %}
         <div id="app-score" class="app-score">{% include 'applications/like.html' %}</div>
     </div>
 </div>
@@ -19,4 +19,6 @@
     </div>
 </div>
 <hr />
-<h2 class="app-ops"><a href="{{ application.get_absolute_url }}" target="_blank">评论</a> | <a href="{{ application.share_button|safe }}" target="_blank">分享到新浪微博</a></h2>
+<h2 class="app-ops">{% if user.is_authenticated and user.is_artist %}
+<a href="#" onclick="be_author('{{ application.package_name }}', '{{ csrf_token }}')"><span>我是图标作者</span></a> |
+{% endif %}<a href="{{ application.get_absolute_url }}" target="_blank">评论</a> | <a href="{{ application.share_button|safe }}" target="_blank">分享到新浪微博</a></h2>

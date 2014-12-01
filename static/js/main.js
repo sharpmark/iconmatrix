@@ -30,6 +30,21 @@ $(document).ready(function() {
 
 });
 
+function be_author(package, csrf) {
+    post_data = {};
+    post_data['package_name'] = package;
+    post_data['action'] = 'be_author';
+    post_data['csrfmiddlewaretoken'] = csrf;
+
+    $.post('/apps/' + package + '/', post_data,
+        function(data){
+            $('#app-author').html(data);
+        },
+        'html');
+
+    event.stopPropagation();
+};
+
 
 function app_rate(package, score, csrf) {
     post_data = {};

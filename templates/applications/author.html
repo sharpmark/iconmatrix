@@ -1,0 +1,2 @@
+{% load app_tags %}
+<span id="app-author" class="app-author">{% if application.artist %}<a href="http://weibo.com/u/{{ application.artist.id }}" target="_blank">@{{ application.artist.name }}</a>{% else %}@Smartisan{% endif %}</span>

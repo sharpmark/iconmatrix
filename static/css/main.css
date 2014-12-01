@@ -114,6 +114,19 @@ body, h1, h2, h3, h4, h5, h6 {
     text-decoration: none;
 }
 
+.app-author {
+    line-height: 30px;
+    margin-left: 10px;
+}
+
+.app-author a {
+    color: #babdc5;
+}
+
+.app-author a:hover {
+    text-decoration: none;
+}
+
 .icon-original {
     /* border-radius: 41px; */
 }
